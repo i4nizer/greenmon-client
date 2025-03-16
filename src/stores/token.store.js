@@ -25,14 +25,9 @@ export const useTokenStore = defineStore('token', () => {
 
     // ---actions
     const rotate = async () => {
-        // craft data
-        const tokens = {
-            accessToken: accessToken.value,
-            refreshToken: refreshToken.value,
-        };
-
-        // send tokens to get new tokens
-        const res = await axios.post(`${env.apiDomain}/user/rotate-token`, tokens);
+        // send refresh token to get new tokens
+        const body = { refreshToken: refreshToken.value };
+        const res = await axios.post(`${env.apiDomain}/user/rotate-token`, body);
 
         // save new tokens
         accessToken.value = res.data.object.accessToken;
