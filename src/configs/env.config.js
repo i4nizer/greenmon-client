@@ -9,7 +9,7 @@ const env = {
     env: "development",
 
     // Api info
-    apiDomain: "http://localhost:4001/v1",
+    apiDomain: "http://localhost:4000/",
 
     // Expiries in milliseconds
     otpLife: 300000,

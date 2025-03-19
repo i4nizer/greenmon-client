@@ -35,7 +35,7 @@ export const useUserStore = defineStore('user', () => {
 
     // ---actions
     const set = (data) => {
-        user.id = data._id ?? user.id;
+        user.id = data.id ?? user.id;
         user.name = data.name ?? user.name;
         user.email = data.email ?? user.email;
         user.verified = data.verified ?? user.verified;
@@ -54,7 +54,7 @@ export const useUserStore = defineStore('user', () => {
 
     const signUp = async (user) => {
         const res = await axios.post(`${env.apiDomain}/user/sign-up`, user);
-        set(res.data.object);
+        set(res.data.user);
         recent.accountVerificationOtp = Date.now();
         return res;
     }
@@ -72,6 +72,7 @@ export const useUserStore = defineStore('user', () => {
 
     const signIn = async (email, password) => {
         const res = await axios.post(`${env.apiDomain}/user/sign-in`, { email, password })
+        set(res.data.user)
         return res;
     }
 

@@ -34,7 +34,7 @@ const onSignIn = async ({ email, password }) => {
     state.signing = true;
 
     await signIn(email, password)
-        .then(res => set(res.data.object))
+        .then(res => set(res.data))
         .then(() => router.push("/user"))
         .catch(console.error)
 

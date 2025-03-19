@@ -30,8 +30,8 @@ export const useTokenStore = defineStore('token', () => {
         const res = await axios.post(`${env.apiDomain}/user/rotate-token`, body);
 
         // save new tokens
-        accessToken.value = res.data.object.accessToken;
-        refreshToken.value = res.data.object.refreshToken;
+        accessToken.value = res.data.accessToken;
+        refreshToken.value = res.data.refreshToken;
         console.log("Token: Token rotated successfully.");
 
         return res;
