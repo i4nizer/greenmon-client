@@ -32,7 +32,7 @@
         <v-btn
             text="Sign Up"
             type="submit"
-            class="w-100"
+            class="w-100 mt-3"
             :loading="loading"
             :disabled="!valid"
         ></v-btn>

@@ -25,7 +25,7 @@
         <v-btn 
             type="submit" 
             text="Sign In" 
-            class="w-100" 
+            class="w-100 mt-3" 
             :disabled="!valid"
             :loading="loading"
         ></v-btn>

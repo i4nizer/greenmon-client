@@ -18,7 +18,7 @@
         <v-btn
             type="submit"
             text="Forgot Password"
-            class="w-100"
+            class="w-100 mt-3"
             :loading="loading"
             :disabled="!valid"
         ></v-btn>

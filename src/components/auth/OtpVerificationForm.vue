@@ -18,7 +18,7 @@
             <br>
             <router-link 
                 to="" 
-                class="text-grey"
+                class="text-grey mt-3"
                 @click.prevent="onResendOtp"
             >{{ resendEmailText }}</router-link>
         </div>
