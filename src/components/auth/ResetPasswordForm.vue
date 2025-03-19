@@ -1,6 +1,5 @@
 <template>
     <v-form
-        class="border rounded pa-7 d-flex flex-column"
         v-model="valid"
         :disabled="loading"
         @submit.prevent="$emit('reset', password.new)"
@@ -9,20 +8,15 @@
         <span class="text-grey">Enter your new password below</span>
 
         <v-text-field
+            type="password"
             label="New Password"
             class="mt-6"
-            variant="outlined"
-            density="compact"
-            type="password"
             v-model="password.new"
             :rules="rules"
         ></v-text-field>
 
         <v-text-field
             label="Confirm Password"
-            class="mt-1"
-            variant="outlined"
-            density="compact"
             type="password"
             v-model="password.confirm"
             :rules="rules"
@@ -31,8 +25,7 @@
         <v-btn
             type="submit"
             text="Reset Passsword"
-            class="text-none mt-3"
-            color="white"
+            class="w-100"
             :loading="loading"
             :disabled="!valid"
         ></v-btn>

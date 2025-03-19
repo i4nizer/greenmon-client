@@ -1,14 +1,12 @@
 <template>
     <v-form 
-        class="border rounded pa-7"
         :disabled="loading"
         @submit.prevent="$emit('verify-otp', otp)"
     >
-        <h2>Account Verification</h2>
+        <h2>OTP Verification</h2>
         <span class="text-grey">Your otp was sent to you via email.</span>
 
         <v-otp-input
-            class=""
             v-model="otp"
             :length="otpDigits"
             :loading="loading"
@@ -20,8 +18,7 @@
             <br>
             <router-link 
                 to="" 
-                class="text-white"
-                :class="resendEmailText == 'Resend Email' ? 'text-white':'text-grey'"
+                class="text-grey"
                 @click.prevent="onResendOtp"
             >{{ resendEmailText }}</router-link>
         </div>

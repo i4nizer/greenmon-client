@@ -1,6 +1,5 @@
 <template>
     <v-form
-        class="border rounded pa-7"
         v-model="valid"
         :disabled="loading"
         @submit.prevent="$emit('forgot', mail)"
@@ -11,8 +10,6 @@
         <v-text-field
             label="Email"
             class="mt-6"
-            variant="outlined"
-            density="compact"
             v-model="mail"
             placeholder="example@email.com"
             :rules="[required(), email()]"
@@ -21,15 +18,14 @@
         <v-btn
             type="submit"
             text="Forgot Password"
-            color="white"
-            class="text-none w-100 mt-3"
+            class="w-100"
             :loading="loading"
             :disabled="!valid"
         ></v-btn>
 
         <div class="text-center mt-3">
             <span>Remember your password? </span>
-            <router-link class="text-white" to="/auth/sign-in">Sign In</router-link>
+            <router-link class="text-grey" to="/auth/sign-in">Sign In</router-link>
         </div>
     </v-form>
 </template>

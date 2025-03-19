@@ -1,6 +1,5 @@
 <template>
     <v-form 
-        class="border rounded pa-7" 
         v-model="valid" 
         :disabled="loading"
         @submit.prevent="onSubmit"
@@ -11,8 +10,6 @@
         <v-text-field
             label="Name"
             class="mt-6"
-            variant="outlined"
-            density="compact"
             v-model="user.name"
             placeholder="Example Name"
             :rules="[required(), min(3), max(30)]"
@@ -20,9 +17,6 @@
 
         <v-text-field
             label="Email"
-            class="mt-1"
-            variant="outlined"
-            density="compact"
             v-model="user.email"
             placeholder="example@email.com"
             :rules="[required(), email()]"
@@ -30,9 +24,6 @@
 
         <v-text-field
             label="Password"
-            class="mt-1"
-            variant="outlined"
-            density="compact"
             type="password"
             v-model="user.password"
             :rules="[required(), min(8)]"
@@ -41,15 +32,14 @@
         <v-btn
             text="Sign Up"
             type="submit"
-            color="white"
-            class="text-none w-100 mt-3"
+            class="w-100"
             :loading="loading"
             :disabled="!valid"
         ></v-btn>
 
         <div class="text-center mt-3">
             <span>Already have an account? </span>
-            <router-link class="text-white" to="/auth/sign-in">Sign In</router-link>
+            <router-link class="text-grey" to="/auth/sign-in">Sign In</router-link>
         </div>
     </v-form>
 </template>
