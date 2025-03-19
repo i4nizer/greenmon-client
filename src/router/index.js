@@ -11,15 +11,16 @@ const routes = [
     {
         path: "/auth",
         name: "Authentication",
-        redirect: "/auth/sign-up",
+        redirect: "/auth/sign-in",
         children: authRoutes,
         beforeEnter: authBeforeEnter,
     },
     {
         path: "/user",
         name: "User",
-        redirect: "/user/greenhouses",
+        redirect: "/user/greenhouse",
         children: userRoutes,
+        component: () => import("@/views/user/Greenhouse.vue"),
         beforeEnter: userBeforeEnter,
     },
 ];
