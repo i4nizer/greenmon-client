@@ -1,5 +1,6 @@
 <template>
     <v-form 
+        class="pa-7"
         :disabled="loading"
         @submit.prevent="$emit('verify-otp', otp)"
     >

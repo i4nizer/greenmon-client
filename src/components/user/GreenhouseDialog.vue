@@ -5,7 +5,7 @@
         </template>
         <template #default="{ isActive }">
             <v-form 
-                class="bg-grey-darken-4"
+                class="bg-grey-darken-4 pa-7"
                 v-model="state.valid" 
                 @submit.prevent="onSubmit"
             >

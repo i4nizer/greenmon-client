@@ -1,5 +1,6 @@
 <template>
     <v-form 
+        class="pa-7"
         v-model="valid" 
         :disabled="loading"
         @submit.prevent="onSubmit"
