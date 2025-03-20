@@ -31,8 +31,8 @@
 <script setup>
 import { useUserStore } from '@/stores/user.store';
 import { defineAsyncComponent, reactive } from 'vue';
-import router from '@/router';
 import { useTokenStore } from '@/stores/token.store';
+import { useRouter } from 'vue-router';
 
 const UserLayout = defineAsyncComponent(() => import("@/views/user/UserLayout.vue"))
 const UserAccountCard = defineAsyncComponent(() => import("@/components/user/UserAccountCard.vue"))
@@ -46,6 +46,9 @@ const {
     forgotPassword,
 } = useUserStore()
 const { clear: clearTokens } = useTokenStore()
+
+// ---composables
+const router = useRouter()
 
 // ---state
 const state = reactive({

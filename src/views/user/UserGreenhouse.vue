@@ -3,7 +3,7 @@
         <v-container class="pa-5 py-7" fluid>
             <v-row>
                 <v-col>
-                    <h3>Greenhouses</h3>
+                    <h3>User Greenhouse</h3>
                 </v-col>
             </v-row>
             <v-row>
@@ -49,9 +49,9 @@
 </template>
 
 <script setup>
-import router from "@/router";
 import { useGreenhouseStore } from "@/stores/greenhouse.store";
 import { defineAsyncComponent, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 const UserLayout = defineAsyncComponent(() => import("@/views/user/UserLayout.vue"))
 const UserGreenhouseCard = defineAsyncComponent(() => import("@/components/user/UserGreenhouseCard.vue"));
@@ -60,6 +60,9 @@ const UserGreenhouseDialog = defineAsyncComponent(() => import("@/components/use
 
 // ---stores
 const { greenhouses, create, retrieve, update, destroy } = useGreenhouseStore();
+
+// ---composables
+const router = useRouter()
 
 // ---events
 const onCreateGreenhouse = async (greenhouse) => {

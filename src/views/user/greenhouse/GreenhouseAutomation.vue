@@ -1,6 +1,6 @@
 <template>
     <GreenhouseLayout>
-        <v-container fluid>
+        <v-container class="pa-5 py-7" fluid>
             <v-row>
                 <v-col>
                     Automation

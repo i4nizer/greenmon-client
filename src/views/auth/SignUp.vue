@@ -27,9 +27,9 @@
 <script setup>
 import env from "@/configs/env.config";
 import axios from "axios";
-import router from "@/router";
 import { useUserStore } from "@/stores/user.store";
 import { computed, defineAsyncComponent, reactive } from "vue";
+import { useRouter } from "vue-router";
 
 const SignUpForm = defineAsyncComponent(() => import("@/components/auth/SignUpForm.vue"));
 const OtpVerificationForm = defineAsyncComponent(() => import("@/components/auth/OtpVerificationForm.vue"));
@@ -43,6 +43,9 @@ const {
     signUp,
     verifyAccountVerificationOtp,
 } = useUserStore();
+
+// ---composables
+const router = useRouter()
 
 // ---getters
 const requiresVerification = computed(() => !user.verified && !!recent.accountVerificationOtp);

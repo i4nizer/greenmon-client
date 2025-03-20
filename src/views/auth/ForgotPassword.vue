@@ -25,9 +25,9 @@
 </template>
 
 <script setup>
-import router from '@/router';
 import { useUserStore } from '@/stores/user.store';
 import { computed, defineAsyncComponent, reactive } from 'vue';
+import { useRouter } from 'vue-router';
 
 const ForgotPasswordForm = defineAsyncComponent(() => import('@/components/auth/ForgotPasswordForm.vue'))
 const OtpVerificationForm = defineAsyncComponent(() => import('@/components/auth/OtpVerificationForm.vue'))
@@ -41,6 +41,9 @@ const {
     forgotPassword,
     verifyResetPasswordOtp,
 } = useUserStore()
+
+// ---composables
+const router = useRouter()
 
 // ---getters
 const forgottenPassword = computed(() => user.email && recent.passwordResetOtp);

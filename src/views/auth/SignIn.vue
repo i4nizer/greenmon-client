@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
-import router from "@/router";
 import { useTokenStore } from "@/stores/token.store";
 import { useUserStore } from "@/stores/user.store";
 import { defineAsyncComponent, reactive } from "vue";
+import { useRouter } from "vue-router";
 
 const SignInForm = defineAsyncComponent(() => import("@/components/auth/SignInForm.vue"));
 
@@ -23,6 +23,9 @@ const SignInForm = defineAsyncComponent(() => import("@/components/auth/SignInFo
 // ---stores
 const { signIn } = useUserStore()
 const { set } = useTokenStore()
+
+// ---composables
+const router = useRouter()
 
 // ---state
 const state = reactive({

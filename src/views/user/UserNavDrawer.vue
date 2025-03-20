@@ -37,16 +37,19 @@
 </template>
 
 <script setup>
-import router from '@/router';
 import { useTokenStore } from '@/stores/token.store';
 import { useUserStore } from '@/stores/user.store';
 import { reactive, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 
 
 // ---stores
 const { user, signOut } = useUserStore()
 const { refreshToken, clear } = useTokenStore()
+
+// ---composables
+const router = useRouter()
 
 // ---state
 const state = reactive({

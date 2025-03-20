@@ -12,9 +12,9 @@
 </template>
 
 <script setup>
-import router from "@/router";
 import { useUserStore } from "@/stores/user.store";
 import { defineAsyncComponent, reactive } from "vue";
+import { useRouter } from "vue-router";
 
 const ResetPasswordForm = defineAsyncComponent(() => import("@/components/auth/ResetPasswordForm.vue"));
 
@@ -22,6 +22,9 @@ const ResetPasswordForm = defineAsyncComponent(() => import("@/components/auth/R
 
 // ---stores
 const { user, resetPassword } = useUserStore()
+
+// ---composables
+const router = useRouter()
 
 // ---state
 const state = reactive({

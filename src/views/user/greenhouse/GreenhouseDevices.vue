@@ -1,10 +1,13 @@
 <template>
     <GreenhouseLayout>
-        <v-container fluid>
+        <v-container class="pa-5 py-7" fluid>
             <v-row>
                 <v-col>
-                    Devices
+                    <h3>Greenhouse Devices</h3>
                 </v-col>
+            </v-row>
+            <v-row>
+                
             </v-row>
         </v-container>
     </GreenhouseLayout>
