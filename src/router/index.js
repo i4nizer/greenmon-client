@@ -10,17 +10,13 @@ const routes = [
     },
     {
         path: "/auth",
-        name: "Authentication",
-        redirect: "/auth/sign-in",
         children: authRoutes,
         beforeEnter: authBeforeEnter,
     },
     {
         path: "/user",
-        name: "User",
-        redirect: "/user/greenhouse",
         children: userRoutes,
-        component: () => import("@/views/user/Greenhouse.vue"),
+        component: () => import("@/views/user/User.vue"),
         beforeEnter: userBeforeEnter,
     },
 ];

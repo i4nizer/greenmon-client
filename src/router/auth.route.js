@@ -4,6 +4,10 @@ import { authBeforeEnter } from "@/middlewares/auth.middleware"
 
 const authRoutes = [
     {
+        path: "",
+        redirect: "/auth/sign-in",
+    },
+    {
         path: "sign-up",
         name: "Sign Up",
         component: () => import("@/views/auth/SignUp.vue"),

@@ -4,6 +4,10 @@ import { userBeforeEnter } from "@/middlewares/user.middleware"
 
 const userRoutes = [
     {
+        path: "",
+        redirect: "/user/greenhouse",
+    },
+    {
         path: "greenhouse",
         name: "Greenhouse",
         components: {
@@ -15,7 +19,7 @@ const userRoutes = [
         path: "settings",
         name: "Settings",
         components: {
-            default: () => import("@/views/user/Greenhouse.vue"),
+            default: () => import("@/views/user/UserSettings.vue"),
             UserNavDrawer: () => import("@/views/user/UserNavDrawer.vue"),
         }
     },
