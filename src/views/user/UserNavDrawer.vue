@@ -26,7 +26,6 @@
             <v-list density="compact">
                 <v-list-item
                     link
-                    color="red"
                     title="Sign Out"
                     prepend-icon="mdi-logout"
                     :disabled="state.signingOut"

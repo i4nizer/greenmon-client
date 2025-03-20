@@ -9,27 +9,27 @@ const greenhouseRoutes = [
     },
     {
         path: "dashboard",
-        name: "Dashboard",
-        component: () => import("@/views/user/greenhouse/GreenhouseLayout.vue"),
+        name: "Greenhouse Dashboard",
+        component: () => import("@/views/user/greenhouse/GreenhouseDashboard.vue"),
     },
     {
         path: "devices",
-        name: "Devices",
+        name: "Greenhouse Devices",
         component: () => import("@/views/user/greenhouse/GreenhouseDevices.vue"),
     },
     {
         path: "automation",
-        name: "Automation",
+        name: "Greenhouse Automation",
         component: () => import("@/views/user/greenhouse/GreenhouseAutomation.vue"),
     },
     {
         path: "schedule",
-        name: "Schedule",
+        name: "Greenhouse Schedule",
         component: () => import("@/views/user/greenhouse/GreenhouseSchedule.vue"),
     },
     {
         path: "settings",
-        name: "Settings",
+        name: "Greenhouse Settings",
         component: () => import("@/views/user/greenhouse/GreenhouseSettings.vue"),
     },
 ];

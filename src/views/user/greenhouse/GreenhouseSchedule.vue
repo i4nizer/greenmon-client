@@ -1,6 +1,6 @@
 <template>
     <GreenhouseLayout>
-        <v-container>
+        <v-container fluid>
             <v-row>
                 <v-col>
                     Schedule

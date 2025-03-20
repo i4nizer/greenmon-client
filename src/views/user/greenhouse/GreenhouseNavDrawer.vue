@@ -21,25 +21,25 @@
             <v-list-item 
                 link 
                 title="Dashboard" 
-                prepend-icon="mdi-chart"
+                prepend-icon="mdi-view-dashboard"
                 :to="`/user/greenhouse/${greenhouseId}/dashboard`" 
             ></v-list-item>
             <v-list-item 
                 link 
                 title="Devices" 
-                prepend-icon="mdi-brain"
+                prepend-icon="mdi-devices"
                 :to="`/user/greenhouse/${greenhouseId}/devices`" 
             ></v-list-item>
             <v-list-item 
                 link 
                 title="Automation" 
-                prepend-icon="mdi-brain"
+                prepend-icon="mdi-auto-fix"
                 :to="`/user/greenhouse/${greenhouseId}/automation`" 
             ></v-list-item>
             <v-list-item 
                 link 
                 title="Schedule" 
-                prepend-icon="mdi-brain"
+                prepend-icon="mdi-calendar-clock"
                 :to="`/user/greenhouse/${greenhouseId}/schedule`" 
             ></v-list-item>
             <v-list-item 
@@ -54,7 +54,12 @@
             <v-list density="compact">
                 <v-list-item
                     link
-                    color="red"
+                    :to="`/user/greenhouse`"
+                    title="Back to User"
+                    prepend-icon="mdi-account-arrow-left"
+                ></v-list-item>
+                <v-list-item
+                    link
                     title="Sign Out"
                     prepend-icon="mdi-logout"
                     :disabled="state.signingOut"

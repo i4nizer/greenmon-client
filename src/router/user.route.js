@@ -9,19 +9,19 @@ const userRoutes = [
         redirect: "/user/greenhouse",
     },
     {
-        path: "greenhouse/:greenhouseId",
-        children: greenhouseRoutes,
-        beforeEnter: greenhouseBeforeEnter,
-    },
-    {
         path: "greenhouse",
-        name: "Greenhouse",
+        name: "User Greenhouse",
         component: () => import("@/views/user/UserGreenhouse.vue"),
     },
     {
         path: "settings",
-        name: "Settings",
+        name: "User Settings",
         component: () => import("@/views/user/UserSettings.vue"),
+    },
+    {
+        path: "greenhouse/:greenhouseId(\\d+)",
+        children: greenhouseRoutes,
+        beforeEnter: greenhouseBeforeEnter,
     },
 ];
 
