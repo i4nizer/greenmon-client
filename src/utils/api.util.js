@@ -16,7 +16,8 @@ const api = axios.create({ baseURL: env.apiDomain, withCredentials: true })
 api.interceptors.request.use(
     async (config) => {
         // check if need token rotation
-        const { accessToken, rotate, expiration } = useTokenStore();
+        const tokenStore = useTokenStore();
+        const { rotate, expiration } = tokenStore;
         const { accessTokenExpired, refreshTokenExpired } = expiration();
 
         // must reauthenticate
@@ -39,7 +40,7 @@ api.interceptors.request.use(
         }
 
         // add to headers
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
+        config.headers["Authorization"] = `Bearer ${tokenStore.accessToken}`;
         return config;
     }
 )
