@@ -1,29 +1,31 @@
 <template>
-    <v-container class="pa-5 py-7" fluid>
-        <v-row>
-            <v-col>
-                <h3>User Settings</h3>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>
-                <UserAccountCard 
-                    :user="user" 
-                    :loading="state.updatingUser"
-                    :disabled="state.updatingUser"
-                    @change="onUpdateUser"
-                />
-            </v-col>
-            <v-col>
-                <UserSecurityCard 
-                    :user="user" 
-                    :loading="state.forgettingPassword"
-                    :disabled="state.forgettingPassword"
-                    @change-password="onChangePassword"
-                />
-            </v-col>
-        </v-row>
-    </v-container>
+    <UserLayout>
+        <v-container class="pa-5 py-7" fluid>
+            <v-row>
+                <v-col>
+                    <h3>User Settings</h3>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <UserAccountCard 
+                        :user="user" 
+                        :loading="state.updatingUser"
+                        :disabled="state.updatingUser"
+                        @change="onUpdateUser"
+                    />
+                </v-col>
+                <v-col>
+                    <UserSecurityCard 
+                        :user="user" 
+                        :loading="state.forgettingPassword"
+                        :disabled="state.forgettingPassword"
+                        @change-password="onChangePassword"
+                    />
+                </v-col>
+            </v-row>
+        </v-container>
+    </UserLayout>
 </template>
 
 <script setup>
@@ -32,6 +34,7 @@ import { defineAsyncComponent, reactive } from 'vue';
 import router from '@/router';
 import { useTokenStore } from '@/stores/token.store';
 
+const UserLayout = defineAsyncComponent(() => import("@/views/user/UserLayout.vue"))
 const UserAccountCard = defineAsyncComponent(() => import("@/components/user/UserAccountCard.vue"))
 const UserSecurityCard = defineAsyncComponent(() => import("@/components/user/UserSecurityCard.vue"))
 

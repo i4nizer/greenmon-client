@@ -1,4 +1,5 @@
-import { userBeforeEnter } from "@/middlewares/user.middleware"
+import { userBeforeEnter } from "@/middlewares/user.middleware";
+import { greenhouseBeforeEnter, greenhouseRoutes } from "./greenhouse.route";
 
 
 
@@ -8,23 +9,22 @@ const userRoutes = [
         redirect: "/user/greenhouse",
     },
     {
+        path: "greenhouse/:greenhouseId",
+        children: greenhouseRoutes,
+        beforeEnter: greenhouseBeforeEnter,
+    },
+    {
         path: "greenhouse",
         name: "Greenhouse",
-        components: {
-            default: () => import("@/views/user/Greenhouse.vue"),
-            UserNavDrawer: () => import("@/views/user/UserNavDrawer.vue"),
-        }
+        component: () => import("@/views/user/UserGreenhouse.vue"),
     },
     {
         path: "settings",
         name: "Settings",
-        components: {
-            default: () => import("@/views/user/UserSettings.vue"),
-            UserNavDrawer: () => import("@/views/user/UserNavDrawer.vue"),
-        }
+        component: () => import("@/views/user/UserSettings.vue"),
     },
-]
+];
 
 
 
-export { userRoutes, userBeforeEnter }
+export { userRoutes, userBeforeEnter };

@@ -4,9 +4,9 @@
             <v-icon>mdi-greenhouse</v-icon>
             <span class="ml-2">{{ greenhouse?.name }}</span>
         </v-card-title>
-        
+
         <v-card-text class="text-grey">{{ greenhouse?.description }}</v-card-text>
-        
+
         <v-card-actions>
             <v-btn @click="emit('view', greenhouse?.id)">
                 <v-icon class="mr-1">mdi-cog</v-icon>
@@ -34,25 +34,20 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent } from "vue";
 
-const GreenhouseDialog = defineAsyncComponent(() => import("@/components/user/GreenhouseDialog.vue"))
-
+const GreenhouseDialog = defineAsyncComponent(() => import("@/components/user/UserGreenhouseDialog.vue"));
 
 // ---events
-const emit = defineEmits(['view', 'edit', 'delete'])
+const emit = defineEmits(["view", "edit", "delete"]);
 
 // ---props
 const props = defineProps({
     greenhouse: {
         type: Object,
         required: true,
-    }
-})
-
-
+    },
+});
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

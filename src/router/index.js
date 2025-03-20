@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import { authRoutes, authBeforeEnter } from "./auth.route";
 import { userRoutes, userBeforeEnter } from "./user.route";
 
+
+
 const routes = [
     {
         path: "/",
@@ -16,7 +18,6 @@ const routes = [
     {
         path: "/user",
         children: userRoutes,
-        component: () => import("@/views/user/User.vue"),
         beforeEnter: userBeforeEnter,
     },
 ];
@@ -25,5 +26,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
+
 
 export default router;
