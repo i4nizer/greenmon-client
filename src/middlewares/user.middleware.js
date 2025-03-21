@@ -1,3 +1,4 @@
+import { useGreenhouseStore } from "@/stores/greenhouse.store";
 import { useTokenStore } from "@/stores/token.store";
 
 
@@ -26,6 +27,10 @@ const userBeforeEnter = async (to, from, next) => {
             return next("/auth/sign-in");
         }
     }
+
+    // load user's greenhouses
+    const { retrieve } = useGreenhouseStore()
+    retrieve().catch(console.error)
 
     // passed all checks
     return next();

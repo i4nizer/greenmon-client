@@ -17,6 +17,11 @@
                     :title="greenhouse?.name"
                     :subtitle="greenhouse?.description"
                 ></v-list-item>
+                <v-list-item
+                    prepend-icon="mdi-chip"
+                    :title="mcu?.name"
+                    :subtitle="mcu?.label"
+                ></v-list-item>
             </v-list>
         </template>
         
@@ -27,36 +32,42 @@
                 link 
                 title="Dashboard" 
                 prepend-icon="mdi-view-dashboard"
-                :to="`/user/greenhouse/${greenhouseId}/dashboard`" 
+                :to="`/user/greenhouse/${greenhouseId}/mcu/${mcuId}/dashboard`" 
             ></v-list-item>
             <v-list-item 
                 link 
-                title="Microcontrollers" 
-                prepend-icon="mdi-chip"
-                :to="`/user/greenhouse/${greenhouseId}/mcu`" 
+                title="Pins" 
+                prepend-icon="mdi-sine-wave"
+                :to="`/user/greenhouse/${greenhouseId}/mcu/${mcuId}/pins`" 
             ></v-list-item>
             <v-list-item 
                 link 
-                title="Automation" 
-                prepend-icon="mdi-auto-fix"
-                :to="`/user/greenhouse/${greenhouseId}/automation`" 
+                title="Sensors" 
+                prepend-icon="mdi-thermometer"
+                :to="`/user/greenhouse/${greenhouseId}/mcu/${mcuId}/sensors`" 
             ></v-list-item>
             <v-list-item 
                 link 
-                title="Schedule" 
-                prepend-icon="mdi-calendar-clock"
-                :to="`/user/greenhouse/${greenhouseId}/schedule`" 
+                title="Actuators" 
+                prepend-icon="mdi-fan"
+                :to="`/user/greenhouse/${greenhouseId}/mcu/${mcuId}/actuators`" 
             ></v-list-item>
             <v-list-item 
                 link 
                 title="Settings" 
                 prepend-icon="mdi-cog"
-                :to="`/user/greenhouse/${greenhouseId}/settings`" 
+                :to="`/user/greenhouse/${greenhouseId}/mcu/${mcuId}/settings`" 
             ></v-list-item>
         </v-list>
         
         <template #append>
             <v-list density="compact">
+                <v-list-item
+                    link
+                    :to="`/user/greenhouse/${greenhouseId}/dashboard`"
+                    title="Back to Greenhouse"
+                    prepend-icon="mdi-greenhouse"
+                ></v-list-item>
                 <v-list-item
                     link
                     :to="`/user/greenhouse`"
@@ -77,27 +88,31 @@
 
 <script setup>
 import { useGreenhouseStore } from '@/stores/greenhouse.store';
+import { useMcuStore } from '@/stores/mcu.store';
 import { useTokenStore } from '@/stores/token.store';
 import { useUserStore } from '@/stores/user.store';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 
 
 // ---stores
 const { user, signOut } = useUserStore()
-const { refreshToken, clear } = useTokenStore()
+const { mcus } = useMcuStore()
 const { greenhouses } = useGreenhouseStore()
+const { refreshToken, clear } = useTokenStore()
 
 // ---composables
 const route = useRoute()
 const router = useRouter()
 
 // ---data
+const mcuId = route.params.mcuId
 const greenhouseId = route.params.greenhouseId
 
 // ---getters
-const greenhouse = computed(() => greenhouses.find(g => g.id == greenhouseId));
+const mcu = computed(() => mcus.find(m => m.id == mcuId))
+const greenhouse = computed(() => greenhouses.find(g => g.id == greenhouseId))
 
 // ---state
 const state = reactive({

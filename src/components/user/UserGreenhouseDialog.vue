@@ -9,7 +9,7 @@
                 v-model="state.valid" 
                 @submit.prevent="onSubmit"
             >
-                <h3>{{ type == 'Create' ? 'Create Greenhouse' : 'Update Greenhouse' }}</h3>
+                <h3>{{ `${type} Greenhouse` }}</h3>
                 <span class="text-grey">Please provide the greenhouse details.</span>
                 <v-text-field
                     label="Name"
@@ -75,8 +75,11 @@ const state = reactive({ valid: false })
 // ---events
 const onSubmit = () => {
     emit("submit", { ...greenhouse });
-    greenhouse.name = null
-    greenhouse.description = null
+
+    if (props.type == 'Create') {
+        greenhouse.name = null
+        greenhouse.description = null
+    }
 }
 
 

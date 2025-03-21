@@ -10,7 +10,7 @@
                 <v-col class="text-end py-0">
                     
                     <!-- For creating greenhouse -->
-                    <UserGreenhouseDialog class="w-100 w-md-50" :type="'Create'" :initial="{}" @submit="onCreateGreenhouse">
+                    <UserGreenhouseDialog class="w-100 w-md-50" :type="'Create'" @submit="onCreateGreenhouse">
                         <template #activator="{ props: activatorProps }">
                             <v-btn :="activatorProps">
                                 <v-icon class="mr-1">mdi-plus</v-icon>
@@ -34,7 +34,7 @@
                     />
                 </v-col>
                 
-                <!-- Fallback/emtystate when greenhouse -->
+                <!-- Fallback/emptystate when no greenhouse -->
                 <v-col v-if="!greenhouses.length">
                     <v-empty-state
                         icon="mdi-greenhouse"
@@ -59,7 +59,7 @@ const UserGreenhouseDialog = defineAsyncComponent(() => import("@/components/use
 
 
 // ---stores
-const { greenhouses, create, retrieve, update, destroy } = useGreenhouseStore();
+const { greenhouses, create, update, destroy } = useGreenhouseStore();
 
 // ---composables
 const router = useRouter()
@@ -74,18 +74,12 @@ const onViewGreenhouse = (greenhouseId) => {
 };
 
 const onEditGreenhouse = async (greenhouse) => {
-    console.log(greenhouse);
     await update(greenhouse).catch(console.error);
 };
 
 const onDeleteGreenhouse = async (greenhouseId) => {
     await destroy(greenhouseId).catch(console.error);
 };
-
-// ---hooks
-onMounted(async () => {
-    await retrieve().catch(console.error);
-});
 
 
 </script>
