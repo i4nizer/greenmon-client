@@ -6,21 +6,24 @@
         :rail="state.rail"
     >
         <template #prepend>
-            <v-list class="py-5">
+            <v-list class="py-5" nav>
                 <v-list-item
+                    link
+                    v-tooltip="`Return to User Page`"
                     prepend-icon="mdi-account"
+                    :to="`/user/greenhouse`"
                     :title="user?.name"
                     :subtitle="user?.email"
                 ></v-list-item>
+            </v-list>
+            <v-divider></v-divider>
+            <v-list density="compact" nav>
                 <v-list-item
+                    link
+                    v-tooltip="`Return to Greenhouse Page`"
                     prepend-icon="mdi-greenhouse"
+                    :to="`/user/greenhouse/${greenhouseId}/dashboard`"
                     :title="greenhouse?.name"
-                    :subtitle="greenhouse?.description"
-                ></v-list-item>
-                <v-list-item
-                    prepend-icon="mdi-chip"
-                    :title="mcu?.name"
-                    :subtitle="mcu?.label"
                 ></v-list-item>
             </v-list>
         </template>
@@ -28,6 +31,7 @@
         <v-divider></v-divider>
         
         <v-list density="compact" nav>
+            <v-list-subheader>{{ mcu?.name }} ({{ mcu?.label }})</v-list-subheader>
             <v-list-item 
                 link 
                 title="Dashboard" 
@@ -60,20 +64,10 @@
             ></v-list-item>
         </v-list>
         
+        
         <template #append>
+            <v-divider></v-divider>
             <v-list density="compact">
-                <v-list-item
-                    link
-                    :to="`/user/greenhouse/${greenhouseId}/dashboard`"
-                    title="Back to Greenhouse"
-                    prepend-icon="mdi-greenhouse"
-                ></v-list-item>
-                <v-list-item
-                    link
-                    :to="`/user/greenhouse`"
-                    title="Back to User"
-                    prepend-icon="mdi-account-arrow-left"
-                ></v-list-item>
                 <v-list-item
                     link
                     title="Sign Out"

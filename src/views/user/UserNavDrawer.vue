@@ -21,8 +21,10 @@
             <v-list-item link to="/user/greenhouse" title="Greenhouse" prepend-icon="mdi-greenhouse"></v-list-item>
             <v-list-item link to="/user/settings" title="Settings" prepend-icon="mdi-cog"></v-list-item>
         </v-list>
+
         
         <template #append>
+            <v-divider></v-divider>
             <v-list density="compact">
                 <v-list-item
                     link

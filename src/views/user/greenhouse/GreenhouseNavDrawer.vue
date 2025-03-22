@@ -6,23 +6,22 @@
         :rail="state.rail"
     >
         <template #prepend>
-            <v-list class="py-5">
+            <v-list class="py-5" nav>
                 <v-list-item
+                    link
+                    v-tooltip="`Return to User Page`"
                     prepend-icon="mdi-account"
+                    :to="`/user/greenhouse`"
                     :title="user?.name"
                     :subtitle="user?.email"
-                ></v-list-item>
-                <v-list-item
-                    prepend-icon="mdi-greenhouse"
-                    :title="greenhouse?.name"
-                    :subtitle="greenhouse?.description"
-                ></v-list-item>
+                ></v-list-item>    
             </v-list>
         </template>
         
         <v-divider></v-divider>
         
         <v-list density="compact" nav>
+            <v-list-subheader>{{ greenhouse?.name }}</v-list-subheader>
             <v-list-item 
                 link 
                 title="Dashboard" 
@@ -54,15 +53,11 @@
                 :to="`/user/greenhouse/${greenhouseId}/settings`" 
             ></v-list-item>
         </v-list>
+
         
         <template #append>
+            <v-divider></v-divider>
             <v-list density="compact">
-                <v-list-item
-                    link
-                    :to="`/user/greenhouse`"
-                    title="Back to User"
-                    prepend-icon="mdi-account-arrow-left"
-                ></v-list-item>
                 <v-list-item
                     link
                     title="Sign Out"
