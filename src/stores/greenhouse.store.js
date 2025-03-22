@@ -17,8 +17,11 @@ export const useGreenhouseStore = defineStore('greenhouse', () => {
 
     const retrieve = async () => {
         const res = await api.get('/user/greenhouse');
+
+        const union = [...new Map([...greenhouses, res.data.greenhouses].map(g => [g.id, g])).values()]
         greenhouses.splice(0, greenhouses.length);
-        greenhouses.push(...res.data.greenhouses);
+        greenhouses.push(...union);
+
         return res;
     }
 

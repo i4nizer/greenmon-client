@@ -20,8 +20,9 @@ export const usePinStore = defineStore('pin', () => {
         const url = `/user/greenhouse/mcu/pin?mcuId=${mcuId}`;
         const res = await api.get(url);
         
+        const union = [...new Map([...pins, ...res.data.pins].map(p => [p.id, p])).values()]
         pins.splice(0, pins.length)
-        pins.push(...res.data.pins)
+        pins.push(...union)
         
         return res
     }

@@ -22,8 +22,9 @@ export const useMcuStore = defineStore('mcu', () => {
         const url = `/user/greenhouse/mcu?greenhouseId=${greenhouseId}`;
         const res = await api.get(url);
         
+        const union = [...new Map([...mcus, ...res.data.mcus].map(m => [m.id, m])).values()]
         mcus.splice(0, mcus.length)
-        mcus.push(...res.data.mcus)
+        mcus.push(...union)
         
         return res
     }
