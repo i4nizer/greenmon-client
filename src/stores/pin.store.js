@@ -11,7 +11,7 @@ export const usePinStore = defineStore('pin', () => {
 
     // ---actions
     const create = async (pin) => {
-        const res = await api.post('/user/greenhouse/mcu', pin)
+        const res = await api.post('/user/greenhouse/mcu/pin', pin)
         pins.push(res.data.pin)
         return res
     }

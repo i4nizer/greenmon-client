@@ -27,14 +27,26 @@ export const useTokenStore = defineStore('token', () => {
     const rotate = async () => {
         // send refresh token to get new tokens
         const body = { refreshToken: refreshToken.value };
-        const res = await axios.post(`${env.apiDomain}/user/rotate-token`, body);
+        let response = null;
+        let error = null;
+        
+        // clear on error
+        await axios.post(`${env.apiDomain}/user/rotate-token`, body)
+            .then(res => response = res)
+            .catch(err => error = err)
 
+        // throw but clear first
+        if (error) {
+            clear();
+            throw error;
+        }
+        
         // save new tokens
-        accessToken.value = res.data.accessToken;
-        refreshToken.value = res.data.refreshToken;
+        accessToken.value = response.data.accessToken;
+        refreshToken.value = response.data.refreshToken;
         console.log("Token: Token rotated successfully.");
 
-        return res;
+        return response;
     }
 
     const expiration = () => {

@@ -35,6 +35,7 @@ export default createVuetify({
     VBtn: { color: 'primary', class: 'text-none' },
     VForm: { class: 'border-md border-md-primary rounded' },
     VTextField: { variant: 'outlined', density: 'compact', class: 'mt-1' },
+    VSelect: { variant: 'outlined', density: 'compact', class: 'mt-1' },
     VTextarea: { variant: 'outlined', density: 'compact', class: 'mt-1' },
   }
 })

@@ -22,7 +22,7 @@
                     link
                     v-tooltip="`Return to Greenhouse Page`"
                     prepend-icon="mdi-greenhouse"
-                    :to="`/user/greenhouse/${greenhouseId}/dashboard`"
+                    :to="`/user/greenhouse/${greenhouseId}/mcu`"
                     :title="greenhouse?.name"
                 ></v-list-item>
             </v-list>

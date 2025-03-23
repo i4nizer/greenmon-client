@@ -1,6 +1,6 @@
 <template>
     <McuLayout>
-        <v-container>
+        <v-container class="pa-5 py-7" fluid>
             <v-row>
                 <v-col>Microcontroller Sensors</v-col>
             </v-row>
