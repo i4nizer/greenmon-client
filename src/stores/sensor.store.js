@@ -100,4 +100,4 @@ export const useSensorStore = defineStore('sensor', () => {
         updateOutput,
         destroyOutput,
     }
-})
+}, { persist: true })

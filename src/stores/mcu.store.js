@@ -99,4 +99,4 @@ export const useMcuStore = defineStore('mcu', () => {
         updatePin,
         destroyPin,
     }
-})
+}, { persist: true })

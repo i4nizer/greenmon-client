@@ -50,4 +50,4 @@ export const useGreenhouseStore = defineStore('greenhouse', () => {
         update,
         destroy,
     }
-})
+}, { persist: true })
