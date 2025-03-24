@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { authRoutes, authBeforeEnter } from "./auth.route";
-import { userRoutes, userBeforeEnter } from "./user.route";
+import { authRoutes } from "./auth.route";
+import { userRoutes } from "./user.route";
 
 
 
@@ -13,12 +13,10 @@ const routes = [
     {
         path: "/auth",
         children: authRoutes,
-        beforeEnter: authBeforeEnter,
     },
     {
         path: "/user",
         children: userRoutes,
-        beforeEnter: userBeforeEnter,
     },
 ];
 
