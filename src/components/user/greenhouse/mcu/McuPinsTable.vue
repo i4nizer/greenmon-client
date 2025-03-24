@@ -1,14 +1,12 @@
 <template>
     <v-data-table
-        hide-default-footer
         class="border"
         :items="pins"
         :headers="headers"
         :loading="loading"
-        :items-per-page="-1"
     >
         <template #top>
-            <v-toolbar density="compact" flat>
+            <v-toolbar flat>
                 <v-toolbar-title>
                     <v-icon>mdi-sine-wave</v-icon>
                     <span class="ml-2">Pins</span>
