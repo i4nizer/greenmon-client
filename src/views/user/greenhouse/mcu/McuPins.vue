@@ -10,8 +10,7 @@
                 <v-col>
                     <McuPinsTable
                         class="w-sm-100 w-md-75 w-lg-50 w-xl-25"
-                        density="compact"
-                        :pins="mcuPins"
+                        :pins="mcu.pins"
                         :loading="state.loading"
                         @create="onCreatePin"
                         @edit="onEditPin"
@@ -24,7 +23,7 @@
 </template>
 
 <script setup>
-import { usePinStore } from '@/stores/pin.store';
+import { useMcuStore } from '@/stores/mcu.store';
 import { computed, defineAsyncComponent, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -33,7 +32,7 @@ const McuPinsTable = defineAsyncComponent(() => import("@/components/user/greenh
 
 
 // ---stores
-const { pins, create, update, destroy } = usePinStore()
+const { mcus, pins, createPin, updatePin, destroyPin, getMcu } = useMcuStore()
 
 // ---composables
 const route = useRoute()
@@ -42,7 +41,11 @@ const route = useRoute()
 const mcuId = route.params.mcuId
 
 // ---getters
-const mcuPins = computed(() => pins.filter(p => p.mcuId == mcuId))
+const mcu = computed(() => {
+    const mcu = mcus.find(m => m.id == mcuId)
+    mcu.pins = pins.filter(p => p.mcuId == mcuId)
+    return mcu;
+})
 
 // ---state
 const state = reactive({ loading: false })
@@ -52,7 +55,7 @@ const onCreatePin = async (pin) => {
     state.loading = true
 
     pin.mcuId = mcuId
-    await create(pin).catch(console.error)
+    await createPin(pin).catch(console.error)
 
     state.loading = false
 }
@@ -60,7 +63,7 @@ const onCreatePin = async (pin) => {
 const onEditPin = async (pin) => {
     state.loading = true
 
-    await update(pin).catch(console.error)
+    await updatePin(pin).catch(console.error)
 
     state.loading = false
 }
@@ -68,7 +71,7 @@ const onEditPin = async (pin) => {
 const onDeletePin = async (pinId) => {
     state.loading = true
 
-    await destroy(pinId).catch(console.error)
+    await destroyPin(pinId).catch(console.error)
 
     state.loading = false
 }

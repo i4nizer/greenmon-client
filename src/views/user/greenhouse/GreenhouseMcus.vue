@@ -50,8 +50,7 @@
 
 <script setup>
 import { useMcuStore } from '@/stores/mcu.store';
-import { usePinStore } from '@/stores/pin.store';
-import { defineAsyncComponent, onMounted, reactive } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"))
@@ -60,7 +59,7 @@ const GreenhouseMcuDialog = defineAsyncComponent(() => import("@/components/user
 
 
 // ---stores
-const { mcus, create, update, destroy } = useMcuStore()
+const { mcus, createMcu, updateMcu, destroyMcu } = useMcuStore()
 
 // ---composables
 const route = useRoute()
@@ -72,7 +71,7 @@ const greenhouseId = route.params.greenhouseId
 // ---events
 const onCreateMcu = async (mcu) => {
     mcu.greenhouseId = greenhouseId
-    await create(mcu).catch(console.error)
+    await createMcu(mcu).catch(console.error)
 }
 
 const onViewMcu = (mcuId) => {
@@ -80,11 +79,11 @@ const onViewMcu = (mcuId) => {
 }
 
 const onEditMcu = async (mcu) => {
-    await update(mcu).catch(console.error)
+    await updateMcu(mcu).catch(console.error)
 }
 
 const onDeleteMcu = async (mcuId) => {
-    await destroy(mcuId).catch(console.error)
+    await destroyMcu(mcuId).catch(console.error)
 }
 
 

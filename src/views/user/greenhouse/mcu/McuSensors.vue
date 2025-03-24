@@ -2,7 +2,9 @@
     <McuLayout>
         <v-container class="pa-5 py-7" fluid>
             <v-row>
-                <v-col>Microcontroller Sensors</v-col>
+                <v-col>
+                    <h3>Microcontroller Sensors</h3>
+                </v-col>
             </v-row>
         </v-container>
     </McuLayout>
