@@ -21,6 +21,21 @@
                     label="Label"
                     v-model="sensor.label"
                 ></v-text-field>
+                <v-text-field
+                    type="number"
+                    label="Read Interval"
+                    prefix="Seconds: "
+                    v-model="sensor.interval"
+                    :rules="[required('Number'), v => min(0)(parseInt(v))]"
+                    @update:model-value="sensor.interval = parseInt(sensor.interval)"
+                ></v-text-field>
+                <v-select
+                    label="Flag"
+                    v-model="sensor.disabled"
+                    :items="['Enabled', 'Disabled']"
+                    :item-title="v => v"
+                    :item-value="v => v == 'Disabled'"
+                ></v-select>
                 <v-btn
                     type="submit"
                     class="mt-3"
@@ -62,12 +77,16 @@ const { required, min, max, } = useRules()
 const sensor = reactive({
     name: props.initial?.name,
     label: props.initial?.label,
+    interval: props.initial?.interval || 15 * 60,
+    disabled: props.initial?.disabled == undefined ? true : props.initial?.disabled,
 })
 
 // ---getters
 const sensorProps = computed(() => ({
     name: props.initial?.name,
     label: props.initial?.label,
+    interval: props.initial?.interval,
+    disabled: props.initial?.disabled,
 }))
 const changed = computed(() => !equal(sensor, sensorProps.value))
 
@@ -86,6 +105,8 @@ const onSubmit = () => {
     if (props.type == 'Create') {
         sensor.name = null
         sensor.label = null
+        sensor.interval = null
+        sensor.disabled = null
     }
 }
 

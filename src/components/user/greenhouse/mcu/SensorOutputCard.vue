@@ -1,13 +1,13 @@
 <template>
     <v-card class="border pt-3">
-        <v-card-title class="d-flex">
+        <v-card-title class="d-flex text-subtitle-1">
             <span>{{ output?.name }}</span>
             <v-spacer></v-spacer>
             <v-icon>{{ output?.icon }}</v-icon>
         </v-card-title>
-        <v-card-subtitle>{{ output?.unit }}</v-card-subtitle>
         
         <v-card-actions>
+            <v-card-subtitle v-if="$vuetify.display.smAndUp">Unit: {{ output?.unit }}</v-card-subtitle>
             <v-spacer></v-spacer>
             <SensorOutputDialog 
                 type="Update" 
