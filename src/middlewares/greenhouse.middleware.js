@@ -19,9 +19,11 @@ const greenhouseBeforeEnter = async (to, from, next) => {
     const greenhouseIndex = greenhouses.findIndex(g => g.id == greenhouseId)
     if (greenhouseIndex == -1) return next("/user/greenhouse")
     
-    // fetch mcus of that greenhouse
-    const { retrieveMcu } = useMcuStore()
+    // fetch mcus & pins of that greenhouse
+    const { mcus, retrieveMcu, retrievePin } = useMcuStore()
     retrieveMcu(greenhouseId)
+        .then(() => mcus.map(m => retrievePin(m.id)))
+        .then(async (reqs) => await Promise.all(reqs))
         .catch(console.error)
     
     next()

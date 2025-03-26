@@ -24,7 +24,7 @@
             <v-row>
 
                 <!-- Microcontroller Lists -->
-                <v-col v-for="mcu in mcus" xs="12" sm="6" md="4" lg="3" xl="2">
+                <v-col v-for="mcu in mcusWithPins" xs="12" sm="6" md="4" lg="3" xl="2">
                     <GreenhouseMcuCard
                         :key="mcu.id"
                         :mcu="mcu"
@@ -35,7 +35,7 @@
                 </v-col>
 
                 <!-- Fallback/emptystate when no mcu -->
-                <v-col v-if="!mcus.length">
+                <v-col v-if="!mcusWithPins.length">
                     <v-empty-state
                         icon="mdi-chip"
                         text="You haven't created any microcontroller yet."
@@ -50,7 +50,7 @@
 
 <script setup>
 import { useMcuStore } from '@/stores/mcu.store';
-import { defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"))
@@ -59,7 +59,7 @@ const GreenhouseMcuDialog = defineAsyncComponent(() => import("@/components/user
 
 
 // ---stores
-const { mcus, createMcu, updateMcu, destroyMcu } = useMcuStore()
+const { mcus, pins, createMcu, updateMcu, destroyMcu } = useMcuStore()
 
 // ---composables
 const route = useRoute()
@@ -67,6 +67,11 @@ const router = useRouter()
 
 // ---getters
 const greenhouseId = route.params.greenhouseId
+const mcusWithPins = computed(() => {
+    const mwp = []
+    mcus.forEach(m => mwp.push({ ...m, pins: pins.filter(p => p.mcuId == m.id) }))
+    return mwp
+})
 
 // ---events
 const onCreateMcu = async (mcu) => {
