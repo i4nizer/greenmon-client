@@ -9,29 +9,21 @@
                 v-model="state.valid" 
                 @submit.prevent="onSubmit"
             >
-                <h3>{{ `${type} Sensor` }}</h3>
-                <span class="text-grey">Please provide the sensor details.</span>
+                <h3>{{ `${type} Actuator` }}</h3>
+                <span class="text-grey">Please provide the actuator details.</span>
                 <v-text-field
                     label="Name"
                     class="mt-6"
-                    v-model="sensor.name"
+                    v-model="actuator.name"
                     :rules="[required(), min(3), max(100)]"
                 ></v-text-field>
                 <v-text-field
                     label="Label"
-                    v-model="sensor.label"
-                ></v-text-field>
-                <v-text-field
-                    type="number"
-                    label="Read Interval"
-                    prefix="Seconds: "
-                    v-model="sensor.interval"
-                    :rules="[required('Number'), v => min(0)(parseInt(v))]"
-                    @update:model-value="sensor.interval = parseInt(sensor.interval)"
+                    v-model="actuator.label"
                 ></v-text-field>
                 <v-select
                     label="Flag"
-                    v-model="sensor.disabled"
+                    v-model="actuator.disabled"
                     :items="['Enabled', 'Disabled']"
                     :item-title="v => v"
                     :item-value="v => v == 'Disabled'"
@@ -74,21 +66,19 @@ const props = defineProps({
 const { required, min, max, } = useRules()
 
 // ---data
-const sensor = reactive({
+const actuator = reactive({
     name: props.initial?.name,
     label: props.initial?.label,
-    interval: props.initial?.interval || 15 * 60,
     disabled: props.initial?.disabled == undefined ? true : props.initial?.disabled,
 })
 
 // ---getters
-const sensorProps = computed(() => ({
+const actuatorProps = computed(() => ({
     name: props.initial?.name,
     label: props.initial?.label,
-    interval: props.initial?.interval,
     disabled: props.initial?.disabled,
 }))
-const changed = computed(() => !equal(sensor, sensorProps.value))
+const changed = computed(() => !equal(actuator, actuatorProps.value))
 
 // ---state
 const state = reactive({ valid: false })
@@ -97,16 +87,15 @@ const state = reactive({ valid: false })
 const onSubmit = () => {
     const data = {
         ...props.initial,
-        ...sensor,
+        ...actuator,
     }
 
     emit("submit", data);
 
     if (props.type == 'Create') {
-        sensor.name = null
-        sensor.label = null
-        sensor.interval = 15 * 60
-        sensor.disabled = true
+        actuator.name = null
+        actuator.label = null
+        actuator.disabled = true
     }
 }
 

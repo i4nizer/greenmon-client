@@ -1,16 +1,16 @@
 <template>
     <v-card class="border pt-3">
         <v-card-title class="d-flex ga-1">
-            <span :class="sensor?.disabled ? 'text-red':'text-green'">{{ sensor?.name }}</span>
+            <span :class="actuator?.disabled ? 'text-red':'text-green'">{{ actuator?.name }}</span>
             <v-spacer></v-spacer>
 
-            <McuSensorDialog 
+            <McuActuatorDialog 
                 type="Update" 
                 class="w-100 w-md-50" 
-                v-model="state.sensorEditDialog"
-                :initial="sensor"
-                @submit="s => emit('edit-sensor', s)"
-            ></McuSensorDialog>
+                v-model="state.actuatorEditDialog"
+                :initial="actuator"
+                @submit="s => emit('edit-actuator', s)"
+            ></McuActuatorDialog>
 
             <v-menu open-on-hover>
                 <template #activator="{ props: menuProps }">
@@ -28,18 +28,18 @@
                             link 
                             rounded 
                             title="Edit"
-                            @click="state.sensorEditDialog = true"
+                            @click="state.actuatorEditDialog = true"
                         ></v-list-item>
                         <v-list-item 
                             link 
                             rounded 
                             title="Delete"
-                            @click="emit('delete-sensor', sensor?.id)"
+                            @click="emit('delete-actuator', actuator?.id)"
                         ></v-list-item>
                         <v-list-item 
                             link 
                             rounded 
-                            :title="sensor?.disabled ? 'Enable':'Disable'"
+                            :title="actuator?.disabled ? 'Enable':'Disable'"
                             @click="onToggleSensor"
                         ></v-list-item>
                     </v-list>
@@ -47,13 +47,12 @@
             </v-menu>
         </v-card-title>
 
-        <v-card-subtitle>Label: {{ sensor?.label }}</v-card-subtitle>
+        <v-card-subtitle>Label: {{ actuator?.label }}</v-card-subtitle>
         
         <v-card-text>
-            <span class="w-100">Read Interval: Every {{ sensor?.interval }} seconds</span>
             <v-list>
                 <v-list-subheader class="d-flex justify-end">
-                    <SensorOutputDialog 
+                    <ActuatorInputDialog 
                         type="Create" 
                         class="w-100 w-md-50" 
                         :pins="pins"
@@ -61,23 +60,23 @@
                     >
                         <template #activator="{ props: activatorProps }">
                             <v-btn 
-                                text="Add Output"
+                                text="Add Input"
                                 color="white"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>
-                    </SensorOutputDialog>
+                    </ActuatorInputDialog>
                 </v-list-subheader>
-                <v-list-item v-for="output in outputs">
-                    <SensorOutputCard
-                        :key="output?.id"
+                <v-list-item v-for="input in inputs">
+                    <ActuatorInputCard
+                        :key="input?.id"
                         :pins="pins"
-                        :output="output"
-                        @edit="o => emit('edit-output', o)"
-                        @delete="o => emit('delete-output', o, sensor?.id)"
+                        :input="input"
+                        @edit="i => emit('edit-input', i)"
+                        @delete="i => emit('delete-input', i, actuator?.id)"
                     />
                 </v-list-item>
-                <v-list-item v-if="!outputs.length" class="text-center">
+                <v-list-item v-if="!inputs.length" class="text-center">
                     <span class="text-grey">No Outputs Yet</span>
                 </v-list-item>
             </v-list>
@@ -88,18 +87,18 @@
 <script setup>
 import { defineAsyncComponent, reactive } from "vue";
 
-const McuSensorDialog = defineAsyncComponent(() => import("./McuSensorDialog.vue"))
-const SensorOutputCard = defineAsyncComponent(() => import("./SensorOutputCard.vue"));
-const SensorOutputDialog = defineAsyncComponent(() => import("./SensorOutputDialog.vue"));
+const McuActuatorDialog = defineAsyncComponent(() => import("./McuActuatorDialog.vue"))
+const ActuatorInputCard = defineAsyncComponent(() => import("./ActuatorInputCard.vue"));
+const ActuatorInputDialog = defineAsyncComponent(() => import("./ActuatorInputDialog.vue"));
 
 
 // ---events
 const emit = defineEmits([
-    'edit-sensor',
-    'delete-sensor',
-    'create-output',
-    'edit-output',
-    'delete-output',
+    'edit-actuator',
+    'delete-actuator',
+    'create-input',
+    'edit-input',
+    'delete-input',
 ])
 
 // ---props
@@ -108,11 +107,11 @@ const props = defineProps({
         type: Array,
         default: [],
     },
-    sensor: {
+    actuator: {
         type: Object,
         required: true,
     },
-    outputs: {
+    inputs: {
         type: Array,
         required: true,
     },
@@ -120,22 +119,22 @@ const props = defineProps({
 
 // ---state
 const state = reactive({
-    sensorEditDialog: false,
+    actuatorEditDialog: false,
 })
 
 // ---events
-const onCreateOutput = (output) => {
-    output.sensorId = props.sensor?.id
-    emit('create-output', output)
+const onCreateOutput = (input) => {
+    input.actuatorId = props.actuator?.id
+    emit('create-input', input)
 }
 
 const onToggleSensor = () => {
-    const sensor = {
-        ...props.sensor,
-        disabled: !props.sensor.disabled,
+    const actuator = {
+        ...props.actuator,
+        disabled: !props.actuator.disabled,
     }
 
-    emit('edit-sensor', sensor)
+    emit('edit-actuator', actuator)
 }
 
 

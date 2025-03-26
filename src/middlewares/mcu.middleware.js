@@ -1,3 +1,4 @@
+import { useActuatorStore } from "@/stores/actuator.store";
 import { useMcuStore } from "@/stores/mcu.store";
 import { useSensorStore } from "@/stores/sensor.store";
 
@@ -28,6 +29,13 @@ const mcuBeforeEnter = async (to, from, next) => {
         .then(() => sensors.map((s) => retrieveOutput(s.id)))
         .then(async (reqs) => await Promise.all(reqs))
         .catch(console.error);
+
+    // fetch actuators & their inputs
+    const { actuators, retrieveActuator, retrieveInput } = useActuatorStore()
+    retrieveActuator(mcuId)
+        .then(() => actuators.map((a) => retrieveInput(a.id)))
+        .then(async (reqs) => await Promise.all(reqs))
+        .catch(console.error)
 
     next();
 };

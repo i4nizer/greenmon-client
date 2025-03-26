@@ -16,7 +16,7 @@
                         @submit="onCreateSensor"
                     >
                         <template #activator="{ props: activatorProps }">
-                            <v-btn :="activatorProps">
+                            <v-btn :="activatorProps" :loading="state.creatingSensor">
                                 <v-icon class="mr-1">mdi-plus</v-icon>
                                 <span v-if="$vuetify.display.smAndUp">New Sensor</span>
                             </v-btn>
@@ -28,12 +28,12 @@
             <v-row>
                 
                 <!-- Sensor Lists -->
-                <v-col v-for="sensor in sensors" sm="12" md="6" lg="4" xl="3" xxl="2">
+                <v-col v-for="sensor in sensorsWithOutputs" sm="12" md="6" lg="4" xl="3" xxl="2">
                     <McuSensorCard
                         :key="sensor?.id"
-                        :pins="mcuPins"
+                        :pins="getFreeSensorOutputPins(mcuFreePins, sensor.outputs)"
                         :sensor="sensor"
-                        :outputs="outputs.filter(o => o?.sensorId == sensor?.id)"
+                        :outputs="sensor.outputs"
                         :loading="state.loadingSensorId == sensor?.id"
                         :disabled="state.loadingSensorId == sensor?.id"
                         @edit-sensor="onEditSensor"
@@ -59,6 +59,7 @@
 </template>
 
 <script setup>
+import { useActuatorStore } from '@/stores/actuator.store';
 import { useMcuStore } from '@/stores/mcu.store';
 import { useSensorStore } from '@/stores/sensor.store';
 import { computed, defineAsyncComponent, reactive } from 'vue';
@@ -82,28 +83,62 @@ const {
     updateOutput,
     destroyOutput,
 } = useSensorStore()
+const { inputs } = useActuatorStore()
 
 // ---composables
 const route = useRoute()
 
 // ---data
 const mcuId = route.params.mcuId
-const mcuPins = computed(() => pins.filter(p => p.mcuId == mcuId))
+
+// ---getters
+const mcuFreePins = computed(() => {
+    const mcuOutputPins = pins.filter(p => p.mcuId == mcuId && (p.mode == 'Unset' || p.mode == 'Output'))
+    for (const inp of inputs) { 
+        const pindex = mcuOutputPins.findIndex(p => p.id == inp.pinId)
+        if (pindex != -1) mcuOutputPins.splice(pindex, 1) // remove pins used by inputs
+    }
+    return mcuOutputPins;
+})
+const sensorsWithOutputs = computed(() => {
+    const swo = []
+    sensors.forEach(s => swo.push({ ...s, outputs: outputs.filter(o => o.sensorId == s.id)}))
+    return swo;
+})
 
 // ---state
 const state = reactive({
+    creatingSensor: false,
     loadingSensorId: null,
 })
 
+// ---actions
+const getFreeSensorOutputPins = (pins, outputs) => {
+    const freePins = []
+    for (const pin of pins) {
+
+        if (pin.mode == 'Unset') {
+            freePins.push(pin)
+            continue
+        }
+
+        if (pin.mode == 'Output' && outputs.some(o => o.pinId == pin.id)) {
+            freePins.push(pin)
+            continue
+        }
+    }
+    return freePins;
+}
+
 // ---events
 const onCreateSensor = async (sensor) => {
-    state.loadingSensorId = sensor?.id
+    state.creatingSensor = true
 
     sensor.mcuId = mcuId
     await createSensor(sensor)
         .catch(console.error)
     
-    state.loadingSensorId = null
+    state.creatingSensor = false
 }
 
 const onEditSensor = async (sensor) => {
