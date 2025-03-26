@@ -4,11 +4,7 @@
             <slot name="activator" :="{ props: activatorProps }"></slot>
         </template>
         <template #default="{ isActive }">
-            <v-form 
-                class="bg-grey-darken-4 pa-7"
-                v-model="state.valid" 
-                @submit.prevent="onSubmit"
-            >
+            <v-form class="bg-grey-darken-4 pa-7" v-model="state.valid" @submit.prevent="onSubmit">
                 <h3>{{ `${type} Input` }}</h3>
                 <span class="text-grey">Please provide the input details.</span>
                 <v-select
@@ -17,25 +13,21 @@
                     v-model="input.icon"
                     :rules="[required()]"
                     :items="actuatorInputIcons"
-                    :item-title="i => i.substring(4)"
-                    :item-value="i => i"
+                    :item-title="(i) => i.substring(4)"
+                    :item-value="(i) => i"
                     :prepend-inner-icon="input.icon"
                 >
                     <template v-slot:item="{ props: listItemProps, item }">
                         <v-list-item :="listItemProps" :prepend-icon="item.raw"></v-list-item>
                     </template>
                 </v-select>
-                <v-text-field
-                    label="Name"
-                    v-model="input.name"
-                    :rules="[required(), min(3), max(100)]"
-                ></v-text-field>
+                <v-text-field label="Name" v-model="input.name" :rules="[required(), min(3), max(100)]"></v-text-field>
                 <v-select
                     label="Type"
                     v-model="input.type"
                     :items="['Boolean', 'Number']"
-                    :item-title="i => i == 'Boolean' ? 'ON/OFF':'Numerical Input'"
-                    :item-value="i => i"
+                    :item-title="(i) => (i == 'Boolean' ? 'ON/OFF' : 'Numerical Input')"
+                    :item-value="(i) => i"
                     :rules="[required(), min(3), max(100)]"
                 ></v-select>
                 <v-text-field
@@ -57,8 +49,8 @@
                     v-model="input.pinId"
                     :rules="[required('Number')]"
                     :items="pins"
-                    :item-title="i => `${i?.type?.at(0)}${i?.number}`"
-                    :item-value="i => i?.id"
+                    :item-title="(i) => `${i?.type?.at(0)}${i?.number}`"
+                    :item-value="(i) => i?.id"
                 ></v-select>
                 <v-btn
                     type="submit"
@@ -73,15 +65,13 @@
 </template>
 
 <script setup>
-import { useRules } from '@/composables/rules.composable';
-import { computed, reactive } from 'vue';
-import equal from 'fast-deep-equal';
-import { useIcons } from '@/composables/icons.composable';
-
-
+import { useRules } from "@/composables/rules.composable";
+import { computed, reactive } from "vue";
+import equal from "fast-deep-equal";
+import { actuatorInputIcons } from "@/utils/icons.util";
 
 // ---events
-const emit = defineEmits(['submit'])
+const emit = defineEmits(["submit"]);
 
 // ---props
 const props = defineProps({
@@ -97,21 +87,20 @@ const props = defineProps({
         type: Object,
         default: {},
     },
-})
+});
 
 // ---composables
-const { actuatorInputIcons } = useIcons()
-const { required, min, max, } = useRules()
+const { required, min, max } = useRules();
 
 // ---data
 const input = reactive({
     icon: props.initial?.icon || "mdi-fan",
     name: props.initial?.name,
-    type: props.initial?.type || 'Boolean',
+    type: props.initial?.type || "Boolean",
     flag: props.initial?.flag || -1,
     status: props.initial?.status || -1,
     pinId: props.initial?.pinId,
-})
+});
 
 // ---getters
 const inputProps = computed(() => ({
@@ -121,35 +110,30 @@ const inputProps = computed(() => ({
     flag: props.initial?.flag,
     status: props.initial?.status,
     pinId: props.initial?.pinId,
-}))
-const changed = computed(() => !equal(input, inputProps.value))
+}));
+const changed = computed(() => !equal(input, inputProps.value));
 
 // ---state
-const state = reactive({ valid: false })
+const state = reactive({ valid: false });
 
 // ---events
 const onSubmit = () => {
     const data = {
         ...props.initial,
         ...input,
-    }
+    };
 
     emit("submit", data);
 
-    if (props.type == 'Create') {
-        input.icon = "mdi-fan"
-        input.name = null
-        input.type = 'Boolean'
-        input.flag = -1
-        input.status = -1
-        input.pinId = null
+    if (props.type == "Create") {
+        input.icon = "mdi-fan";
+        input.name = null;
+        input.type = "Boolean";
+        input.flag = -1;
+        input.status = -1;
+        input.pinId = null;
     }
-}
-
-
-
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -59,12 +59,10 @@ const actuatorInputIcons = [
   'mdi-lightbulb',      // Light actuator
   'mdi-water-pump',     // Water pump actuator
   'mdi-fan',            // Fan actuator
-  'mdi-heater',         // Heater actuator
   'mdi-air-conditioner',// Air conditioning actuator
   'mdi-door',           // Door actuator (e.g., automated door)
   'mdi-gate',           // Gate actuator
   'mdi-valve',          // Valve actuator (e.g., irrigation system)
-  'mdi-motor',          // Motor actuator
   'mdi-bell',           // Alarm or buzzer actuator
   'mdi-speaker',        // Speaker actuator
   'mdi-vibrate',        // Vibration actuator
@@ -76,11 +74,7 @@ const actuatorInputIcons = [
 
 
 
-export const useIcons = () => {
-    
-    // ---expose
-    return {
-        sensorOutputIcons,
-        actuatorInputIcons,
-    }
+export {
+    sensorOutputIcons,
+    actuatorInputIcons,
 }

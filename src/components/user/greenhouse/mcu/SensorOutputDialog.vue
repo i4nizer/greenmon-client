@@ -4,11 +4,7 @@
             <slot name="activator" :="{ props: activatorProps }"></slot>
         </template>
         <template #default="{ isActive }">
-            <v-form 
-                class="bg-grey-darken-4 pa-7"
-                v-model="state.valid" 
-                @submit.prevent="onSubmit"
-            >
+            <v-form class="bg-grey-darken-4 pa-7" v-model="state.valid" @submit.prevent="onSubmit">
                 <h3>{{ `${type} Output` }}</h3>
                 <span class="text-grey">Please provide the output details.</span>
                 <v-select
@@ -17,24 +13,16 @@
                     v-model="output.icon"
                     :rules="[required()]"
                     :items="sensorOutputIcons"
-                    :item-title="i => i.substring(4)"
-                    :item-value="i => i"
+                    :item-title="(i) => i.substring(4)"
+                    :item-value="(i) => i"
                     :prepend-inner-icon="output.icon"
                 >
                     <template v-slot:item="{ props: listItemProps, item }">
                         <v-list-item :="listItemProps" :prepend-icon="item.raw"></v-list-item>
                     </template>
                 </v-select>
-                <v-text-field
-                    label="Name"
-                    v-model="output.name"
-                    :rules="[required(), min(3), max(100)]"
-                ></v-text-field>
-                <v-text-field
-                    label="Unit"
-                    v-model="output.unit"
-                    :rules="[required(), max(100)]"
-                ></v-text-field>
+                <v-text-field label="Name" v-model="output.name" :rules="[required(), min(3), max(100)]"></v-text-field>
+                <v-text-field label="Unit" v-model="output.unit" :rules="[required(), max(100)]"></v-text-field>
                 <v-select
                     label="Type"
                     v-model="output.type"
@@ -46,8 +34,8 @@
                     v-model="output.pinId"
                     :rules="[required('Number')]"
                     :items="pins"
-                    :item-title="i => `${i?.type[0]}${i?.number}`"
-                    :item-value="i => i?.id"
+                    :item-title="(i) => `${i?.type[0]}${i?.number}`"
+                    :item-value="(i) => i?.id"
                 ></v-select>
                 <v-btn
                     type="submit"
@@ -62,15 +50,13 @@
 </template>
 
 <script setup>
-import { useRules } from '@/composables/rules.composable';
-import { computed, reactive } from 'vue';
-import equal from 'fast-deep-equal';
-import { useIcons } from '@/composables/icons.composable';
-
-
+import { useRules } from "@/composables/rules.composable";
+import { computed, reactive } from "vue";
+import equal from "fast-deep-equal";
+import { sensorOutputIcons } from "@/utils/icons.util";
 
 // ---events
-const emit = defineEmits(['submit'])
+const emit = defineEmits(["submit"]);
 
 // ---props
 const props = defineProps({
@@ -86,11 +72,10 @@ const props = defineProps({
         type: Object,
         default: {},
     },
-})
+});
 
 // ---composables
-const { sensorOutputIcons } = useIcons()
-const { required, min, max, } = useRules()
+const { required, min, max } = useRules();
 
 // ---data
 const output = reactive({
@@ -99,7 +84,7 @@ const output = reactive({
     unit: props.initial?.unit,
     type: props.initial?.type,
     pinId: props.initial?.pinId,
-})
+});
 
 // ---getters
 const outputProps = computed(() => ({
@@ -108,34 +93,29 @@ const outputProps = computed(() => ({
     unit: props.initial?.unit,
     type: props.initial?.type,
     pinId: props.initial?.pinId,
-}))
-const changed = computed(() => !equal(output, outputProps.value))
+}));
+const changed = computed(() => !equal(output, outputProps.value));
 
 // ---state
-const state = reactive({ valid: false })
+const state = reactive({ valid: false });
 
 // ---events
 const onSubmit = () => {
     const data = {
         ...props.initial,
         ...output,
-    }
+    };
 
     emit("submit", data);
 
-    if (props.type == 'Create') {
-        output.icon = "mdi-thermometer"
-        output.name = null
-        output.unit = null
-        output.type = null
-        output.pinId = null
+    if (props.type == "Create") {
+        output.icon = "mdi-thermometer";
+        output.name = null;
+        output.unit = null;
+        output.type = null;
+        output.pinId = null;
     }
-}
-
-
-
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
