@@ -1,4 +1,9 @@
-import { mcuBeforeEnter } from "@/middlewares/mcu.middleware"
+import {
+    mcuBeforeEnter,
+    mcuPinsBeforeEnter,
+    mcuSensorsBeforeEnter,
+    mcuActuatorsBeforeEnter,
+} from "@/middlewares/mcu.middleware"
 
 
 
@@ -11,31 +16,31 @@ const mcuRoutes = [
         path: "dashboard",
         name: "Mcu Dashboard",
         component: () => import("@/views/user/greenhouse/mcu/McuDashboard.vue"),
-        beforeEnter: mcuBeforeEnter,
+        beforeEnter: [mcuBeforeEnter],
     },
     {
         path: "pins",
         name: "Mcu Pins",
         component: () => import("@/views/user/greenhouse/mcu/McuPins.vue"),
-        beforeEnter: mcuBeforeEnter,
+        beforeEnter: [mcuBeforeEnter, mcuPinsBeforeEnter],
     },
     {
         path: "sensors",
         name: "Mcu Sensors",
         component: () => import("@/views/user/greenhouse/mcu/McuSensors.vue"),
-        beforeEnter: mcuBeforeEnter,
+        beforeEnter: [mcuBeforeEnter, mcuSensorsBeforeEnter],
     },
     {
         path: "actuators",
         name: "Mcu Actuators",
         component: () => import("@/views/user/greenhouse/mcu/McuActuators.vue"),
-        beforeEnter: mcuBeforeEnter,
+        beforeEnter: [mcuBeforeEnter, mcuActuatorsBeforeEnter],
     },
     {
         path: "settings",
         name: "Mcu Settings",
         component: () => import("@/views/user/greenhouse/mcu/McuSettings.vue"),
-        beforeEnter: mcuBeforeEnter,
+        beforeEnter: [mcuBeforeEnter],
     },
 ]
 

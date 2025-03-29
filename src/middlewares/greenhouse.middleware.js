@@ -3,6 +3,8 @@ import { useActuatorStore } from "@/stores/actuator.store"
 import { useGreenhouseStore } from "@/stores/greenhouse.store"
 import { useMcuStore } from "@/stores/mcu.store"
 import { useScheduleStore } from "@/stores/schedule.store"
+import { useSensorStore } from "@/stores/sensor.store"
+import { useThresholdStore } from "@/stores/threshold.store"
 
 
 
@@ -20,28 +22,88 @@ const greenhouseBeforeEnter = async (to, from, next) => {
     const greenhouseIndex = greenhouses.findIndex((g) => g.id == greenhouseId);
     if (greenhouseIndex == -1) return next("/user/greenhouse");
 
-    // fetch schedules & actions of that greenhouse
+    return next()
+}
+
+/** Fetches mcus. */
+const greenhouseMcuBeforeEnter = async (to, from, next) => {
+    const greenhouseId = to.params.greenhouseId;
+
+    // init stores for data & funcs
+    const { retrieveMcu } = useMcuStore();
+
+    // fetch mcus
+    retrieveMcu(greenhouseId);
+
+    return next()
+}
+
+/** Fetches mcus, sensors, outputs, actuators, inputs, thresholds, conditions, actions. */
+const greenhouseAutomationBeforeEnter = async (to, from, next) => {
+    const greenhouseId = to.params.greenhouseId;
+
+    // init stores for data & funcs
+    const { mcus, retrieveMcu } = useMcuStore();
+    const { sensors, retrieveSensor, retrieveOutput } = useSensorStore();
+    const { actuators, retrieveActuator, retrieveInput } = useActuatorStore();
+    const { thresholds, retrieveThreshold, retrieveCondition } = useThresholdStore();
     const { retrieve: retrieveAction } = useActionStore();
+
+    // fetch mcus
+    retrieveMcu(greenhouseId)
+        // fetch sensors & actuators
+        .then(() => mcus.map((m) => [retrieveSensor(m.id), retrieveActuator(m.id)]))
+        .then(async (reqs) => await Promise.all(reqs.flat()))
+        // fetch inputs & outputs
+        .then(() => [actuators.map((a) => retrieveInput(a.id)), sensors.map((s) => retrieveOutput(s.id))])
+        .then(async (reqs) => await Promise.all(reqs.flat()))
+        .catch(console.error);
+
+    // fetch thresholds
+    retrieveThreshold(greenhouseId)
+        // fetch actions & conditions
+        .then(() => thresholds.map((t) => [retrieveAction(null, t.id), retrieveCondition(t.id)]))
+        .then(async (reqs) => await Promise.all(reqs.flat()))
+        .catch(console.error);
+
+    return next()
+}
+
+/** Fetches schedules, actions, mcus, actuators, inputs. */
+const greenhouseScheduleBeforeEnter = async (to, from, next) => {
+    const greenhouseId = to.params.greenhouseId;
+
+    // init stores for data & funcs
     const { schedules, retrieve: retrieveSchedule } = useScheduleStore();
+    const { retrieve: retrieveAction } = useActionStore();
+    const { mcus, retrieveMcu } = useMcuStore();
+    const { actuators, retrieveActuator, retrieveInput } = useActuatorStore();
+
+    // fetch schedules
     retrieveSchedule(greenhouseId)
-        .then(() => schedules.map((s) => retrieveAction(s.id)))
+        // fetch actions
+        .then(() => schedules.map((s) => retrieveAction(s.id, null)))
         .then(async (reqs) => await Promise.all(reqs))
         .catch(console.error);
 
-    // fetch mcus, pins, actuators, inputs of that greenhouse
-    const { mcus, retrieveMcu, retrievePin } = useMcuStore();
-    const { actuators, inputs, retrieveActuator, retrieveInput } = useActuatorStore();
-    
+    // fetch mcus
     retrieveMcu(greenhouseId)
-        .then(() => mcus.map((m) => [retrievePin(m.id), retrieveActuator(m.id)]))
-        .then(async (reqs) => await Promise.all(reqs.flat()))
+        // fetch actuators
+        .then(() => mcus.map((m) => retrieveActuator(m.id)))
+        .then(async (reqs) => await Promise.all(reqs))
+        // fetch inputs
         .then(() => actuators.map((a) => retrieveInput(a.id)))
         .then(async (reqs) => await Promise.all(reqs))
         .catch(console.error);
 
-    next();
+    return next()
 }
 
 
 
-export { greenhouseBeforeEnter }
+export {
+    greenhouseBeforeEnter,
+    greenhouseMcuBeforeEnter,
+    greenhouseAutomationBeforeEnter,
+    greenhouseScheduleBeforeEnter,
+}

@@ -19,27 +19,62 @@ const mcuBeforeEnter = async (to, from, next) => {
     const mcuIndex = mcus.findIndex((m) => m.id == mcuId);
     if (mcuIndex == -1) return next(`/user/greenhouse/${greenhouseId}/dashboard`);
 
-    // fetch pins of the mcu
-    Promise.all(mcus.map(m => retrievePin(m.id)))
-        .catch(console.error())
+    return next()
+};
 
-    // fetch sensors & their outputs
-    const { sensors, retrieveSensor, retrieveOutput } = useSensorStore();
+/** Fetches mcu pins. */
+const mcuPinsBeforeEnter = async (to, from, next) => {
+    const mcuId = to.params.mcuId;
+
+    // init stores for data & funcs
+    const { retrievePin } = useMcuStore()
+
+    // fetch pins
+    retrievePin(mcuId)
+        .catch(console.error)
+    
+    return next()
+}
+
+/** Fetches mcu sensors, outputs. */
+const mcuSensorsBeforeEnter = async (to, from, next) => {
+    const mcuId = to.params.mcuId;
+
+    // init stores for data & funcs
+    const { sensors, retrieveSensor, retrieveOutput } = useSensorStore()
+
+    // fetch sensors
     retrieveSensor(mcuId)
+        // fetch outputs
         .then(() => sensors.map((s) => retrieveOutput(s.id)))
         .then(async (reqs) => await Promise.all(reqs))
         .catch(console.error);
+    
+    return next();
+}
 
-    // fetch actuators & their inputs
+/** Fetches mcu actuators, inputs. */
+const mcuActuatorsBeforeEnter = async (to, from, next) => {
+    const mcuId = to.params.mcuId;
+
+    // init stores for data & funcs
     const { actuators, retrieveActuator, retrieveInput } = useActuatorStore()
+
+    // fetch actuators
     retrieveActuator(mcuId)
+        // fetch inputs
         .then(() => actuators.map((a) => retrieveInput(a.id)))
         .then(async (reqs) => await Promise.all(reqs))
         .catch(console.error)
+    
+    return next();
+}
 
-    next();
+
+
+export {
+    mcuBeforeEnter,
+    mcuPinsBeforeEnter,
+    mcuSensorsBeforeEnter,
+    mcuActuatorsBeforeEnter,
 };
-
-
-
-export { mcuBeforeEnter };
