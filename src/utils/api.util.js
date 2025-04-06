@@ -8,7 +8,7 @@ import { useTokenStore } from "@/stores/token.store";
 /**
  * This axios instance automatically adds access token in authorization headers.
  */
-const api = axios.create({ baseURL: env.apiDomain, withCredentials: true })
+const api = axios.create({ baseURL: env.apiDomain, withCredentials: false })
 
 /**
  * Automatically add access token in authorization headers.
