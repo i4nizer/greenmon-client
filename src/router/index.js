@@ -18,6 +18,21 @@ const routes = [
         path: "/user",
         children: userRoutes,
     },
+    {
+        path: "/model",
+        children: [
+            {
+                path: "details",
+                name: "Model Details",
+                component: () => import("@/views/model/ModelDetails.vue"),
+            },
+            {
+                path: "detect",
+                name: "Model Detect",
+                component: () => import("@/views/model/ModelDetect.vue"),
+            },
+        ]
+    },
 ];
 
 const router = createRouter({

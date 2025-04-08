@@ -22,6 +22,12 @@ const env = {
 
     // Otp config
     otpDigits: 6,
+
+    // Model
+    modelUrl: "http://localhost:4000/user/model/v1/model.json",
+    modelName: "yolov11n-640",
+    modelClasses: ['Healthy', 'Nitrogen Deficient', 'Phosphorus Deficient', 'Potassium Deficient'],
+    modelInputSize: [640, 640],
 };
 
 
