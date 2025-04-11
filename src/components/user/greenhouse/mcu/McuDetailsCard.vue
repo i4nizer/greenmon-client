@@ -20,13 +20,6 @@
                     label="Label"
                     v-model="mcu.label"
                 ></v-text-field>
-                <v-text-field
-                    readonly
-                    label="Key"
-                    v-model="mcu.key"
-                    append-inner-icon="mdi-content-copy"
-                    @click:append-inner="onCopyKey"
-                ></v-text-field>
                 <v-btn
                     type="submit"
                     text="Save"
@@ -62,14 +55,12 @@ const { required, min, max } = useRules()
 const mcu = reactive({
     name: props.mcu?.name,
     label: props.mcu?.label,
-    key: props.mcu?.key,
 })
 
 // ---getters
 const propsGreenhouse = computed(() => ({
     name: props.mcu?.name,
     label: props.mcu?.label,
-    key: props.mcu?.key,
 }))
 const changed = computed(() => !equal(mcu, propsGreenhouse.value))
 
@@ -78,8 +69,6 @@ const state = reactive({ valid: false })
 
 // ---events
 const onSubmit = () => emit('change', { ...props.mcu, ...mcu })
-
-const onCopyKey = async () => await navigator.clipboard.writeText(mcu.key).catch(console.error)
 
 
 </script>
