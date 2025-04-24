@@ -66,12 +66,12 @@ const mcu = reactive({
 })
 
 // ---getters
-const propsGreenhouse = computed(() => ({
+const propsMcu = computed(() => ({
     name: props.mcu?.name,
     label: props.mcu?.label,
     key: props.mcu?.key,
 }))
-const changed = computed(() => !equal(mcu, propsGreenhouse.value))
+const changed = computed(() => !equal(mcu, propsMcu.value))
 
 // ---state
 const state = reactive({ valid: false })
@@ -79,7 +79,7 @@ const state = reactive({ valid: false })
 // ---events
 const onSubmit = () => emit('change', { ...props.mcu, ...mcu })
 
-const onCopyKey = async () => await navigator.clipboard.writeText(greenhouse.key).catch(console.error)
+const onCopyKey = async () => await navigator.clipboard.writeText(props.mcu.key).catch(console.error)
 
 </script>
 
