@@ -9,13 +9,13 @@ export const useScheduleStore = defineStore('schedule', () => {
     const schedules = reactive([]);
 
     // ---actions
-    const create = async (schedule) => {
+    const createSchedule = async (schedule) => {
         const res = await api.post('/user/greenhouse/schedule', schedule);
         schedules.push(res.data.schedule);
         return res;
     }
 
-    const retrieve = async (greenhouseId) => {
+    const retrieveSchedule = async (greenhouseId) => {
         const url = `/user/greenhouse/schedule?greenhouseId=${greenhouseId}`;
         const res = await api.get(url);
 
@@ -26,7 +26,7 @@ export const useScheduleStore = defineStore('schedule', () => {
         return res;
     }
 
-    const update = async (schedule) => {
+    const updateSchedule = async (schedule) => {
         schedule.scheduleId = schedule.id
         const res = await api.patch(`/user/greenhouse/schedule`, schedule);
         
@@ -36,7 +36,7 @@ export const useScheduleStore = defineStore('schedule', () => {
         return res;
     }
 
-    const destroy = async (scheduleId) => {
+    const destroySchedule = async (scheduleId) => {
         const res = await api.delete(`/user/greenhouse/schedule?scheduleId=${scheduleId}`);
         const index = schedules.findIndex(g => g.id == scheduleId);
         schedules.splice(index, 1);
@@ -46,9 +46,9 @@ export const useScheduleStore = defineStore('schedule', () => {
     // ---expose
     return {
         schedules,
-        create,
-        retrieve,
-        update,
-        destroy,
+        createSchedule,
+        retrieveSchedule,
+        updateSchedule,
+        destroySchedule,
     }
 }, { persist: true })

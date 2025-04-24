@@ -15,8 +15,8 @@ const greenhouseBeforeEnter = async (to, from, next) => {
     if (!greenhouseId) return next("/user/greenhouse");
 
     // fetch greenhouses first
-    const { greenhouses, retrieve } = useGreenhouseStore();
-    await retrieve().catch(console.error);
+    const { greenhouses, retrieveGreenhouse } = useGreenhouseStore();
+    await retrieveGreenhouse().catch(console.error);
 
     // not exist
     const greenhouseIndex = greenhouses.findIndex((g) => g.id == greenhouseId);
@@ -47,7 +47,7 @@ const greenhouseAutomationBeforeEnter = async (to, from, next) => {
     const { sensors, retrieveSensor, retrieveOutput } = useSensorStore();
     const { actuators, retrieveActuator, retrieveInput } = useActuatorStore();
     const { thresholds, retrieveThreshold, retrieveCondition } = useThresholdStore();
-    const { retrieve: retrieveAction } = useActionStore();
+    const { retrieveAction } = useActionStore();
 
     // fetch mcus
     retrieveMcu(greenhouseId)
@@ -74,8 +74,8 @@ const greenhouseScheduleBeforeEnter = async (to, from, next) => {
     const greenhouseId = to.params.greenhouseId;
 
     // init stores for data & funcs
-    const { schedules, retrieve: retrieveSchedule } = useScheduleStore();
-    const { retrieve: retrieveAction } = useActionStore();
+    const { schedules, retrieveSchedule } = useScheduleStore();
+    const { retrieveAction } = useActionStore();
     const { mcus, retrieveMcu } = useMcuStore();
     const { actuators, retrieveActuator, retrieveInput } = useActuatorStore();
 

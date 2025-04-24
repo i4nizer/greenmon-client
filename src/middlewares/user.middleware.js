@@ -29,8 +29,8 @@ const userBeforeEnter = async (to, from, next) => {
     }
 
     // load user's greenhouses
-    const { retrieve } = useGreenhouseStore()
-    retrieve().catch(console.error)
+    const { retrieveGreenhouse } = useGreenhouseStore()
+    retrieveGreenhouse().catch(console.error)
 
     // passed all checks
     return next();

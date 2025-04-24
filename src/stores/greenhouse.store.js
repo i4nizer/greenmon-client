@@ -9,13 +9,13 @@ export const useGreenhouseStore = defineStore('greenhouse', () => {
     const greenhouses = reactive([]);
 
     // ---actions
-    const create = async (greenhouse) => {
+    const createGreenhouse = async (greenhouse) => {
         const res = await api.post('/user/greenhouse', greenhouse);
         greenhouses.push(res.data.greenhouse);
         return res;
     }
 
-    const retrieve = async () => {
+    const retrieveGreenhouse = async () => {
         const res = await api.get('/user/greenhouse');
 
         const union = [...new Map([...greenhouses, ...res.data.greenhouses].map(g => [g.id, g])).values()]
@@ -25,7 +25,7 @@ export const useGreenhouseStore = defineStore('greenhouse', () => {
         return res;
     }
 
-    const update = async (greenhouse) => {
+    const updateGreenhouse = async (greenhouse) => {
         greenhouse.greenhouseId = greenhouse.id
         const res = await api.patch(`/user/greenhouse`, greenhouse);
         
@@ -35,7 +35,7 @@ export const useGreenhouseStore = defineStore('greenhouse', () => {
         return res;
     }
 
-    const destroy = async (greenhouseId) => {
+    const destroyGreenhouse = async (greenhouseId) => {
         const res = await api.delete(`/user/greenhouse?greenhouseId=${greenhouseId}`);
         const index = greenhouses.findIndex(g => g.id == greenhouseId);
         greenhouses.splice(index, 1);
@@ -45,9 +45,9 @@ export const useGreenhouseStore = defineStore('greenhouse', () => {
     // ---expose
     return {
         greenhouses,
-        create,
-        retrieve,
-        update,
-        destroy,
+        createGreenhouse,
+        retrieveGreenhouse,
+        updateGreenhouse,
+        destroyGreenhouse,
     }
 }, { persist: true })

@@ -50,7 +50,7 @@
 
 <script setup>
 import { useGreenhouseStore } from "@/stores/greenhouse.store";
-import { defineAsyncComponent, onMounted } from "vue";
+import { defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
 
 const UserLayout = defineAsyncComponent(() => import("@/views/user/UserLayout.vue"))
@@ -59,14 +59,14 @@ const UserGreenhouseDialog = defineAsyncComponent(() => import("@/components/use
 
 
 // ---stores
-const { greenhouses, create, update, destroy } = useGreenhouseStore();
+const { greenhouses, createGreenhouse, updateGreenhouse, destroyGreenhouse } = useGreenhouseStore();
 
 // ---composables
 const router = useRouter()
 
 // ---events
 const onCreateGreenhouse = async (greenhouse) => {
-    await create(greenhouse).catch(console.error);
+    await createGreenhouse(greenhouse).catch(console.error);
 };
 
 const onViewGreenhouse = (greenhouseId) => {
@@ -74,11 +74,11 @@ const onViewGreenhouse = (greenhouseId) => {
 };
 
 const onEditGreenhouse = async (greenhouse) => {
-    await update(greenhouse).catch(console.error);
+    await updateGreenhouse(greenhouse).catch(console.error);
 };
 
 const onDeleteGreenhouse = async (greenhouseId) => {
-    await destroy(greenhouseId).catch(console.error);
+    await destroyGreenhouse(greenhouseId).catch(console.error);
 };
 
 

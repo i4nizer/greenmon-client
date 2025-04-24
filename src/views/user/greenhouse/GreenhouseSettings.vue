@@ -30,7 +30,7 @@ const GreenhouseDetailsCard = defineAsyncComponent(() => import("@/components/us
 
 
 // ---stores
-const { greenhouses, update } = useGreenhouseStore()
+const { greenhouses, updateGreenhouse } = useGreenhouseStore()
 
 // ---composables
 const route = useRoute()
@@ -45,7 +45,7 @@ const state = reactive({ updating: false })
 const onUpdateGreenhouse = async (greenhouse) => {
     state.updating = true
 
-    await update({ ...greenhouse })
+    await updateGreenhouse({ ...greenhouse })
         .catch(console.error)
 
     state.updating = false

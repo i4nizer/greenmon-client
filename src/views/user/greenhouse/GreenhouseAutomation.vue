@@ -68,9 +68,9 @@ const { inputs } = useActuatorStore()
 const { outputs } = useSensorStore()
 const {
     actions,
-    create: createAction,
-    update: updateAction,
-    destroy: destroyAction,
+    createAction,
+    updateAction,
+    destroyAction,
 } = useActionStore()
 const {
     thresholds,

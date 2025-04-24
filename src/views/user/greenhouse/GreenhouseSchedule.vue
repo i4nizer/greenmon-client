@@ -67,15 +67,15 @@ const GreenhouseScheduleDialog = defineAsyncComponent(() => import("@/components
 // ---stores
 const {
     schedules,
-    create: createSchedule,
-    update: updateSchedule,
-    destroy: destroySchedule,
+    createSchedule,
+    updateSchedule,
+    destroySchedule,
 } = useScheduleStore()
 const {
     actions,
-    create: createAction,
-    update: updateAction,
-    destroy: destroyAction,
+    createAction,
+    updateAction,
+    destroyAction,
 } = useActionStore()
 const {
     inputs,
