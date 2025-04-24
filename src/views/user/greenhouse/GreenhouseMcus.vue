@@ -69,7 +69,9 @@ const router = useRouter()
 const greenhouseId = route.params.greenhouseId
 const mcusWithPins = computed(() => {
     const mwp = []
-    mcus.forEach(m => mwp.push({ ...m, pins: pins.filter(p => p.mcuId == m.id) }))
+    mcus
+        .filter(m => m.greenhouseId == greenhouseId)
+        .forEach(m => mwp.push({ ...m, pins: pins.filter(p => p.mcuId == m.id) }))
     return mwp
 })
 

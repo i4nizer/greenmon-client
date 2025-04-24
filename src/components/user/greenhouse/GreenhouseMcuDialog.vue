@@ -21,20 +21,18 @@
                     label="Label"
                     v-model="mcu.label"
                 ></v-text-field>
-                <v-text-field
-                    type="number"
+                <v-number-input
                     label="Digital Pins"
                     v-model="pins.digital"
-                    :rules="[required('Number'), v => min(0)(parseInt(v))]"
+                    :rules="[required('Number'), min(0)]"
                     :readonly="type == 'Update'"
-                ></v-text-field>
-                <v-text-field
-                    type="number"
+                ></v-number-input>
+                <v-number-input
                     label="Analog Pins"
                     v-model="pins.analog"
-                    :rules="[required('Number'), v => min(0)(parseInt(v))]"
+                    :rules="[required('Number'), min(0)]"
                     :readonly="type == 'Update'"
-                ></v-text-field>
+                ></v-number-input>
                 <v-btn
                     type="submit"
                     class="mt-3"
@@ -101,8 +99,9 @@ const onSubmit = () => {
 
     if (props.type == 'Create') {
         data.pins = []
-        for (let i = 0; i < pins.analog; i++) data.pins.push({ type: 'Analog', number: i });
-        for (let i = 0; i < pins.digital; i++) data.pins.push({ type: 'Digital', number: i });
+        let pinNum = 0;
+        for (; pinNum < pins.digital; pinNum++) data.pins.push({ type: 'Digital', number: pinNum });
+        for (; pinNum < pins.digital + pins.analog; pinNum++) data.pins.push({ type: 'Analog', number: pinNum });
     }
 
     emit("submit", data);

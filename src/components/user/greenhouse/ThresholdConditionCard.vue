@@ -1,7 +1,9 @@
 <template>
     <v-card class="border pt-3">
         <v-card-title class="d-flex text-subtitle-1">
-            <span>{{ output?.name }} is <span class="font-weight-bold">{{ condition?.type?.toUpperCase() }}</span></span>
+            <span>{{ output?.name }} is</span>
+            <span class="font-weight-bold">&nbsp;{{ condition?.type?.toUpperCase() }}</span>
+            <span>&nbsp;{{ condition?.value }}</span>
             <v-spacer></v-spacer>
             <v-icon>{{ output?.icon }}</v-icon>
         </v-card-title>

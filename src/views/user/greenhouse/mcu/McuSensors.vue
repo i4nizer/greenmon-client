@@ -28,16 +28,21 @@
             <v-row>
                 
                 <!-- Sensor Lists -->
-                <v-col v-for="sensor in sensorsWithOutputs" sm="12" md="6" lg="4" xl="3" xxl="2">
+                <v-col v-for="sensor in sensorsWithHooksOutputs" sm="12" lg="6" xxl="4">
                     <McuSensorCard
                         :key="sensor?.id"
                         :pins="getFreeSensorOutputPins(mcuFreePins, sensor.outputs)"
+                        :hooks="sensor.hooks"
                         :sensor="sensor"
+                        :actions="actions"
                         :outputs="sensor.outputs"
                         :loading="state.loadingSensorId == sensor?.id"
                         :disabled="state.loadingSensorId == sensor?.id"
                         @edit-sensor="onEditSensor"
                         @delete-sensor="onDeleteSensor"
+                        @create-hook="onCreateHook"
+                        @edit-hook="onEditHook"
+                        @delete-hook="onDeleteHook"
                         @create-output="onCreateOutput"
                         @edit-output="onEditOutput"
                         @delete-output="onDeleteOutput"
@@ -45,7 +50,7 @@
                 </v-col>
 
                 <!-- Fallback/emptystate when no sensor -->
-                <v-col v-if="!sensors.length">
+                <v-col v-if="!sensorsWithHooksOutputs.length">
                     <v-empty-state
                         icon="mdi-thermometer"
                         text="You haven't created any sensor yet."
@@ -59,6 +64,7 @@
 </template>
 
 <script setup>
+import { useActionStore } from '@/stores/action.store';
 import { useActuatorStore } from '@/stores/actuator.store';
 import { useMcuStore } from '@/stores/mcu.store';
 import { useSensorStore } from '@/stores/sensor.store';
@@ -73,12 +79,17 @@ const McuSensorDialog = defineAsyncComponent(() => import("@/components/user/gre
 
 // ---stores
 const { pins } = useMcuStore()
+const { actions } = useActionStore()
 const {
+    hooks,
     sensors,
     outputs,
     createSensor,
     updateSensor,
     destroySensor,
+    createHook,
+    updateHook,
+    destroyHook,
     createOutput,
     updateOutput,
     destroyOutput,
@@ -88,10 +99,8 @@ const { inputs } = useActuatorStore()
 // ---composables
 const route = useRoute()
 
-// ---data
-const mcuId = route.params.mcuId
-
 // ---getters
+const mcuId = route.params.mcuId
 const mcuFreePins = computed(() => {
     const mcuOutputPins = pins.filter(p => p.mcuId == mcuId && (p.mode == 'Unset' || p.mode == 'Output'))
     for (const inp of inputs) { 
@@ -100,10 +109,16 @@ const mcuFreePins = computed(() => {
     }
     return mcuOutputPins;
 })
-const sensorsWithOutputs = computed(() => {
-    const swo = []
-    sensors.forEach(s => swo.push({ ...s, outputs: outputs.filter(o => o.sensorId == s.id)}))
-    return swo;
+const sensorsWithHooksOutputs = computed(() => {
+    const swho = []
+    sensors
+        .filter(s => s.mcuId == mcuId)
+        .forEach(s => swho.push({
+            ...s,
+            hooks: hooks.filter(h => h.sensorId == s.id),
+            outputs: outputs.filter(o => o.sensorId == s.id),
+        }))
+    return swho;
 })
 
 // ---state
@@ -156,6 +171,33 @@ const onDeleteSensor = async (sensorId) => {
     await destroySensor(sensorId)
         .catch(console.error)
 
+    state.loadingSensorId = null
+}
+
+const onCreateHook = async (hook) => {
+    state.loadingSensorId = hook?.sensorId
+
+    await createHook(hook)
+        .catch(console.error)
+
+    state.loadingSensorId = null
+}
+
+const onEditHook = async (hook) => {
+    state.loadingSensorId = hook?.sensorId
+
+    await updateHook(hook)
+        .catch(console.error)
+
+    state.loadingSensorId = null
+}
+
+const onDeleteHook = async (hookId, sensorId) => {
+    state.loadingSensorId = sensorId
+
+    await destroyHook(hookId)
+        .catch(console.error)
+    
     state.loadingSensorId = null
 }
 

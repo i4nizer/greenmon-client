@@ -1,3 +1,4 @@
+import { useActionStore } from "@/stores/action.store";
 import { useActuatorStore } from "@/stores/actuator.store";
 import { useMcuStore } from "@/stores/mcu.store";
 import { useSensorStore } from "@/stores/sensor.store";
@@ -39,15 +40,21 @@ const mcuPinsBeforeEnter = async (to, from, next) => {
 /** Fetches mcu sensors, outputs. */
 const mcuSensorsBeforeEnter = async (to, from, next) => {
     const mcuId = to.params.mcuId;
+    const greenhouseId = to.params.greenhouseId;
 
     // init stores for data & funcs
     const { retrievePin } = useMcuStore()
+    const { retrieveAction } = useActionStore()
     const { sensors, retrieveSensor, retrieveOutput, retrieveHook } = useSensorStore()
 
     // fetch pins
     retrievePin(mcuId)
         .catch(console.error)
-
+        
+    // fetch actions
+    retrieveAction(null, null, greenhouseId)
+        .catch(console.error)
+    
     // fetch sensors
     retrieveSensor(mcuId)
         // fetch outputs

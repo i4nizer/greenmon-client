@@ -58,10 +58,11 @@
         <v-card-text>
             <v-list>
                 <v-list-subheader class="d-flex justify-end">
-                    <ScheduleActionDialog
+                    <GreenhouseActionDialog
                         type="Create" 
                         class="w-100 w-md-50" 
                         :inputs="inputs"
+                        :referenced="'Schedule'"
                         @submit="onCreateAction"
                     >
                         <template #activator="{ props: activatorProps }">
@@ -71,14 +72,15 @@
                                 :="activatorProps" 
                             ></v-btn>
                         </template>
-                    </ScheduleActionDialog>
+                    </GreenhouseActionDialog>
                 </v-list-subheader>
                 <v-list-item v-for="action in actionsWithInputs">
-                    <ScheduleActionCard
+                    <GreenhouseActionCard
                         :key="action?.id"
                         :input="action.input"
                         :inputs="inputs"
                         :action="action"
+                        :referenced="'Schedule'"
                         @edit="a => emit('edit-action', a)"
                         @delete="a => emit('delete-action', a, schedule?.id)"
                     />
@@ -96,8 +98,8 @@
 import { computed, defineAsyncComponent, reactive } from "vue";
 import { useDate } from "vuetify";
 
-const ScheduleActionDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/ScheduleActionDialog.vue"))
-const ScheduleActionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/ScheduleActionCard.vue"))
+const GreenhouseActionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseActionCard.vue"))
+const GreenhouseActionDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseActionDialog.vue"))
 const GreenhouseScheduleDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseScheduleDialog.vue"))
 
 

@@ -30,20 +30,16 @@
                     :item-value="(i) => i"
                     :rules="[required(), min(3), max(100)]"
                 ></v-select>
-                <v-text-field
-                    type="number"
+                <v-number-input
                     label="Flag"
                     v-model="input.flag"
                     :rules="[required('Number')]"
-                    @update:model-value="input.flag = parseInt(input.flag)"
-                ></v-text-field>
-                <v-text-field
-                    type="number"
+                ></v-number-input>
+                <v-number-input
                     label="Status"
                     v-model="input.status"
                     :rules="[required('Number')]"
-                    @update:model-value="input.status = parseInt(input.status)"
-                ></v-text-field>
+                ></v-number-input>
                 <v-select
                     label="Pin"
                     v-model="input.pinId"

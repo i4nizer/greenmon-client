@@ -36,6 +36,12 @@
             ></v-list-item>
             <v-list-item 
                 link 
+                title="Action" 
+                prepend-icon="mdi-rocket-launch"
+                :to="`/user/greenhouse/${greenhouseId}/action`" 
+            ></v-list-item>
+            <v-list-item 
+                link 
                 title="Automation" 
                 prepend-icon="mdi-auto-fix"
                 :to="`/user/greenhouse/${greenhouseId}/automation`" 

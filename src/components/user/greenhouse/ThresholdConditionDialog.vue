@@ -31,13 +31,12 @@
                     :items="['Equal', 'Above', 'Below']"
                     :rules="[required()]"
                 ></v-select>
-                <v-text-field
+                <v-number-input
                     label="Value"
-                    type="number"
                     v-model="condition.value"
                     :rules="[required('Number')]"
                     :prefix="`${output?.unit || ''}`"
-                ></v-text-field>
+                ></v-number-input>
                 <v-btn
                     type="submit"
                     class="mt-3"

@@ -30,14 +30,12 @@
                     v-model="action.name"
                     :rules="[required(), min(3), max(100)]"
                 ></v-text-field>
-                <v-text-field
+                <v-number-input
                     v-if="input?.type == 'Number'"
-                    type="number"
                     label="Input Value"
                     v-model="action.value"
-                    :rules="[required('Number'), v => min(0)(parseInt(v))]"
-                    @update:model-value="action.value = parseInt(action.value) || 0"
-                ></v-text-field>
+                    :rules="[required('Number'), min(0)]"
+                ></v-number-input>
                 <v-select
                     v-if="input?.type == 'Boolean'"
                     label="Input Value"
@@ -46,21 +44,41 @@
                     :item-title="i => i"
                     :item-value="i => i == 'ON' ? 1 : 0"
                 ></v-select>
-                <v-text-field
-                    type="number"
+                <v-number-input
+                    label="Delay"
+                    prefix="Seconds: "
+                    v-model="action.delay"
+                    :rules="[required('Number'), min(0)]"
+                ></v-number-input>
+                <v-number-input
                     label="Duration"
                     prefix="Seconds: "
                     v-model="action.duration"
-                    :rules="[required('Number'), v => min(0)(parseInt(v))]"
-                    @update:model-value="action.duration = parseInt(action.duration) || 0"
-                ></v-text-field>
-                <v-text-field
-                    type="number"
+                    :rules="[required('Number'), min(-1)]"
+                ></v-number-input>
+                <v-number-input
                     label="Precedence"
                     v-model="action.precedence"
-                    :rules="[required('Number'), v => min(0)(parseInt(v))]"
-                    @update:model-value="action.precedence = parseInt(action.precedence) || 0"
-                ></v-text-field>
+                    :rules="[required('Number'), min(0)]"
+                ></v-number-input>
+                <v-select
+                    v-if="referenced == 'Greenhouse'"
+                    clearable
+                    label="Schedule"
+                    v-model="action.scheduleId"
+                    :items="schedules"
+                    :item-title="s => s?.name"
+                    :item-value="s => s?.id"
+                ></v-select>
+                <v-select
+                    v-if="referenced == 'Greenhouse'"
+                    clearable
+                    label="Threshold"
+                    v-model="action.thresholdId"
+                    :items="thresholds"
+                    :item-title="t => t?.name"
+                    :item-value="t => t?.id"
+                ></v-select>
                 <v-btn
                     type="submit"
                     class="mt-3"
@@ -97,6 +115,18 @@ const props = defineProps({
         type: Object,
         default: {},
     },
+    schedules: {
+        type: Array,
+        default: [],
+    },
+    thresholds: {
+        type: Array,
+        default: [],
+    },
+    referenced: {
+        type: String,
+        default: "Greenhouse"
+    },
 })
 
 // ---composables
@@ -106,9 +136,12 @@ const { required, min, max, } = useRules()
 const action = reactive({
     name: props.initial?.name,
     value: props.initial?.value || 1,
+    delay: props.initial?.delay || 0,
     duration: props.initial?.duration || 30,
     precedence: props.initial?.precedence || 0,
     inputId: props.initial?.inputId,
+    scheduleId: props.initial?.scheduleId,
+    thresholdId: props.initial?.thresholdId,
 })
 
 // ---getters
@@ -116,9 +149,12 @@ const input = computed(() => props.inputs.find(i => i.id == action.inputId))
 const actionProps = computed(() => ({
     name: props.initial?.name,
     value: props.initial?.value,
+    delay: props.initial?.delay,
     duration: props.initial?.duration,
     precedence: props.initial?.precedence,
     inputId: props.initial?.inputId,
+    scheduleId: props.initial?.scheduleId,
+    thresholdId: props.initial?.thresholdId,
 }))
 const changed = computed(() => !equal(action, actionProps.value))
 
@@ -137,9 +173,12 @@ const onSubmit = () => {
     if (props.type == 'Create') {
         action.name = null
         action.value = 0
+        action.delay = 0
         action.duration = 30
         action.precedence = 0
         action.inputId = null
+        action.scheduleId = null
+        action.thresholdId = null
     }
 }
 

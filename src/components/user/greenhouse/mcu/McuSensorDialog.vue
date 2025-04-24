@@ -21,14 +21,12 @@
                     label="Label"
                     v-model="sensor.label"
                 ></v-text-field>
-                <v-text-field
-                    type="number"
+                <v-number-input
                     label="Read Interval"
                     prefix="Seconds: "
                     v-model="sensor.interval"
-                    :rules="[required('Number'), v => min(0)(parseInt(v))]"
-                    @update:model-value="sensor.interval = parseInt(sensor.interval)"
-                ></v-text-field>
+                    :rules="[required('Number'), min(0)]"
+                ></v-number-input>
                 <v-select
                     label="Flag"
                     v-model="sensor.disabled"

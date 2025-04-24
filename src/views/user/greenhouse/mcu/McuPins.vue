@@ -32,7 +32,7 @@ const McuPinsTable = defineAsyncComponent(() => import("@/components/user/greenh
 
 
 // ---stores
-const { mcus, pins, createPin, updatePin, destroyPin, getMcu } = useMcuStore()
+const { mcus, pins, createPin, updatePin, destroyPin } = useMcuStore()
 
 // ---composables
 const route = useRoute()

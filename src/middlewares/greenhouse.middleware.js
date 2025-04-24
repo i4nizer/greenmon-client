@@ -38,6 +38,42 @@ const greenhouseMcuBeforeEnter = async (to, from, next) => {
     return next()
 }
 
+/** Fetches mcus, actuators, inputs, thresholds, conditions, actions. */
+const greenhouseActionBeforeEnter = async (to, from, next) => {
+    const greenhouseId = to.params.greenhouseId;
+
+    // init stores for data & funcs
+    const { mcus, retrieveMcu } = useMcuStore();
+    const { actuators, retrieveActuator, retrieveInput } = useActuatorStore();
+    const { retrieveAction } = useActionStore();
+    const { retrieveSchedule } = useScheduleStore()
+    const { retrieveThreshold } = useThresholdStore()
+
+    // fetch mcus
+    retrieveMcu(greenhouseId)
+        // fetch actuators
+        .then(() => mcus.map((m) => retrieveActuator(m.id)))
+        .then(async (reqs) => await Promise.all(reqs))
+        // fetch inputs
+        .then(() => actuators.map((a) => retrieveInput(a.id)))
+        .then(async (reqs) => await Promise.all(reqs))
+        .catch(console.error);
+
+    // fetch actions
+    retrieveAction(null, null, greenhouseId)
+        .catch(console.error);
+        
+    // fetch schedules
+    retrieveSchedule(greenhouseId)
+        .catch(console.error);
+    
+    // fetch thresholds
+    retrieveThreshold(greenhouseId)
+        .catch(console.error);
+
+    return next()
+}
+
 /** Fetches mcus, sensors, outputs, actuators, inputs, thresholds, conditions, actions. */
 const greenhouseAutomationBeforeEnter = async (to, from, next) => {
     const greenhouseId = to.params.greenhouseId;
@@ -104,6 +140,7 @@ const greenhouseScheduleBeforeEnter = async (to, from, next) => {
 export {
     greenhouseBeforeEnter,
     greenhouseMcuBeforeEnter,
+    greenhouseActionBeforeEnter,
     greenhouseAutomationBeforeEnter,
     greenhouseScheduleBeforeEnter,
 }

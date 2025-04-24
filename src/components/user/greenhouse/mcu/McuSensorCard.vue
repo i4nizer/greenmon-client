@@ -51,6 +51,8 @@
         
         <v-card-text>
             <span class="w-100">Read Interval: Every {{ sensor?.interval }} seconds</span>
+            
+            <!-- Output Lists -->
             <v-list>
                 <v-list-subheader class="d-flex justify-end">
                     <SensorOutputDialog 
@@ -81,16 +83,56 @@
                     <span class="text-grey">No Outputs Yet</span>
                 </v-list-item>
             </v-list>
+            
+            <!-- Hook Lists -->
+            <v-list>
+                <v-list-subheader class="d-flex justify-end">
+                    <SensorHookDialog 
+                        type="Create" 
+                        class="w-100 w-md-50" 
+                        :pins="pins"
+                        :sensor="sensor"
+                        :actions="actions"
+                        @submit="onCreateHook"
+                    >
+                        <template #activator="{ props: activatorProps }">
+                            <v-btn 
+                                text="Add Hook"
+                                color="white"
+                                :="activatorProps" 
+                            ></v-btn>
+                        </template>
+                    </SensorHookDialog>
+                </v-list-subheader>
+                <v-list-item v-for="hook in hooksWithActions">
+                    <SensorHookCard
+                        :key="hook?.id"
+                        :pins="pins"
+                        :hook="hook"
+                        :sensor="sensor"
+                        :action="hook?.action"
+                        :actions="actions"
+                        @edit="o => emit('edit-hook', o)"
+                        @delete="o => emit('delete-hook', o, sensor?.id)"
+                    />
+                </v-list-item>
+                <v-list-item v-if="!hooksWithActions.length" class="text-center">
+                    <span class="text-grey">No Hooks Yet</span>
+                </v-list-item>
+            </v-list>
+
         </v-card-text>
     </v-card>
 </template>
 
 <script setup>
-import { defineAsyncComponent, reactive } from "vue";
+import { computed, defineAsyncComponent, reactive } from "vue";
 
 const McuSensorDialog = defineAsyncComponent(() => import("./McuSensorDialog.vue"))
 const SensorOutputCard = defineAsyncComponent(() => import("./SensorOutputCard.vue"));
 const SensorOutputDialog = defineAsyncComponent(() => import("./SensorOutputDialog.vue"));
+const SensorHookCard = defineAsyncComponent(() => import("./SensorHookCard.vue"));
+const SensorHookDialog = defineAsyncComponent(() => import("./SensorHookDialog.vue"));
 
 
 // ---events
@@ -100,11 +142,18 @@ const emit = defineEmits([
     'create-output',
     'edit-output',
     'delete-output',
+    'create-hook',
+    'edit-hook',
+    'delete-hook',
 ])
 
 // ---props
 const props = defineProps({
     pins: {
+        type: Array,
+        default: [],
+    },
+    hooks: {
         type: Array,
         default: [],
     },
@@ -116,7 +165,18 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    actions: {
+        type: Array,
+        default: [],
+    },
 });
+
+// ---getters
+const hooksWithActions = computed(() => {
+    const hwa = []
+    props.hooks.forEach(h => hwa.push({ ...h, action: props.actions?.find(a => a.id == h.actionId) }))
+    return hwa
+})
 
 // ---state
 const state = reactive({
@@ -124,6 +184,11 @@ const state = reactive({
 })
 
 // ---events
+const onCreateHook = (hook) => {
+    hook.sensorId = props.sensor?.id
+    emit('create-hook', hook)
+}
+
 const onCreateOutput = (output) => {
     output.sensorId = props.sensor?.id
     emit('create-output', output)

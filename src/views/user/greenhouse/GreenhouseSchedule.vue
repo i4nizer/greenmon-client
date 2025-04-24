@@ -39,7 +39,7 @@
                 </v-col>
                 
                 <!-- Fallback/emptystate when no schedule -->
-                <v-col v-if="!schedules.length">
+                <v-col v-if="!schedulesWithActions.length">
                     <v-empty-state
                         icon="mdi-calendar-clock"
                         text="You haven't created any schedule yet."
@@ -90,7 +90,11 @@ const greenhouseId = route.params.greenhouseId
 // ---getters
 const schedulesWithActions = computed(() => {
     const swa = []
-    schedules.forEach(s => swa.push({ ...s, actions: actions.filter(a => a.scheduleId == s.id) }))
+    schedules
+        .filter(s => s.greenhouseId == greenhouseId)
+        .forEach(s => swa.push({
+            ...s, actions: actions.filter(a => a.scheduleId == s.id)
+        }))
     return swa;
 })
 
@@ -137,6 +141,7 @@ const onDeleteSchedule = async (scheduleId) => {
 const onCreateAction = async (action) => {
     state.loadingScheduleId = action?.scheduleId
 
+    action.greenhouseId = greenhouseId
     await createAction(action)
         .catch(console.error)
 

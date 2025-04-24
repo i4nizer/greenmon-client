@@ -94,10 +94,11 @@
             <!-- Action Lists -->
             <v-list>
                 <v-list-subheader class="d-flex justify-end">
-                    <ThresholdActionDialog
+                    <GreenhouseActionDialog
                         type="Create" 
                         class="w-100 w-md-50"
                         :inputs="inputs"
+                        :referenced="'Threshold'"
                         @submit="onCreateAction"
                     >
                         <template #activator="{ props: activatorProps }">
@@ -107,14 +108,15 @@
                                 :="activatorProps" 
                             ></v-btn>
                         </template>
-                    </ThresholdActionDialog>
+                    </GreenhouseActionDialog>
                 </v-list-subheader>
                 <v-list-item v-for="action in actionsWithInputs" class="text-center">
-                    <ThresholdActionCard
+                    <GreenhouseActionCard
                         :key="action?.id"
                         :input="action?.input"
                         :inputs="inputs"
                         :action="action"
+                        :referenced="'Threshold'"
                         @edit="a => emit('edit-action', a)"
                         @delete="a => emit('delete-action', a, threshold?.id)"
                     />
@@ -132,8 +134,8 @@
 <script setup>
 import { computed, defineAsyncComponent, reactive } from "vue";
 
-const ThresholdActionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/ThresholdActionCard.vue"))
-const ThresholdActionDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/ThresholdActionDialog.vue"))
+const GreenhouseActionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseActionCard.vue"))
+const GreenhouseActionDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseActionDialog.vue"))
 const ThresholdConditionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/ThresholdConditionCard.vue"))
 const ThresholdConditionDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/ThresholdConditionDialog.vue"))
 const GreenhouseThresholdDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseThresholdDialog.vue"))

@@ -7,7 +7,6 @@ import { defineStore } from "pinia";
 export const useActionStore = defineStore('action', () => {
     // ---state
     const actions = reactive([]);
-    const triggers = reactive([]);
 
     // ---actions
     const createAction = async (action) => {
@@ -16,11 +15,13 @@ export const useActionStore = defineStore('action', () => {
         return res;
     }
 
-    const retrieveAction = async (scheduleId = null, thresholdId = null) => {
+    const retrieveAction = async (scheduleId = null, thresholdId = null, greenhouseId = null) => {
         let url = `/user/greenhouse/action?`;
         url += scheduleId ? `scheduleId=${scheduleId}` : "";
         url += scheduleId && thresholdId ? "&" : "";
         url += thresholdId ? `thresholdId=${thresholdId}` : "";
+        url += scheduleId || thresholdId ? "&" : "";
+        url += greenhouseId ? `greenhouseId=${greenhouseId}` : "";
 
         const res = await api.get(url);
 
@@ -48,44 +49,6 @@ export const useActionStore = defineStore('action', () => {
         return res;
     }
     
-    const createTrigger = async (trigger) => {
-        const res = await api.post('/user/greenhouse/action/trigger', trigger);
-        triggers.push(res.data.trigger);
-        return res;
-    }
-
-    const retrieveTrigger = async (actionId = null, srcActionId = null) => {
-        let url = `/user/greenhouse/action/trigger?`;
-        url += actionId ? `actionId=${actionId}` : "";
-        url += actionId && srcActionId ? "&" : "";
-        url += srcActionId ? `srcActionId=${srcActionId}` : "";
-
-        const res = await api.get(url);
-
-        const union = [...new Map([...triggers, ...res.data.triggers].map(g => [g.id, g])).values()]
-        triggers.splice(0, triggers.length);
-        triggers.push(...union);
-
-        return res;
-    }
-
-    const updateTrigger = async (trigger) => {
-        trigger.triggerId = trigger.id
-        const res = await api.patch(`/user/greenhouse/action/trigger`, trigger);
-        
-        const index = triggers.findIndex(g => g.id == trigger.id);
-        triggers.splice(index, 1, trigger);
-        
-        return res;
-    }
-
-    const destroyTrigger = async (triggerId) => {
-        const res = await api.delete(`/user/greenhouse/action/trigger?triggerId=${triggerId}`);
-        const index = triggers.findIndex(g => g.id == triggerId);
-        triggers.splice(index, 1);
-        return res;
-    }
-
     // ---expose
     return {
         actions,
@@ -93,11 +56,5 @@ export const useActionStore = defineStore('action', () => {
         retrieveAction,
         updateAction,
         destroyAction,
-
-        triggers,
-        createTrigger,
-        retrieveTrigger,
-        updateTrigger,
-        destroyTrigger,
     }
 }, { persist: true })

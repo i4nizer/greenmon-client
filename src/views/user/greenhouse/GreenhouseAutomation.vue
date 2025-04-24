@@ -45,6 +45,15 @@
                     />
                 </v-col>
 
+                <!-- Fallback/emptystate when no threshold -->
+                <v-col v-if="!thresholds.length">
+                    <v-empty-state
+                        icon="mdi-auto-fix"
+                        text="You haven't created any automation yet."
+                        title="No automation yet"
+                    ></v-empty-state>
+                </v-col>
+
             </v-row>
         </v-container>
     </GreenhouseLayout>
@@ -86,19 +95,17 @@ const {
 // ---composables
 const route = useRoute()
 
-// ---data
-const greenhouseId = route.params.greenhouseId
-
 // ---getters
+const greenhouseId = route.params.greenhouseId
 const thresholdsWithConditionsActions = computed(() => {
     const twca = [];
-    thresholds.forEach(t =>
-        twca.push(
-            {
-                ...t,
-                actions: actions.filter(a => a.thresholdId == t.id),
-                conditions: conditions.filter(c => c.thresholdId == t.id)
-            }))
+    thresholds
+        .filter(t => t.greenhouseId == greenhouseId)
+        .forEach(t => twca.push({
+            ...t,
+            actions: actions.filter(a => a.thresholdId == t.id),
+            conditions: conditions.filter(c => c.thresholdId == t.id)
+        }))
     return twca;
 })
 
@@ -140,6 +147,7 @@ const onDeleteThreshold = async (thresholdId) => {
 const onCreateAction = async (action) => {
     state.loadingThresholdId = action?.thresholdId
 
+    action.greenhouseId = greenhouseId
     await createAction(action)
         .catch(console.error)
 

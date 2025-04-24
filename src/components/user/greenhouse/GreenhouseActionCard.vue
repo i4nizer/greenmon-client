@@ -1,21 +1,29 @@
 <template>
     <v-card class="border pt-3">
-        <v-card-title class="d-flex text-subtitle-1">
-            <span>{{ action?.name }}</span>
+        <v-card-title class="d-flex ga-1 text-subtitle-1">
+            <span class="text-truncate" style="white-space: normal;">{{ action?.name }}</span>
             <v-spacer></v-spacer>
             <v-icon>{{ input?.icon }}</v-icon>
         </v-card-title>
         
         <v-card-actions>
-            <v-card-subtitle v-if="$vuetify.display.smAndUp">Duration: {{ action?.duration }} seconds</v-card-subtitle>
-            <v-card-subtitle v-if="$vuetify.display.smAndUp">Precedence: {{ action?.precedence }}</v-card-subtitle>
+            <v-card-subtitle v-if="$vuetify.display.smAndUp">
+                <span>Input: {{ action?.value }}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>Delay: {{ action?.delay }}s&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>Duration: {{ action?.duration <= -1 ? 'Endless' : `${action?.duration}s` }}</span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>Precedence: {{ action?.precedence }}</span>
+            </v-card-subtitle>
             <v-spacer></v-spacer>
-            <ThresholdActionDialog 
+            <GreenhouseActionDialog 
                 type="Update" 
                 class="w-100 w-md-50" 
                 :inputs="inputs"
                 :initial="action"
-                @submit="i => emit('edit', i)"
+                :schedules="schedules"
+                :thresholds="thresholds"
+                :referenced="referenced"
+                @submit="o => emit('edit', o)"
             >
                 <template #activator="{ props: activatorProps }">
                     <v-btn 
@@ -25,7 +33,7 @@
                         :="activatorProps"
                     ></v-btn>
                 </template>
-            </ThresholdActionDialog>
+            </GreenhouseActionDialog>
             <v-btn 
                 size="small"
                 icon="mdi-delete"
@@ -39,7 +47,7 @@
 <script setup>
 import { defineAsyncComponent } from "vue";
 
-const ThresholdActionDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/ThresholdActionDialog.vue"));
+const GreenhouseActionDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseActionDialog.vue"));
 
 
 // ---events
@@ -58,6 +66,18 @@ const props = defineProps({
     action: {
         type: Object,
         required: true,
+    },
+    schedules: {
+        type: Array,
+        default: [],
+    },
+    thresholds: {
+        type: Array,
+        default: [],
+    },
+    referenced: {
+        type: String,
+        default: 'Greenhouse'
     },
 });
 

@@ -18,14 +18,12 @@
                     :items="['Digital', 'Analog']"
                     :rules="[required()]"
                 ></v-select>
-                <v-text-field
-                    type="number"
+                <v-number-input
                     label="Number"
                     v-model="pin.number"
-                    :rules="[required('Number'), v => min(0)(parseInt(v)), pinAvalaibleRule]"
+                    :rules="[required('Number'), min(0), pinAvalaibleRule]"
                     :disabled="!pin.type"
-                    @update:model-value="v => pin.number = parseInt(v) || 0"
-                ></v-text-field>
+                ></v-number-input>
                 <v-select
                     readonly
                     label="Mode"

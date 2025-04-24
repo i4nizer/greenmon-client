@@ -31,10 +31,6 @@
                 </McuPinDialog>
             </v-toolbar>
         </template>
-        
-        <template #item.pin="{ item }">
-            {{ item?.type[0] }}{{ item?.number }}
-        </template>
 
         <template #item.actions="{ item }">
             <McuPinDialog
@@ -89,7 +85,8 @@ const props = defineProps({
 
 // ---data
 const headers = [
-    { title: 'Pin', value: 'pin' },
+    { title: 'Pin', value: 'number' },
+    { title: 'Type', value: 'type' },
     { title: 'Mode', key: 'mode', sortable: false },
     { title: 'Actions', value: 'actions', sortable: false },
 ]

@@ -34,7 +34,7 @@
                     v-model="output.pinId"
                     :rules="[required('Number')]"
                     :items="pins"
-                    :item-title="(i) => `${i?.type[0]}${i?.number}`"
+                    :item-title="(i) => `${i?.number} - ${i?.type}`"
                     :item-value="(i) => i?.id"
                 ></v-select>
                 <v-btn

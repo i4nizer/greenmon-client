@@ -28,7 +28,7 @@
             <v-row>
 
                 <!-- Actuator Lists -->
-                <v-col v-for="actuator in actuatorsWithInputs" sm="12" md="6" lg="4" xl="3" xxl="2">
+                <v-col v-for="actuator in actuatorsWithInputs" sm="12" lg="6" xxl="4">
                     <McuActuatorCard 
                         :key="actuator.id"
                         :pins="getFreeActuatorInputPins(mcuFreePins, actuator.inputs)"
@@ -42,6 +42,15 @@
                         @edit-input="onEditInput"
                         @delete-input="onDeleteInput"
                     />
+                </v-col>
+
+                <!-- Fallback/emptystate when no actuator -->
+                <v-col v-if="!actuatorsWithInputs.length">
+                    <v-empty-state
+                        icon="mdi-fan"
+                        text="You haven't created any actuator yet."
+                        title="No actuator yet"
+                    ></v-empty-state>
                 </v-col>
 
             </v-row>
@@ -78,10 +87,8 @@ const { outputs } = useSensorStore()
 // ---composables
 const route = useRoute()
 
-// ---data
-const mcuId = route.params.mcuId
-
 // ---getters
+const mcuId = route.params.mcuId
 const mcuFreePins = computed(() => {
     const mcuInputPins = pins.filter(p => p.mcuId == mcuId && (p.mode == 'Unset' || p.mode == 'Input'))
     for (const out of outputs) { 
@@ -92,7 +99,12 @@ const mcuFreePins = computed(() => {
 })
 const actuatorsWithInputs = computed(() => {
     const awi = []
-    actuators.forEach(a => awi.push({ ...a, inputs: inputs.filter(i => i.actuatorId == a.id)}))
+    actuators
+        .filter(a => a.mcuId == mcuId)
+        .forEach(a => awi.push({
+            ...a,
+            inputs: inputs.filter(i => i.actuatorId == a.id),
+        }))
     return awi;
 })
 
