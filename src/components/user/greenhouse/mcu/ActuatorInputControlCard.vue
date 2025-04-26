@@ -1,0 +1,45 @@
+<template>
+    <v-card>
+        <v-card-title>{{ actuator?.name }}</v-card-title>
+        <v-card-subtitle>{{ actuator?.label }}</v-card-subtitle>
+        <v-card-text>
+
+            <!-- Input Lists -->
+            <InputControlCard
+                v-for="input in inputs"
+                class="mb-1"
+                :key="input?.id"
+                :input="input"
+                @change="input => $emit('change', input)"
+            ></InputControlCard>
+
+        </v-card-text>
+    </v-card>
+</template>
+
+<script setup>
+import { defineAsyncComponent } from 'vue';
+
+const InputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/InputControlCard.vue"))
+
+
+// ---events
+const emit = defineEmits(['change'])
+
+// ---props
+const props = defineProps({
+    actuator: {
+        type: Object,
+        required: true,
+    },
+    inputs: {
+        type: Array,
+        default: [],
+    },
+})
+
+</script>
+
+<style scoped>
+
+</style>

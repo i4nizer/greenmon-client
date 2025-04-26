@@ -23,16 +23,25 @@ const mcuBeforeEnter = async (to, from, next) => {
     return next()
 };
 
-/** Fetches mcu pins. */
+/** Fetches mcu sensor, outputs, actuators, inputs. */
 const mcuDashboardBeforeEnter = async (to, from, next) => {
     const mcuId = to.params.mcuId;
 
     // init stores for data & funcs
     const { sensors, retrieveSensor, retrieveOutput } = useSensorStore()
+    const { actuators, retrieveActuator, retrieveInput } = useActuatorStore()
 
     // fetch sensors
     retrieveSensor(mcuId)
+        // fetch outputs
         .then(() => sensors.map(s => retrieveOutput(s.id)))
+        .then(async (reqs) => await Promise.all(reqs))
+        .catch(console.error)
+    
+    // fetch actuators
+    retrieveActuator(mcuId)
+        // fetch inputs
+        .then(() => actuators.map(a => retrieveInput(a.id)))
         .then(async (reqs) => await Promise.all(reqs))
         .catch(console.error)
     

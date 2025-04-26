@@ -25,22 +25,23 @@ const greenhouseBeforeEnter = async (to, from, next) => {
     return next()
 }
 
-/** Fetches mcus, sensors, outputs. */
+/** Fetches mcus, sensors, outputs, actuators, inputs. */
 const greenhouseDashboardBeforeEnter = async (to, from, next) => {
     const greenhouseId = to.params.greenhouseId;
 
     // init stores for data & funcs
     const { mcus, retrieveMcu } = useMcuStore();
     const { sensors, retrieveSensor, retrieveOutput } = useSensorStore()
+    const { actuators, retrieveActuator, retrieveInput } = useActuatorStore()
 
     // fetch mcus
     retrieveMcu(greenhouseId)
-        // fetch sensors
-        .then(() => mcus.map(m => retrieveSensor(m.id)))
-        .then(async (reqs) => await Promise.all(reqs))
-        // fetch outputs
-        .then(() => sensors.map(s => retrieveOutput(s.id)))
-        .then(async (reqs) => await Promise.all(reqs))
+        // fetch sensors & actuators
+        .then(() => mcus.map((m) => [retrieveSensor(m.id), retrieveActuator(m.id)]))
+        .then(async (reqs) => await Promise.all(reqs.flat()))
+        // fetch outputs & inputs
+        .then(() => [sensors.map((s) => retrieveOutput(s.id)), actuators.map((a) => retrieveInput(a.id))])
+        .then(async (reqs) => await Promise.all(reqs.flat()))
         .catch(console.error);
 
     return next()

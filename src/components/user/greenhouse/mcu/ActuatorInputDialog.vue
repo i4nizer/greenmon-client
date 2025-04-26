@@ -93,8 +93,8 @@ const input = reactive({
     icon: props.initial?.icon || "mdi-fan",
     name: props.initial?.name,
     type: props.initial?.type || "Boolean",
-    flag: props.initial?.flag || -1,
-    status: props.initial?.status || -1,
+    flag: props.initial?.flag,
+    status: props.initial?.status,
     pinId: props.initial?.pinId,
 });
 
