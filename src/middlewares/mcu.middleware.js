@@ -24,6 +24,22 @@ const mcuBeforeEnter = async (to, from, next) => {
 };
 
 /** Fetches mcu pins. */
+const mcuDashboardBeforeEnter = async (to, from, next) => {
+    const mcuId = to.params.mcuId;
+
+    // init stores for data & funcs
+    const { sensors, retrieveSensor, retrieveOutput } = useSensorStore()
+
+    // fetch sensors
+    retrieveSensor(mcuId)
+        .then(() => sensors.map(s => retrieveOutput(s.id)))
+        .then(async (reqs) => await Promise.all(reqs))
+        .catch(console.error)
+    
+    return next()
+}
+
+/** Fetches mcu pins. */
 const mcuPinsBeforeEnter = async (to, from, next) => {
     const mcuId = to.params.mcuId;
 
@@ -91,6 +107,7 @@ const mcuActuatorsBeforeEnter = async (to, from, next) => {
 
 export {
     mcuBeforeEnter,
+    mcuDashboardBeforeEnter,
     mcuPinsBeforeEnter,
     mcuSensorsBeforeEnter,
     mcuActuatorsBeforeEnter,

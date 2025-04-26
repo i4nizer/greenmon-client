@@ -3,6 +3,7 @@ import {
     mcuPinsBeforeEnter,
     mcuSensorsBeforeEnter,
     mcuActuatorsBeforeEnter,
+    mcuDashboardBeforeEnter,
 } from "@/middlewares/mcu.middleware"
 
 
@@ -16,7 +17,7 @@ const mcuRoutes = [
         path: "dashboard",
         name: "Mcu Dashboard",
         component: () => import("@/views/user/greenhouse/mcu/McuDashboard.vue"),
-        beforeEnter: [mcuBeforeEnter],
+        beforeEnter: [mcuBeforeEnter, mcuDashboardBeforeEnter],
     },
     {
         path: "pins",

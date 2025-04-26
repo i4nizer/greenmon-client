@@ -28,6 +28,9 @@ const env = {
     modelName: "yolov11n-640",
     modelClasses: ['Healthy', 'Nitrogen Deficient', 'Phosphorus Deficient', 'Potassium Deficient'],
     modelInputSize: [640, 640],
+
+    // Web Socket
+    webSocketUrl: "ws://localhost:4000/ws-client",
 };
 
 

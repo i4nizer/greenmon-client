@@ -25,6 +25,27 @@ const greenhouseBeforeEnter = async (to, from, next) => {
     return next()
 }
 
+/** Fetches mcus, sensors, outputs. */
+const greenhouseDashboardBeforeEnter = async (to, from, next) => {
+    const greenhouseId = to.params.greenhouseId;
+
+    // init stores for data & funcs
+    const { mcus, retrieveMcu } = useMcuStore();
+    const { sensors, retrieveSensor, retrieveOutput } = useSensorStore()
+
+    // fetch mcus
+    retrieveMcu(greenhouseId)
+        // fetch sensors
+        .then(() => mcus.map(m => retrieveSensor(m.id)))
+        .then(async (reqs) => await Promise.all(reqs))
+        // fetch outputs
+        .then(() => sensors.map(s => retrieveOutput(s.id)))
+        .then(async (reqs) => await Promise.all(reqs))
+        .catch(console.error);
+
+    return next()
+}
+
 /** Fetches mcus. */
 const greenhouseMcuBeforeEnter = async (to, from, next) => {
     const greenhouseId = to.params.greenhouseId;
@@ -33,7 +54,8 @@ const greenhouseMcuBeforeEnter = async (to, from, next) => {
     const { retrieveMcu } = useMcuStore();
 
     // fetch mcus
-    retrieveMcu(greenhouseId);
+    retrieveMcu(greenhouseId)
+        .catch(console.error);
 
     return next()
 }
@@ -139,6 +161,7 @@ const greenhouseScheduleBeforeEnter = async (to, from, next) => {
 
 export {
     greenhouseBeforeEnter,
+    greenhouseDashboardBeforeEnter,
     greenhouseMcuBeforeEnter,
     greenhouseActionBeforeEnter,
     greenhouseAutomationBeforeEnter,
