@@ -31,18 +31,42 @@
                 </v-col>
 
             </v-row>
+            <v-row>
+
+                <!-- Greenhouse Alerts -->
+                <v-col cols="12" lg="6">
+                    <GreenhouseAlertCard
+                        class="border"
+                        :limit="10"
+                        :greenhouse="greenhouse"
+                    ></GreenhouseAlertCard>
+                </v-col>
+
+                <!-- Greenhouse Log Card -->
+                <v-col cols="12" lg="6">
+                    <GreenhouseLogCard
+                        class="border"
+                        :limit="10"
+                        :greenhouse="greenhouse"
+                    ></GreenhouseLogCard>
+                </v-col>
+
+            </v-row>
         </v-container>
     </GreenhouseLayout>
 </template>
 
 <script setup>
 import { useActuatorStore } from '@/stores/actuator.store';
+import { useGreenhouseStore } from '@/stores/greenhouse.store';
 import { useMcuStore } from '@/stores/mcu.store';
 import { useSensorStore } from '@/stores/sensor.store';
 import { reactive, computed, defineAsyncComponent } from 'vue';
 import { useRoute } from 'vue-router';
 
 const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"))
+const GreenhouseLogCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseLogCard.vue"))
+const GreenhouseAlertCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseAlertCard.vue"))
 const SensorOutputReadingCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/SensorOutputReadingCard.vue"))
 const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/ActuatorInputControlCard.vue"))
 
@@ -51,12 +75,14 @@ const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components
 const { mcus } = useMcuStore()
 const { sensors, outputs } = useSensorStore()
 const { actuators, inputs, updateInput } = useActuatorStore()
+const { greenhouses } = useGreenhouseStore()
 
 // ---composables
 const route = useRoute()
 
 // ---getters
 const greenhouseId = route.params.greenhouseId
+const greenhouse = computed(() => greenhouses.find(g => g.id == greenhouseId))
 const greenhouseMcus = computed(() => mcus.filter(m => m.greenhouseId == greenhouseId))
 const greenhouseMcusSensorsWithOutputs = computed(() =>
     sensors

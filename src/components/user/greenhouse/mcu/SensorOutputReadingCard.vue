@@ -1,6 +1,15 @@
 <template>
     <v-card>
-        <v-card-title :class="sensor?.disabled ? 'text-red' : 'text-green'">{{ sensor?.name }}</v-card-title>
+        <v-card-title class="d-flex align-center justify-space-between">
+            <span :class="sensor?.disabled ? 'text-red' : 'text-green'">{{ sensor?.name }}</span>
+            <v-btn
+                link
+                icon="mdi-chevron-right"
+                size="small"
+                color="transparent"
+                :to="`/user/greenhouse/${$route.params?.greenhouseId}/mcu/${sensor?.mcuId}/sensors#sensor-${sensor?.id}`"
+            ></v-btn>
+        </v-card-title>
         <v-card-subtitle>{{ sensor?.label }}</v-card-subtitle>
         <v-card-text>
             

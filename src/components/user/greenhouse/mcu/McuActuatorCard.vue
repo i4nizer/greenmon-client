@@ -1,5 +1,5 @@
 <template>
-    <v-card class="border pt-3">
+    <v-card class="border pt-3" :id="`actuator-${actuator?.id}`">
         <v-card-title class="d-flex ga-1">
             <span :class="actuator?.disabled ? 'text-red':'text-green'">{{ actuator?.name }}</span>
             <v-spacer></v-spacer>

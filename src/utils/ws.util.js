@@ -91,7 +91,7 @@ const addWsEvent = (event, callback, query = 'Create') => {
  * @param {WsEvent} event The event to be removed.
  */
 const delWsEvent = (event) => {
-    const index = _onMessageEvents.findIndex(e => e.id == event.id)
+    const index = _onMessageEvents.findIndex(e => e?.id == event?.id)
     if (index != -1) _onMessageEvents.splice(index, 1)
 }
 

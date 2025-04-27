@@ -1,5 +1,5 @@
 <template>
-    <v-card class="border pt-3">
+    <v-card class="border pt-3" :id="`sensor-${sensor?.id}`">
         <v-card-title class="d-flex ga-1">
             <span :class="sensor?.disabled ? 'text-red':'text-green'">{{ sensor?.name }}</span>
             <v-spacer></v-spacer>

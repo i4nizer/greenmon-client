@@ -1,6 +1,15 @@
 <template>
     <v-card>
-        <v-card-title>{{ actuator?.name }}</v-card-title>
+        <v-card-title class="d-flex align-center justify-space-between">
+            <span :class="actuator?.disabled ? 'text-red' : 'text-green'">{{ actuator?.name }}</span>
+            <v-btn
+                link
+                size="small"
+                icon="mdi-chevron-right"
+                color="transparent"
+                :to="`/user/greenhouse/${$route.params?.greenhouseId}/mcu/${actuator?.mcuId}/actuators#actuator-${actuator?.id}`"
+            ></v-btn>
+        </v-card-title>
         <v-card-subtitle>{{ actuator?.label }}</v-card-subtitle>
         <v-card-text>
 
@@ -10,6 +19,7 @@
                 class="mb-1"
                 :key="input?.id"
                 :input="input"
+                :disabled="actuator?.disabled"
                 @change="input => $emit('change', input)"
             ></InputControlCard>
 
@@ -37,6 +47,8 @@ const props = defineProps({
         default: [],
     },
 })
+
+
 
 </script>
 
