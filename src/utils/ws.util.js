@@ -24,6 +24,7 @@ class WsEvent {
  * @type {WebSocket} WebSocket instance.
  */
 let _webSocket = null
+let _connected = false
 let _connecting = false
 let _reconnectInterval = 5000
 
@@ -36,13 +37,14 @@ const _onMessageEvents = []
 
 /** Starts connecting. */
 const connectWebSocket = () => {
-    if (_connecting) return;
+    if (_connected || _connecting) return;
     _connecting = true
 
     const { accessToken } = useTokenStore()
     _webSocket = new WebSocket(`${env.webSocketUrl}?token=${accessToken}`)
     
     _webSocket.onopen = e => {
+        _connected = true
         _connecting = false
         console.log('Web Socket connected successfully.')
     }
@@ -53,6 +55,7 @@ const connectWebSocket = () => {
     }
 
     _webSocket.onclose = e => {
+        _connected = false
         _connecting = true
         console.log('Web socket closed, reconnecting.')
         setTimeout(() => connectWebSocket(), _reconnectInterval)

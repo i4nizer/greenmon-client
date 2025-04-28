@@ -1,5 +1,5 @@
 <template>
-    <v-card density="compact">
+    <v-card class="border pt-3" density="compact">
         <v-card-title>{{ greenhouse?.name }} Logs</v-card-title>
         <v-card-subtitle v-if="logs.length > 0">
             <span>Last Log: {{ date.format(logs.at(-1)?.createdAt, 'fullDateWithWeekday') }}</span>
@@ -11,7 +11,7 @@
                 <v-timeline-item v-for="log in logs" :key="log?.id" size="small">
                     <v-card>
                         <v-card-title>{{ log?.title }}</v-card-title>
-                        <v-card-subtitle>{{ date.format(log?.createdAt, 'keyboardDate') }}</v-card-subtitle>
+                        <v-card-subtitle>{{ date.format(log?.createdAt, 'fullDateWithWeekday') }}</v-card-subtitle>
                         <v-card-text>{{ log?.message }}</v-card-text>
                     </v-card>
                 </v-timeline-item>

@@ -14,7 +14,15 @@
         </template>
 
         <template #append>
-            <v-icon v-if="readings.length > 0" size="24">mdi-arrow-right-thick</v-icon>
+            <v-btn
+                v-if="readings.length > 0" 
+                link
+                size="small"
+                icon="mdi-arrow-right-thick"
+                color="transparent"
+                elevation="0"
+                :to="`/user/greenhouse/${$route.params?.greenhouseId}/statistics#sensor-${output?.sensorId}`"
+            ></v-btn>
         </template>
 
         <v-sheet v-if="readings.length > 0" color="transparent">

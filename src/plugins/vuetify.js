@@ -11,6 +11,7 @@ import 'vuetify/styles'
 // Composables
 import { createVuetify } from 'vuetify'
 import colors from 'vuetify/util/colors'
+import { VTimePicker } from 'vuetify/labs/VTimePicker'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
@@ -38,5 +39,8 @@ export default createVuetify({
     VNumberInput: { variant: 'outlined', density: 'compact', class: 'mt-1' },
     VSelect: { variant: 'outlined', density: 'compact', class: 'mt-1' },
     VTextarea: { variant: 'outlined', density: 'compact', class: 'mt-1' },
+  },
+  components: {
+    VTimePicker,
   }
 })

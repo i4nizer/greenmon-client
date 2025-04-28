@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="border pt-3">
         <v-card-title>{{ greenhouse?.name }} Alerts</v-card-title>
         <v-card-subtitle v-if="alerts.length > 0">
             <span>Last Alert: {{ date.format(alerts.at(-1)?.createdAt, 'fullDateWithWeekday') }}</span>
@@ -12,11 +12,10 @@
                 class="mb-1 border"
                 variant="text"
                 :key="alert?.id"
-                :text="alert?.message"
+                :text="`${alert?.message} (${date.format(alert?.createdAt, 'fullDateWithWeekday')})`"
                 :type="alert?.severity?.toLowerCase()"
                 :title="alert?.title"
             ></v-alert>
-
 
         </v-card-text>
     </v-card>

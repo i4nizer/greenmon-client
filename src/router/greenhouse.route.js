@@ -5,6 +5,7 @@ import {
     greenhouseAutomationBeforeEnter,
     greenhouseActionBeforeEnter,
     greenhouseDashboardBeforeEnter,
+    greenhouseStatisticsBeforeEnter,
 } from "@/middlewares/greenhouse.middleware";
 import { mcuRoutes } from "./mcu.route";
 
@@ -20,6 +21,12 @@ const greenhouseRoutes = [
         name: "Greenhouse Dashboard",
         component: () => import("@/views/user/greenhouse/GreenhouseDashboard.vue"),
         beforeEnter: [greenhouseBeforeEnter, greenhouseDashboardBeforeEnter],
+    },
+    {
+        path: "statistics",
+        name: "Greenhouse Statistics",
+        component: () => import("@/views/user/greenhouse/GreenhouseStatistics.vue"),
+        beforeEnter: [greenhouseBeforeEnter, greenhouseStatisticsBeforeEnter],
     },
     {
         path: "mcu",

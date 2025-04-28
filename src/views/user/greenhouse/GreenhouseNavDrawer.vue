@@ -30,6 +30,12 @@
             ></v-list-item>
             <v-list-item 
                 link 
+                title="Statistics" 
+                prepend-icon="mdi-chart-line"
+                :to="`/user/greenhouse/${greenhouseId}/statistics`" 
+            ></v-list-item>
+            <v-list-item 
+                link 
                 title="Microcontrollers" 
                 prepend-icon="mdi-chip"
                 :to="`/user/greenhouse/${greenhouseId}/mcu`" 

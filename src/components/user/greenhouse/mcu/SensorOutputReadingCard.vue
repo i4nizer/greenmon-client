@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="border pt-3">
         <v-card-title class="d-flex align-center justify-space-between">
             <span :class="sensor?.disabled ? 'text-red' : 'text-green'">{{ sensor?.name }}</span>
             <v-btn
