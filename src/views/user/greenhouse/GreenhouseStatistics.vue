@@ -17,6 +17,15 @@
                     ></GreenhouseSensorReadingChart>
                 </v-col>
 
+                <!-- Fallback/emptystate when no readings/charts -->
+                <v-col v-if="ghMcusSensorsWithOutputs?.length <= 0">
+                    <v-empty-state
+                        icon="mdi-chart-line"
+                        text="There aren't any generated readings yet."
+                        title="No statistics yet"
+                    ></v-empty-state>
+                </v-col>
+
             </v-row>
         </v-container>
     </GreenhouseLayout>

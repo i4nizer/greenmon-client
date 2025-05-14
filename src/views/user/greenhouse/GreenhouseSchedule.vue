@@ -8,7 +8,6 @@
             </v-row>
             <v-row>
                 <v-col class="text-end py-0">
-
                     <!-- For creating schedule -->
                     <GreenhouseScheduleDialog class="w-100 w-md-50" type="Create" @submit="onCreateSchedule">
                         <template #activator="{ props: activatorProps }">
@@ -18,11 +17,9 @@
                             </v-btn>
                         </template>
                     </GreenhouseScheduleDialog>
-
                 </v-col>
             </v-row>
             <v-row>
-
                 <!-- Schedule Lists -->
                 <v-col v-for="schedule in schedulesWithActions" lg="6" xxl="4">
                     <GreenhouseScheduleCard
@@ -37,7 +34,7 @@
                         @delete-action="onDeleteAction"
                     />
                 </v-col>
-                
+
                 <!-- Fallback/emptystate when no schedule -->
                 <v-col v-if="!schedulesWithActions.length">
                     <v-empty-state
@@ -46,60 +43,49 @@
                         title="No schedule yet"
                     ></v-empty-state>
                 </v-col>
-
             </v-row>
         </v-container>
     </GreenhouseLayout>
 </template>
 
 <script setup>
-import { useActionStore } from '@/stores/action.store';
-import { useActuatorStore } from '@/stores/actuator.store';
-import { useScheduleStore } from '@/stores/schedule.store';
-import { computed, defineAsyncComponent, reactive, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useActionStore } from "@/stores/action.store";
+import { useActuatorStore } from "@/stores/actuator.store";
+import { useScheduleStore } from "@/stores/schedule.store";
+import { computed, defineAsyncComponent, reactive, watch } from "vue";
+import { useRoute } from "vue-router";
 
-const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"))
-const GreenhouseScheduleCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseScheduleCard.vue"))
-const GreenhouseScheduleDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseScheduleDialog.vue"))
-
+const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"));
+const GreenhouseScheduleCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseScheduleCard.vue"));
+const GreenhouseScheduleDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseScheduleDialog.vue"));
 
 // ---stores
-const {
-    schedules,
-    createSchedule,
-    updateSchedule,
-    destroySchedule,
-} = useScheduleStore()
-const {
-    actions,
-    createAction,
-    updateAction,
-    destroyAction,
-} = useActionStore()
-const {
-    inputs,
-} = useActuatorStore()
+const { schedules, createSchedule, updateSchedule, destroySchedule } = useScheduleStore();
+const { actions, createAction, updateAction, destroyAction } = useActionStore();
+const { inputs } = useActuatorStore();
 
 // ---composables
-const route = useRoute()
+const route = useRoute();
 
 // ---data
-const greenhouseId = route.params.greenhouseId
+const greenhouseId = route.params.greenhouseId;
 
 // ---getters
 const schedulesWithActions = computed(() => {
-    const swa = []
+    const swa = [];
     schedules
-        .filter(s => s.greenhouseId == greenhouseId)
-        .forEach(s => swa.push({
-            ...s, actions: actions.filter(a => a.scheduleId == s.id)
-        }))
+        .filter((s) => s.greenhouseId == greenhouseId)
+        .forEach((s) =>
+            swa.push({
+                ...s,
+                actions: actions.filter((a) => a.scheduleId == s.id),
+            })
+        );
     return swa;
-})
+});
 
 // ---watchers
-watch(actions, nv => actions.sort((a, b) => b.precedence - a.precedence), { deep: true })
+watch(actions, (nv) => actions.sort((a, b) => b.priority - a.priority), { deep: true });
 
 // ---state
 const state = reactive({
@@ -107,69 +93,58 @@ const state = reactive({
     updatingSchedule: false,
     deletingSchedule: false,
     loadingScheduleId: null,
-})
+});
 
 // ---events
 const onCreateSchedule = async (schedule) => {
-    state.creatingSchedule = true
-    
-    schedule.greenhouseId = greenhouseId
-    await createSchedule(schedule)
-        .catch(console.error)
+    state.creatingSchedule = true;
 
-    state.creatingSchedule = false
-}
+    schedule.greenhouseId = greenhouseId;
+    await createSchedule(schedule).catch(console.error);
+
+    state.creatingSchedule = false;
+};
 
 const onEditSchedule = async (schedule) => {
-    state.updatingSchedule = true
+    state.updatingSchedule = true;
 
-    await updateSchedule(schedule)
-        .catch(console.error)
+    await updateSchedule(schedule).catch(console.error);
 
-    state.updatingSchedule = false
-}
+    state.updatingSchedule = false;
+};
 
 const onDeleteSchedule = async (scheduleId) => {
-    state.deletingSchedule = true
+    state.deletingSchedule = true;
 
-    await destroySchedule(scheduleId)
-        .catch(console.error)
+    await destroySchedule(scheduleId).catch(console.error);
 
-    state.deletingSchedule = false
-}
+    state.deletingSchedule = false;
+};
 
 const onCreateAction = async (action) => {
-    state.loadingScheduleId = action?.scheduleId
+    state.loadingScheduleId = action?.scheduleId;
 
-    action.greenhouseId = greenhouseId
-    await createAction(action)
-        .catch(console.error)
+    action.greenhouseId = greenhouseId;
+    await createAction(action).catch(console.error);
 
-    state.loadingScheduleId = null
-}
+    state.loadingScheduleId = null;
+};
 
 const onEditAction = async (action) => {
-    state.loadingScheduleId = action?.scheduleId
+    state.loadingScheduleId = action?.scheduleId;
 
-    await updateAction(action)
-        .catch(console.error)
+    await updateAction(action).catch(console.error);
 
-    state.loadingScheduleId = null
-}
+    state.loadingScheduleId = null;
+};
 
 const onDeleteAction = async (actionId, scheduleId) => {
-    state.loadingScheduleId = scheduleId
+    state.loadingScheduleId = scheduleId;
 
-    await destroyAction(actionId)
-        .catch(console.error)
+    await destroyAction(actionId).catch(console.error);
 
-    state.loadingScheduleId = null
-}
-
-
-
+    state.loadingScheduleId = null;
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

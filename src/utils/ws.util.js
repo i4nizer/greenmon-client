@@ -46,23 +46,23 @@ const connectWebSocket = () => {
     _webSocket.onopen = e => {
         _connected = true
         _connecting = false
-        console.log('Web Socket connected successfully.')
+        // console.log('Web Socket connected successfully.')
     }
 
     _webSocket.onmessage = e => {
-        console.log('Web socket received: ', e.data)
+        // console.log('Web socket received: ', e.data)
         _executeOnMessageEvent(e.data).catch(console.error)
     }
 
     _webSocket.onclose = e => {
         _connected = false
         _connecting = true
-        console.log('Web socket closed, reconnecting.')
+        // console.log('Web socket closed, reconnecting.')
         setTimeout(() => connectWebSocket(), _reconnectInterval)
     }
 
     _webSocket.onerror = e => {
-        console.error('Web socket error: ', e)
+        // console.error('Web socket error: ', e)
         _webSocket.close();
     }
 }

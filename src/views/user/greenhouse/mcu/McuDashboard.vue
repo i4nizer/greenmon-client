@@ -26,7 +26,6 @@
                         :inputs="mawi?.inputs"
                         :loading="state.loadingActuatorId == mawi?.id"
                         :actuator="mawi"
-                        @change="onUpdateInput"
                     ></ActuatorInputControlCard>
                 </v-col>
 
@@ -48,7 +47,7 @@ const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components
 
 // ---stores
 const { sensors, outputs } = useSensorStore()
-const { actuators, inputs, updateInput } = useActuatorStore()
+const { actuators, inputs } = useActuatorStore()
 
 // ---composables
 const route = useRoute()
@@ -73,14 +72,6 @@ const state = reactive({
 
 
 // ---events
-const onUpdateInput = async (input) => {
-    state.loadingActuatorId = input?.actuatorId
-    
-    await updateInput(input)
-        .catch(console.error)
-    
-    state.loadingActuatorId = null
-}
 
 
 </script>

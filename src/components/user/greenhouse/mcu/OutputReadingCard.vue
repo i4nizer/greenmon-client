@@ -65,6 +65,7 @@ const readings = reactive([])
 // ---events
 const onWsReadings = (data) => {
     for (const d of data) {
+        if (d?.outputId != props.output?.id) continue;
         if (readings.length >= props.limit) readings.shift()
         readings.push(d)
     }

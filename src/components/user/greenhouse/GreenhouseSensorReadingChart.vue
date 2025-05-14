@@ -1,5 +1,5 @@
 <template>
-    <v-card class="border pt-3" :id="`sensor-${sensor?.id}`">
+    <v-card class="border pt-3" :id="`sensor-${sensor?.id}`" :loading="state.downloading">
         <template #prepend>
             <v-icon size="38" class="me-2">mdi-chart-line</v-icon>
         </template>
@@ -42,23 +42,65 @@
         <template #default>
             <v-container fluid>
                 <v-row>
-                    <v-col cols="12">
-                        <DateRangeControl
-                            :end="dateRange.end"
-                            :start="dateRange.start"
-                            :interval="dateRange.interval"
-                            @change="v => ([dateRange.end, dateRange.start, dateRange.interval] = [v.end, v.start, v.interval])"
-                        ></DateRangeControl>
+                    <v-col cols="4" class="d-flex align-center">
+                        <span class="pl-1">Interval: {{ props.sensor?.interval }} seconds</span>
+                    </v-col>
+                    <v-col cols="8" class="d-flex align-center justify-end">
+                        <v-btn 
+                            size="small"
+                            icon="mdi-chevron-triple-left"
+                            color="transparent"
+                            class="mr-1"
+                            @click="decrement += 10"
+                        ></v-btn>
+                        <v-btn 
+                            size="small"
+                            icon="mdi-chevron-left"
+                            color="transparent"
+                            class="mr-1"
+                            @click="decrement++"
+                        ></v-btn>
+                        <span>{{ date.format(dateRange.start, 'keyboardDateTime12h') }}</span>
+                        <span>&nbsp;-&nbsp;</span>
+                        <span>{{ date.format(dateRange.end, 'keyboardDateTime12h') }}</span>
+                        <v-btn 
+                            size="small"
+                            icon="mdi-chevron-right"
+                            color="transparent"
+                            class="ml-1"
+                            :disabled="decrement <= 0"
+                            @click="decrement--"
+                        ></v-btn>
+                        <v-btn 
+                            size="small"
+                            icon="mdi-chevron-triple-right"
+                            color="transparent"
+                            class="ml-1"
+                            :disabled="decrement <= 0"
+                            @click="decrement -= 10"
+                        ></v-btn>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col cols="12">
+
+                        <!-- The line chart -->
                         <Line 
+                            v-if="readings.length > 0"
                             class="w-100 border pt-3"
                             :key="chartKey"
                             :data="chartData" 
                             :options="chartOptions"
                         ></Line>
+
+                        <!-- Fallback/emptystate when no readings -->
+                        <v-empty-state
+                            v-else
+                            icon="mdi-chart-line"
+                            text="There are no data from this date range."
+                            title="No records found."
+                        ></v-empty-state>
+
                     </v-col>
                 </v-row>
             </v-container>
@@ -77,24 +119,28 @@ import {
     LineElement,
     PointElement,
     LinearScale,
-    CategoryScale
+    CategoryScale,
+    TimeScale
 } from 'chart.js'
+import 'chartjs-adapter-date-fns'
 import { Line } from 'vue-chartjs'
 import { useDate } from 'vuetify';
-import { computed, defineAsyncComponent, reactive, ref, watch } from 'vue'
-
-const DateRangeControl = defineAsyncComponent(() => import("@/components/user/greenhouse/DateRangeControl.vue"))
+import { computed, defineAsyncComponent, onMounted, reactive, ref, toRaw, watch } from 'vue'
 
 
 // Register Chart.js components
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale)
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, TimeScale)
 
 // Chart Options
 const chartOptions = reactive({
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     scales: {
         x: {
+            type: 'time',
+            time: {
+                unit: 'second'
+            },
             grid: {
                 color: 'rgba(128, 128, 128, 0.5)',
             },
@@ -109,6 +155,10 @@ const chartOptions = reactive({
 
 // ---props
 const props = defineProps({
+    limit: {
+        type: Number,
+        default: 50,
+    },
     sensor: {
         type: Object,
         required: true,
@@ -122,20 +172,12 @@ const props = defineProps({
 // ---composables
 const date = useDate()
 
-// ---const
-const today = new Date()
-const yesterday = new Date(today)
-yesterday.setDate(today.getDate() - 1)
-
 // ---data
 const readings = reactive([])
 const chartKey = ref(0)
-const chartData = reactive({ labels: [], datasets: [] })
-const dateRange = reactive({
-    end: today.toISOString(),
-    start: yesterday.toISOString(),
-    interval: 60, // minute
-})
+const decrement = ref(0)
+const chartData = reactive({ datasets: [] })
+const dateRange = reactive({ start: new Date(), end: new Date() })
 
 // ---getters
 const outputWithReadings = computed(() =>
@@ -149,22 +191,28 @@ const outputWithReadings = computed(() =>
 const state = reactive({ downloading: false })
 
 // ---watchers
-watch(dateRange, async (nv, ov) => {
-    readings.splice(0, readings.length)
-    const { start, end } = dateRange
+watch(decrement, async (nv, ov) => {
+    const gap = props.sensor.interval * props.limit
+    const { start, end } = getDateRange(gap, nv)
+    dateRange.end = end.toISOString()
+    dateRange.start = start.toISOString()
+
+    const outputReadings = []
     for (const output of props.outputs) {
         const url = `/user/greenhouse/mcu/sensor/output/reading`
-        const query = `outputId=${output?.id}&startdt=${start}&enddt=${end}`
+        const query = `outputId=${output?.id}&startdt=${start.toISOString()}&enddt=${end.toISOString()}&limit=${props.limit}`
 
         await api.get(`${url}?${query}`)
-            .then(res => readings.push(...res.data.readings))
+            .then(res => outputReadings.push(...res.data.readings))
             .catch(console.error)
     }
 
+    readings.splice(0, readings.length)
+    readings.push(...outputReadings)
+
     chartData.datasets = generateChartDatasets(outputWithReadings.value, nv.interval)
-    chartData.labels = generateChartLabels(nv.start, nv.end, nv.interval)
     chartKey.value++;
-}, { immediate: true })
+})
 
 
 
@@ -175,43 +223,34 @@ const getRandColor = () => {
     return colorArr.at(randIndex)
 }
 
-const generateChartLabels = (startDateStr, endDateStr, interval) => {
-    const startDate = new Date(startDateStr);
-    const endDate = new Date(endDateStr);
-    const labels = [];
-    
-    let currentDate = new Date(startDate);
-    while (currentDate <= endDate) {
-        labels.push(date.format(currentDate, 'keyboardDateTime12h'));
-        currentDate.setMinutes(currentDate.getMinutes() + interval)
-    }
+const getDateRange = (gap, decrement) => {
+    const start = new Date()
+    start.setSeconds(start.getSeconds() - (gap * decrement))
+    const end = new Date(start)
+    end.setSeconds(end.getSeconds() + gap)
 
-    return labels;
+    return { start, end }
 }
 
-const generateChartDatasets = (outputs, interval) => {
+const generateChartDatasets = (outputs) => {
     const datasets = []
 
     for (const output of outputs) {
         const color = getRandColor()
+
         const dataset = { 
             label: output?.name,
             backgroundColor: color,
             borderColor: color,
             data: [],
             fill: false,
-            tension: 0.4,
+            tension: 0.1,
         }
 
-        let lastTime = -1;
-        for (const r of output.readings) {
-            const time = new Date(r?.createdAt).getTime(); // milliseconds
-
-            if (lastTime == -1 || (time - lastTime) >= (interval * 60 * 1000)) {
-                dataset.data.push(r?.value)
-                lastTime = time
-            }
-        }
+        dataset.data = output?.readings?.map(r => ({
+            x: r.createdAt,
+            y: r.value,
+        }))
 
         datasets.push(dataset)
     }
@@ -239,18 +278,39 @@ const downloadReadingsCsv = async (query = '', filename = 'readings.csv') => {
 }
 
 const downloadReadingsData = async () => {
-    const query = `sensorId=${props.sensor?.id}&startdt=${dateRange.start}&enddt=${dateRange.end}`
-    const filename = `${props.sensor?.name}-readings-${new Date().toISOString()}--startdt-${dateRange.start}--enddt-${dateRange.end}.csv`
-    await downloadReadingsCsv(query, filename)
-        .catch(console.error)
+    const gap = props.sensor.interval * props.limit
+    const { start, end } = getDateRange(gap, decrement.value)
+    const [todayStr, startStr, endStr] = [new Date().toISOString(), start.toISOString(), end.toISOString()]
+    
+    const query = `sensorId=${props.sensor?.id}&startdt=${startStr}&enddt=${endStr}`
+    const filename = `${props.sensor?.name}-readings-${todayStr}--startdt-${startStr}--enddt-${endStr}.csv`
+
+    await downloadReadingsCsv(query, filename).catch(console.error)
 }
 
 const downloadReadingsDataAll = async () => {
     const query = `sensorId=${props.sensor?.id}`
-    await downloadReadingsCsv(query, `${props.sensor?.name}-readings-${new Date().toISOString()}-all.csv`)
-        .catch(console.error)
+    const filename = `${props.sensor?.name}-readings-${new Date().toISOString()}-all.csv`
+
+    await downloadReadingsCsv(query, filename).catch(console.error)
 }
 
+
+// ---hooks
+onMounted(async () => {
+    if (props.outputs.length <= 0) return;
+
+    const url = `/user/greenhouse/mcu/sensor/output/reading`
+    const query = `outputId=${props.outputs[0]?.id}&limit=1`
+
+    const sample = await api.get(`${url}?${query}`)
+    if (sample.data?.readings?.length <= 0) return;
+
+    const gap = props.sensor.interval * props.limit
+    const endDate = new Date(sample.data?.readings?.at(0).createdAt)
+    const diffSeconds = Math.abs((new Date() - endDate) / 1000)
+    decrement.value = Math.floor((diffSeconds / gap)) + 1
+})
 
 
 </script>

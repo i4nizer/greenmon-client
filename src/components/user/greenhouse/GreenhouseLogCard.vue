@@ -16,10 +16,13 @@
                     </v-card>
                 </v-timeline-item>
 
-                <v-timeline-item v-if="logs.length <= 0">
-                    <v-card>
-                        <v-card-title>No Records Yet</v-card-title>
-                    </v-card>
+                <!-- Fallback/emptystate when no alert -->
+                <v-timeline-item v-if="logs?.length <= 0">
+                    <v-empty-state
+                        icon="mdi-file"
+                        text="There aren't any generated logs yet."
+                        title="No log yet"
+                    ></v-empty-state>
                 </v-timeline-item>
     
             </v-timeline>   

@@ -73,10 +73,11 @@ const greenhouseMcuBeforeEnter = async (to, from, next) => {
     const greenhouseId = to.params.greenhouseId;
 
     // init stores for data & funcs
-    const { retrieveMcu } = useMcuStore();
+    const { mcus, retrieveMcu, retrievePin } = useMcuStore();
 
     // fetch mcus
     retrieveMcu(greenhouseId)
+        .then(() => mcus.map(m => retrievePin(m.id)))
         .catch(console.error);
 
     return next()

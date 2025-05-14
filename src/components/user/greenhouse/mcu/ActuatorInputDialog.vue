@@ -93,8 +93,8 @@ const input = reactive({
     icon: props.initial?.icon || "mdi-fan",
     name: props.initial?.name,
     type: props.initial?.type || "Boolean",
-    flag: props.initial?.flag,
-    status: props.initial?.status,
+    flag: props.initial?.flag ?? 0,
+    status: props.initial?.status ?? 0,
     pinId: props.initial?.pinId,
 });
 
@@ -103,8 +103,8 @@ const inputProps = computed(() => ({
     icon: props.initial?.icon,
     name: props.initial?.name,
     type: props.initial?.type,
-    flag: props.initial?.flag,
-    status: props.initial?.status,
+    flag: props.initial?.flag ?? 0,
+    status: props.initial?.status ?? 0,
     pinId: props.initial?.pinId,
 }));
 const changed = computed(() => !equal(input, inputProps.value));
@@ -125,8 +125,8 @@ const onSubmit = () => {
         input.icon = "mdi-fan";
         input.name = null;
         input.type = "Boolean";
-        input.flag = -1;
-        input.status = -1;
+        input.flag = 0;
+        input.status = 0;
         input.pinId = null;
     }
 };

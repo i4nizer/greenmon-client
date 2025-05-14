@@ -69,14 +69,14 @@ const { required, min, max, } = useRules()
 const actuator = reactive({
     name: props.initial?.name,
     label: props.initial?.label,
-    disabled: props.initial?.disabled == undefined ? true : props.initial?.disabled,
+    disabled: props.initial?.disabled ?? true,
 })
 
 // ---getters
 const actuatorProps = computed(() => ({
     name: props.initial?.name,
     label: props.initial?.label,
-    disabled: props.initial?.disabled,
+    disabled: props.initial?.disabled ?? true,
 }))
 const changed = computed(() => !equal(actuator, actuatorProps.value))
 

@@ -17,6 +17,14 @@
                 :title="alert?.title"
             ></v-alert>
 
+            <!-- Fallback/emptystate when no alert -->
+            <v-empty-state
+                v-if="alerts?.length <= 0"
+                icon="mdi-alert"
+                text="There aren't any generated alert yet."
+                title="No alert yet"
+            ></v-empty-state>
+
         </v-card-text>
     </v-card>
 </template>

@@ -8,8 +8,8 @@
             </v-row>
             <v-row>
                 <v-col>
+                    <!-- class="w-sm-100 w-md-75 w-lg-50 w-xl-25" -->
                     <McuPinsTable
-                        class="w-sm-100 w-md-75 w-lg-50 w-xl-25"
                         :pins="mcu.pins"
                         :loading="state.loading"
                         @create="onCreatePin"

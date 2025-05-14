@@ -25,7 +25,6 @@
                     :disabled="!pin.type"
                 ></v-number-input>
                 <v-select
-                    readonly
                     label="Mode"
                     v-model="pin.mode"
                     :items="['Unset', 'Input', 'Output', 'Other']"

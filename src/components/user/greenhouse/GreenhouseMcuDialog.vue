@@ -76,8 +76,8 @@ const mcu = reactive({
     label: props.initial?.label,
 })
 const pins = reactive({
-    analog: (props.initial?.pins?.filter(p => p.type == 'Analog')?.length) || 0,
-    digital: (props.initial?.pins?.filter(p => p.type == 'Digital')?.length) || 0,
+    analog: (props.initial?.pins?.filter(p => p.type == 'Analog')?.length),
+    digital: (props.initial?.pins?.filter(p => p.type == 'Digital')?.length),
 })
 
 // ---getters

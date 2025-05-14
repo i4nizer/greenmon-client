@@ -20,7 +20,6 @@
                 :key="input?.id"
                 :input="input"
                 :disabled="actuator?.disabled"
-                @change="input => $emit('change', input)"
             ></InputControlCard>
 
         </v-card-text>
@@ -33,8 +32,6 @@ import { defineAsyncComponent } from 'vue';
 const InputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/InputControlCard.vue"))
 
 
-// ---events
-const emit = defineEmits(['change'])
 
 // ---props
 const props = defineProps({

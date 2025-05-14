@@ -26,7 +26,6 @@
                         :inputs="gmawi?.inputs"
                         :loading="state.loadingActuatorId == gmawi?.id"
                         :actuator="gmawi"
-                        @change="onUpdateInput"
                     ></ActuatorInputControlCard>
                 </v-col>
 
@@ -74,7 +73,7 @@ const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components
 // ---stores
 const { mcus } = useMcuStore()
 const { sensors, outputs } = useSensorStore()
-const { actuators, inputs, updateInput } = useActuatorStore()
+const { actuators, inputs } = useActuatorStore()
 const { greenhouses } = useGreenhouseStore()
 
 // ---composables
@@ -100,16 +99,6 @@ const state = reactive({
     loadingActuatorId: null,
 })
 
-
-// ---events
-const onUpdateInput = async (input) => {
-    state.loadingActuatorId = input?.actuatorId
-    
-    await updateInput(input)
-        .catch(console.error)
-    
-    state.loadingActuatorId = null
-}
 
 </script>
 
