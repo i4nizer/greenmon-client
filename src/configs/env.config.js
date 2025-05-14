@@ -9,7 +9,7 @@ const env = {
     env: "development",
 
     // Api info
-    apiDomain: "http://localhost:4000",
+    apiDomain: "https://greenmon-api-production.up.railway.app",
 
     // Expiries in milliseconds
     otpLife: 300000,
@@ -24,13 +24,13 @@ const env = {
     otpDigits: 6,
 
     // Model
-    modelUrl: "http://localhost:4000/user/model/v1/model.json",
+    modelUrl: "https://greenmon-api-production.up.railway.app/user/model/v1/model.json",
     modelName: "yolov11n-640",
-    modelClasses: ['Healthy', 'Nitrogen Deficient', 'Phosphorus Deficient', 'Potassium Deficient'],
+    modelClasses: ["Healthy", "Nitrogen Deficient", "Phosphorus Deficient", "Potassium Deficient"],
     modelInputSize: [640, 640],
 
     // Web Socket
-    webSocketUrl: "ws://localhost:4000/ws-client",
+    webSocketUrl: "ws://greenmon-api-production.up.railway.app/ws-client",
 };
 
 
