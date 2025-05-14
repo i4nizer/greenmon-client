@@ -30,7 +30,7 @@ const env = {
     modelInputSize: [640, 640],
 
     // Web Socket
-    webSocketUrl: "ws://greenmon-api-production.up.railway.app/ws-client",
+    webSocketUrl: "wss://greenmon-api-production.up.railway.app/ws-client",
 };
 
 
