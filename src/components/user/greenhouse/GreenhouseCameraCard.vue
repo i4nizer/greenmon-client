@@ -1,22 +1,22 @@
 <template>
     <v-card class="border pt-3">
-        <v-card-title class="d-flex">
-            <v-icon>mdi-chip</v-icon>
-            <span class="ml-2" :class="mcu?.connected ? 'text-green':''">{{ mcu?.name }}</span>
+        <v-card-title class="d-flex"    >
+            <v-icon>mdi-camera</v-icon>
+            <span class="ml-2" :class="camera?.connected ? 'text-green':''">{{ camera?.name }}</span>
         </v-card-title>
 
-        <v-card-text class="text-grey">{{ mcu?.label }}</v-card-text>
+        <v-card-text class="text-grey">{{ camera?.label }}</v-card-text>
 
         <v-card-actions>
-            <v-btn @click="emit('view', mcu?.id)">
+            <v-btn @click="emit('view', camera?.id)">
                 <v-icon class="mr-1">mdi-cog</v-icon>
                 <span v-if="$vuetify.display.smAndUp">View</span>
             </v-btn>
-            <GreenhouseMcuDialog
+            <GreenhouseCameraDialog
                 class="w-100 w-md-50"
                 :type="'Update'"
-                :initial="mcu"
-                @submit="(m) => emit('edit', m)"
+                :initial="camera"
+                @submit="(c) => emit('edit', c)"
             >
                 <template #activator="{ props: activatorProps }">
                     <v-btn color="blue" :="activatorProps">
@@ -24,8 +24,8 @@
                         <span v-if="$vuetify.display.smAndUp">Edit</span>
                     </v-btn>
                 </template>
-            </GreenhouseMcuDialog>
-            <v-btn color="red" @click="emit('delete', mcu?.id)">
+            </GreenhouseCameraDialog>
+            <v-btn color="red" @click="emit('delete', camera?.id)">
                 <v-icon class="mr-1">mdi-delete</v-icon>
                 <span v-if="$vuetify.display.smAndUp">Delete</span>
             </v-btn>
@@ -36,7 +36,7 @@
 <script setup>
 import { defineAsyncComponent } from "vue";
 
-const GreenhouseMcuDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseMcuDialog.vue"));
+const GreenhouseCameraDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseCameraDialog.vue"));
 
 
 // ---events
@@ -44,7 +44,7 @@ const emit = defineEmits(["view", "edit", "delete"]);
 
 // ---props
 const props = defineProps({
-    mcu: {
+    camera: {
         type: Object,
         required: true,
     },

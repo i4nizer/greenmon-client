@@ -14,61 +14,35 @@
                     :to="`/user/greenhouse`"
                     :title="user?.name"
                     :subtitle="user?.email"
-                ></v-list-item>    
+                ></v-list-item>
+            </v-list>
+            <v-divider></v-divider>
+            <v-list density="compact" nav>
+                <v-list-item
+                    link
+                    v-tooltip="`Return to Greenhouse Page`"
+                    prepend-icon="mdi-greenhouse"
+                    :to="`/user/greenhouse/${greenhouseId}/camera`"
+                    :title="greenhouse?.name"
+                ></v-list-item>
             </v-list>
         </template>
         
         <v-divider></v-divider>
         
         <v-list density="compact" nav>
-            <v-list-subheader>{{ greenhouse?.name }}</v-list-subheader>
+            <v-list-subheader>{{ camera?.name }} ({{ camera?.label }})</v-list-subheader>
             <v-list-item 
                 link 
-                title="Dashboard" 
-                prepend-icon="mdi-view-dashboard"
-                :to="`/user/greenhouse/${greenhouseId}/dashboard`" 
-            ></v-list-item>
-            <v-list-item 
-                link 
-                title="Statistics" 
-                prepend-icon="mdi-chart-line"
-                :to="`/user/greenhouse/${greenhouseId}/statistics`" 
-            ></v-list-item>
-            <v-list-item 
-                link 
-                title="Microcontrollers" 
-                prepend-icon="mdi-chip"
-                :to="`/user/greenhouse/${greenhouseId}/mcu`" 
-            ></v-list-item>
-            <v-list-item 
-                link 
-                title="Camera" 
-                prepend-icon="mdi-camera"
-                :to="`/user/greenhouse/${greenhouseId}/camera`" 
-            ></v-list-item>
-            <v-list-item 
-                link 
-                title="Action" 
-                prepend-icon="mdi-rocket-launch"
-                :to="`/user/greenhouse/${greenhouseId}/action`" 
-            ></v-list-item>
-            <v-list-item 
-                link 
-                title="Automation" 
-                prepend-icon="mdi-auto-fix"
-                :to="`/user/greenhouse/${greenhouseId}/automation`" 
-            ></v-list-item>
-            <v-list-item 
-                link 
-                title="Schedule" 
-                prepend-icon="mdi-calendar-clock"
-                :to="`/user/greenhouse/${greenhouseId}/schedule`" 
+                title="Reatime" 
+                prepend-icon="mdi-video-wireless"
+                :to="`/user/greenhouse/${greenhouseId}/camera/${cameraId}/realtime`" 
             ></v-list-item>
             <v-list-item 
                 link 
                 title="Settings" 
                 prepend-icon="mdi-cog"
-                :to="`/user/greenhouse/${greenhouseId}/settings`" 
+                :to="`/user/greenhouse/${greenhouseId}/camera/${cameraId}/settings`" 
             ></v-list-item>
         </v-list>
 
@@ -89,28 +63,32 @@
 </template>
 
 <script setup>
+import { useCameraStore } from '@/stores/camera.store';
 import { useGreenhouseStore } from '@/stores/greenhouse.store';
 import { useTokenStore } from '@/stores/token.store';
 import { useUserStore } from '@/stores/user.store';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 
 
 // ---stores
 const { user, signOut } = useUserStore()
-const { refreshToken, clear } = useTokenStore()
+const { cameras } = useCameraStore()
 const { greenhouses } = useGreenhouseStore()
+const { refreshToken, clear } = useTokenStore()
 
 // ---composables
 const route = useRoute()
 const router = useRouter()
 
 // ---data
+const cameraId = route.params.cameraId
 const greenhouseId = route.params.greenhouseId
 
 // ---getters
-const greenhouse = computed(() => greenhouses.find(g => g.id == greenhouseId));
+const camera = computed(() => cameras.find(c => c.id == cameraId))
+const greenhouse = computed(() => greenhouses.find(g => g.id == greenhouseId))
 
 // ---state
 const state = reactive({

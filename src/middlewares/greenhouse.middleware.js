@@ -2,6 +2,7 @@ import { useActionStore } from "@/stores/action.store"
 import { useActuatorStore } from "@/stores/actuator.store"
 import { useGreenhouseStore } from "@/stores/greenhouse.store"
 import { useMcuStore } from "@/stores/mcu.store"
+import { useCameraStore } from "@/stores/camera.store"
 import { useScheduleStore } from "@/stores/schedule.store"
 import { useSensorStore } from "@/stores/sensor.store"
 import { useThresholdStore } from "@/stores/threshold.store"
@@ -78,6 +79,20 @@ const greenhouseMcuBeforeEnter = async (to, from, next) => {
     // fetch mcus
     retrieveMcu(greenhouseId)
         .then(() => mcus.map(m => retrievePin(m.id)))
+        .catch(console.error);
+
+    return next()
+}
+
+/** Fetches cameras. */
+const greenhouseCameraBeforeEnter = async (to, from, next) => {
+    const greenhouseId = to.params.greenhouseId;
+
+    // init stores for data & funcs
+    const { retrieveCamera } = useCameraStore()
+
+    // fetch mcus
+    retrieveCamera(greenhouseId)
         .catch(console.error);
 
     return next()
@@ -187,6 +202,7 @@ export {
     greenhouseDashboardBeforeEnter,
     greenhouseStatisticsBeforeEnter,
     greenhouseMcuBeforeEnter,
+    greenhouseCameraBeforeEnter,
     greenhouseActionBeforeEnter,
     greenhouseAutomationBeforeEnter,
     greenhouseScheduleBeforeEnter,

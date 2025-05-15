@@ -24,12 +24,6 @@
                 <v-text-field label="Name" v-model="output.name" :rules="[required(), min(3), max(100)]"></v-text-field>
                 <v-text-field label="Unit" v-model="output.unit" :rules="[required(), max(100)]"></v-text-field>
                 <v-select
-                    label="Type"
-                    v-model="output.type"
-                    :rules="[required()]"
-                    :items="['Number', 'Image']"
-                ></v-select>
-                <v-select
                     label="Pin"
                     v-model="output.pinId"
                     :rules="[required('Number')]"
@@ -82,7 +76,6 @@ const output = reactive({
     icon: props.initial?.icon || "mdi-thermometer",
     name: props.initial?.name,
     unit: props.initial?.unit,
-    type: props.initial?.type,
     pinId: props.initial?.pinId,
 });
 
@@ -91,7 +84,6 @@ const outputProps = computed(() => ({
     icon: props.initial?.icon,
     name: props.initial?.name,
     unit: props.initial?.unit,
-    type: props.initial?.type,
     pinId: props.initial?.pinId,
 }));
 const changed = computed(() => !equal(output, outputProps.value));
@@ -112,7 +104,6 @@ const onSubmit = () => {
         output.icon = "mdi-thermometer";
         output.name = null;
         output.unit = null;
-        output.type = null;
         output.pinId = null;
     }
 };

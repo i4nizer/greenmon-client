@@ -1,6 +1,7 @@
 import {
     greenhouseBeforeEnter,
     greenhouseMcuBeforeEnter,
+    greenhouseCameraBeforeEnter,
     greenhouseScheduleBeforeEnter,
     greenhouseAutomationBeforeEnter,
     greenhouseActionBeforeEnter,
@@ -8,6 +9,7 @@ import {
     greenhouseStatisticsBeforeEnter,
 } from "@/middlewares/greenhouse.middleware";
 import { mcuRoutes } from "./mcu.route";
+import { cameraRoutes } from "./camera.route";
 
 
 
@@ -33,6 +35,12 @@ const greenhouseRoutes = [
         name: "Greenhouse Mcus",
         component: () => import("@/views/user/greenhouse/GreenhouseMcus.vue"),
         beforeEnter: [greenhouseBeforeEnter, greenhouseMcuBeforeEnter],
+    },
+    {
+        path: "camera",
+        name: "Greenhouse Camera",
+        component: () => import("@/views/user/greenhouse/GreenhouseCamera.vue"),
+        beforeEnter: [greenhouseBeforeEnter, greenhouseCameraBeforeEnter],
     },
     {
         path: "action",
@@ -61,6 +69,10 @@ const greenhouseRoutes = [
     {
         path: "mcu/:mcuId(\\d+)",
         children: mcuRoutes,
+    },
+    {
+        path: "camera/:cameraId(\\d+)",
+        children: cameraRoutes,
     },
 ];
 
