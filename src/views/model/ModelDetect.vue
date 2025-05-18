@@ -27,11 +27,11 @@
         </v-row>
         <v-row>
             <v-col>
-                <ModelDetectionDisplayCard
+                <VideoDetectionCard
                     :bounding-boxes="boundingBoxes"
                     :video-src-object="camera.stream"
                     @paint-frame="onVideoFrame"
-                ></ModelDetectionDisplayCard>
+                ></VideoDetectionCard>
             </v-col>
         </v-row>
         <v-row>
@@ -47,8 +47,8 @@ import { mlLettuceModelPredict, mlLettuceModelUnload } from '@/utils/model.util'
 import { getVideoDevices, getVideoDeviceStream } from '@/utils/camera.util';
 import { defineAsyncComponent, onMounted, onUnmounted, reactive } from 'vue';
 
+const VideoDetectionCard = defineAsyncComponent(() => import("@/components/model/VideoDetectionCard.vue"))
 const ModelDetectionGuideCard = defineAsyncComponent(() => import("@/components/model/ModelDetectionGuideCard.vue"))
-const ModelDetectionDisplayCard = defineAsyncComponent(() => import("@/components/model/ModelDetectionDisplayCard.vue"))
 
 
 // ---data

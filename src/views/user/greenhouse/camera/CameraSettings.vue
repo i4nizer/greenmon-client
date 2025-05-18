@@ -30,7 +30,7 @@ const CameraDetailsCard = defineAsyncComponent(() => import("@/components/user/g
 
 
 // ---stores
-const { cameras, updateCamera } = useCameraStore()
+const { cameras, retrieveCamera, updateCamera } = useCameraStore()
 
 // ---composables
 const route = useRoute()
@@ -54,6 +54,7 @@ const onUpdateCamera = async (camera) => {
     state.updating = false
 }
 
+//
 
 </script>
 

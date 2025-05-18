@@ -11,23 +11,39 @@
             <span>FPS: {{ fps.toFixed(2) }}</span>
         </template>
         <v-card-text>
+
+            <ImageDetectionCard
+                v-if="base64url.length > 0"
+                :src="base64url"
+                :bounding-boxes="boundingBoxes"
+                @load-image="onLoadImage"
+            ></ImageDetectionCard>
+            
             <v-empty-state
                 v-if="base64url.length <= 0"
                 icon="mdi-camera-off"
                 text="Kindly wait while we are requesting preview."
                 title="Please Wait"
             ></v-empty-state>
-            <v-img v-else :src="base64url"></v-img>
+            
         </v-card-text>
     </v-card>
 </template>
 
 <script setup>
 import { useCameraStore } from "@/stores/camera.store";
+import { mlLettuceModelPredict, mlLettuceModelUnload } from "@/utils/model.util";
 import { wsAddEvent, wsDelEvent } from "@/utils/ws.util";
-import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import { defineAsyncComponent, onBeforeUnmount, onMounted, reactive, ref } from "vue";
+
+const ImageDetectionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/ImageDetectionCard.vue"))
 
 //
+
+// ---events
+const emit = defineEmits({
+    
+})
 
 // ---props
 const props = defineProps({
@@ -47,8 +63,7 @@ const lastFrame = ref(0);
 // ---data
 const wsEvents = reactive([]);
 const base64url = ref("");
-
-// ---actions
+const boundingBoxes = reactive([])
 
 // ---events
 const onImageRealtime = (data) => {
@@ -63,15 +78,30 @@ const onImageRealtime = (data) => {
     }
 };
 
+const onLoadImage = async (image) => {
+    const bboxes = await mlLettuceModelPredict(image, 0.7)
+    boundingBoxes.splice(0, boundingBoxes.length)
+    boundingBoxes.push(...bboxes)
+}
+
 // ---hooks
 onMounted(async () => {
+
+    // set camera realtime
     await updateCamera({ ...props.camera, realtime: true }).catch(console.error);
     wsEvents.push(wsAddEvent("image-realtime", onImageRealtime, "Create"));
+
 });
 
 onBeforeUnmount(async () => {
+
+    // reset back to non-realtime
     await updateCamera({ ...props.camera, realtime: false });
     while (wsEvents.length > 0) wsDelEvent(wsEvents.shift());
+
+    // unload ml model
+    mlLettuceModelUnload()
+
 });
 
 //

@@ -91,7 +91,7 @@ import { useRules } from '@/composables/rules.composable';
 import equal from 'fast-deep-equal';
 import { computed, reactive, watch } from 'vue';
 
-
+//
 
 // ---events
 const emit = defineEmits(['change'])
@@ -163,6 +163,8 @@ watch(() => state.tooFrequentDetect, (nv, ov) => { if (nv != ov) camera.detect =
 const onSubmit = () => emit('change', { ...props.camera, ...camera })
 
 const onCopyKey = async () => await navigator.clipboard.writeText(props.camera.key).catch(console.error)
+
+//
 
 </script>
 

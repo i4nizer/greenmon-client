@@ -24,6 +24,7 @@
 import { useSize } from '@/composables/size.composable';
 import { onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 
+//
 
 // ---events
 const emit = defineEmits(['paintFrame'])
@@ -152,6 +153,9 @@ onMounted(() => {
 })
 
 onUnmounted(() => stop())
+
+//
+
 </script>
 
 <style lang="scss" scoped>
