@@ -29,7 +29,7 @@ const CameraRealtimeCard = defineAsyncComponent(() => import("@/components/user/
 
 
 // ---stores
-const { cameras, updateCamera } = useCameraStore()
+const { cameras } = useCameraStore()
 
 // ---composables
 const route = useRoute()
@@ -40,10 +40,7 @@ const cameraId = route.params.cameraId
 // ---getters
 const camera = computed(() => cameras.find(c => c.id == cameraId))
 
-// ---hooks
-onMounted(async () => await updateCamera({ ...camera.value, interval: 0, detect: false }).catch(console.error))
-onBeforeUnmount(async () => await updateCamera({ ...camera.value }).catch(console.error))
-
+//
 
 </script>
 

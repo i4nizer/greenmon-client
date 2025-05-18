@@ -36,7 +36,7 @@ const props = defineProps({
 })
 
 // ---composables
-const { observe, stop } = useSize()
+const { observe: observeCanvas, stop: stopObserveCanvas } = useSize()
 
 // ---refs
 const imageRef = ref(new Image())
@@ -44,13 +44,10 @@ const canvasRef = ref(null)
 
 // ---data
 const canvasCtx = ref(null)
-const canvasSize = reactive({ width: 1000, height: 1000 })
+const canvasSize = reactive({ width: 4000, height: 4000 })
 
 // ---watchers
-watch(props, (nv, ov) => {
-    if (nv.src == ov.src) return;
-    imageRef.value.src = nv.src
-})
+watch(props, (nv, ov) => imageRef.value.src = nv.src)
 
 // ---actions
 const denormalize = (base, box) => {
@@ -120,11 +117,21 @@ const drawBoundingBox = (ctx, canvas, bbox) => {
 
 // ---events
 const onLoadImage = async () => {
-    emit('loadImage', imageRef.value)
+    if (!imageRef.value) return
 
+    // get aspect ratio
+    const { naturalWidth: imgW, naturalHeight: imgH } = imageRef.value
+    
+    // crop centered
+    const side = Math.min(imgW, imgH)
+    const sideX = (imgW - side) / 2
+    const sideY = (imgH - side) / 2
+    
     const { width, height } = canvasRef.value
     canvasCtx.value.imageSmoothingEnabled = false
-    canvasCtx.value.drawImage(imageRef.value, 0, 0, width, height)
+    canvasCtx.value.drawImage(imageRef.value, sideX, sideY, side, side, 0, 0, width, height)
+    
+    emit('loadImage', canvasRef.value)
 
     for (const bbox of props.boundingBoxes) {
         drawBoundingBox(canvasCtx.value, canvasSize, bbox)
@@ -141,10 +148,10 @@ onMounted(() => {
     imageRef.value.onload = onLoadImage
     imageRef.value.src = props.src
     canvasCtx.value = canvasRef.value?.getContext('2d')
-    observe(canvasRef.value, onResizeCanvas)
+    observeCanvas(canvasRef.value, onResizeCanvas)
 })
 
-onUnmounted(() => stop())
+onUnmounted(() => stopObserveCanvas())
 
 //
 

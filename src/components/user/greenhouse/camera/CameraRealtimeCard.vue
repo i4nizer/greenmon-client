@@ -96,7 +96,7 @@ onMounted(async () => {
 onBeforeUnmount(async () => {
 
     // reset back to non-realtime
-    await updateCamera({ ...props.camera, realtime: false });
+    await updateCamera({ ...props.camera, realtime: false }).catch(console.error);
     while (wsEvents.length > 0) wsDelEvent(wsEvents.shift());
 
     // unload ml model
