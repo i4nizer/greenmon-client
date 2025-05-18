@@ -1,12 +1,24 @@
 <template>
     <v-card class="border pt-3">
-        <v-card-title>
+        <template #prepend>
             <v-icon>mdi-camera</v-icon>
+        </template>
+        <template #title>
             <span class="ml-2">{{ camera?.name }}</span>
-        </v-card-title>
+        </template>
         <v-card-subtitle>{{ camera?.label }}</v-card-subtitle>
+        <template #append>
+            <span>FPS: {{ fps.toFixed(2) }}</span>
+        </template>
         <v-card-text>
+            <v-empty-state
+                v-if="base64url.length <= 0"
+                icon="mdi-camera-off"
+                text="Kindly wait while we are requesting preview."
+                title="Please Wait"
+            ></v-empty-state>
             <v-img  
+                v-else
                 :src="base64url"
             ></v-img>
         </v-card-text>
@@ -30,6 +42,10 @@ const props = defineProps({
 // ---stores
 const { updateCamera } = useCameraStore()
 
+// ---fps
+const fps = ref(0)
+const lastFrame = ref(0)
+
 // ---data
 const wsEvents = reactive([])
 const base64url = ref('')
@@ -39,18 +55,21 @@ const base64url = ref('')
 
 // ---events
 const onImageRealtime = (data) => {
-    console.log(data) 
     for (const image of data) {
         if (image?.cameraId != props.camera?.id) continue
 
-        base64url.value = image?.base64img
+        base64url.value = `data:image/jpeg;base64,${image?.base64img}`
+        
+        const frameDiff = Date.now() - lastFrame.value
+        fps.value = frameDiff > 0 ? 1 / (frameDiff / 1000) : 0
+        lastFrame.value = Date.now()
     }
 }
 
 // ---hooks
 onMounted(async () => {
 
-    await updateCamera({ ...props.camera, interval: 0, detect: false })
+    await updateCamera({ ...props.camera, realtime: true })
         .catch(console.error)
 
     connectWebSocket()
@@ -59,7 +78,7 @@ onMounted(async () => {
 
 onBeforeUnmount(async () => {
 
-    await updateCamera({ ...props.camera })
+    await updateCamera({ ...props.camera, realtime: false })
     
     while (wsEvents.length > 0) delWsEvent(wsEvents.shift())
 })

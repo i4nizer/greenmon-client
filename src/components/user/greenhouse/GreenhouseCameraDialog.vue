@@ -37,6 +37,33 @@
                     :rules="[required('Number'), min(0)]"
                 ></v-number-input>
                 <v-select
+                    persistent-hint
+                    hint="Default recommended is PIXFORMAT_JPEG."
+                    label="Pixel Format"
+                    v-model="camera.format"
+                    :items="pixelFormats"
+                ></v-select>
+                <v-number-input
+                    label="Quality"
+                    v-model="camera.quality"
+                    :rules="[min(0), max(63)]"
+                ></v-number-input>
+                <v-select
+                    persistent-hint
+                    hint="Default recommended is FRAMESIZE_UXGA."
+                    label="Resolution"
+                    v-model="camera.resolution"
+                    :items="resolutions"
+                ></v-select>
+                <v-select
+                    hint="Even at realtime, the delays are still present due to network transmit."
+                    label="Capture Speed"
+                    v-model="camera.realtime"
+                    :items="['Realtime', 'Interval']"
+                    :item-title="v => v"
+                    :item-value="v => v == 'Realtime'"
+                ></v-select>
+                <v-select
                     label="Flag"
                     v-model="camera.disabled"
                     :items="['Enabled', 'Disabled']"
@@ -86,8 +113,25 @@ const camera = reactive({
     label: props.initial?.label,
     detect: props.initial?.detect ?? true,
     interval: props.initial?.interval ?? 60,
+    format: props.initial?.format ?? "PIXFORMAT_JPEG",
+    quality: props.initial?.quality ?? 12,
+    resolution: props.initial?.resolution ?? "FRAMESIZE_UXGA",
+    realtime: props.initial?.realtime ?? false,
     disabled: props.initial?.disabled ?? true,
 })
+const pixelFormats = reactive([
+    "PIXFORMAT_RG656", "PIXFORMAT_YUV422", "PIXFORMAT_YUV420", "PIXFORMAT_GRAYSCALE", 
+    "PIXFORMAT_JPEG", "PIXFORMAT_RGB888", "PIXFORMAT_RAW", "PIXFORMAT_RGB444", 
+    "PIXFORMAT_RGB555"
+])
+const resolutions = reactive([
+    "FRAMESIZE_96X96", "FRAMESIZE_QQVGA", "FRAMESIZE_QCIF", "FRAMESIZE_HQVGA", 
+    "FRAMESIZE_240X240", "FRAMESIZE_QVGA", "FRAMESIZE_CIF", "FRAMESIZE_HVGA",
+    "FRAMESIZE_VGA", "FRAMESIZE_SVGA", "FRAMESIZE_XGA", "FRAMESIZE_HD",
+    "FRAMESIZE_SXGA", "FRAMESIZE_UXGA", "FRAMESIZE_FHD", "FRAMESIZE_P_HD",
+    "FRAMESIZE_P_3MP", "FRAMESIZE_QXGA", "FRAMESIZE_QHD", "FRAMESIZE_WQXGA",
+    "FRAMESIZE_P_FHD", "FRAMESIZE_QSXGA"
+])
 
 // ---getters
 const cameraProps = computed(() => ({
@@ -95,6 +139,10 @@ const cameraProps = computed(() => ({
     label: props.initial?.label,
     detect: props.initial?.detect ?? true,
     interval: props.initial?.interval ?? 60,
+    format: props.initial?.format ?? "PIXFORMAT_JPEG",
+    quality: props.initial?.quality ?? 12,
+    resolution: props.initial?.resolution ?? "FRAMESIZE_UXGA",
+    realtime: props.initial?.realtime ?? false,
     disabled: props.initial?.disabled ?? true,
 }))
 const changed = computed(() => !equal(camera, cameraProps.value))
@@ -123,6 +171,10 @@ const onSubmit = () => {
         camera.label = null
         camera.detect = true
         camera.interval = 60
+        camera.format = "PIXFORMAT_JPEG"
+        camera.quality = 12
+        camera.resolution = "FRAMESIZE_UXGA"
+        camera.disabled = false
         camera.disabled = true
     }
 }
