@@ -85,9 +85,9 @@ const camera = reactive({
     name: props.camera?.name,
     label: props.camera?.label,
     key: props.camera?.key,
-    detect: props.initial?.detect ?? true,
-    interval: props.initial?.interval ?? 60,
-    disabled: props.initial?.disabled ?? true,
+    detect: props.camera?.detect ?? true,
+    interval: props.camera?.interval ?? 60,
+    disabled: props.camera?.disabled ?? true,
 })
 
 // ---getters
@@ -95,9 +95,9 @@ const propsCamera = computed(() => ({
     name: props.camera?.name,
     label: props.camera?.label,
     key: props.camera?.key,
-    detect: props.initial?.detect ?? true,
-    interval: props.initial?.interval ?? 60,
-    disabled: props.initial?.disabled ?? true,
+    detect: props.camera?.detect ?? true,
+    interval: props.camera?.interval ?? 60,
+    disabled: props.camera?.disabled ?? true,
 }))
 const changed = computed(() => !equal(camera, propsCamera.value))
 

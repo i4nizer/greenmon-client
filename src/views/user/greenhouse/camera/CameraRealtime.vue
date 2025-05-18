@@ -8,8 +8,10 @@
             </v-row>
             <v-row>
 
-                <v-col>
-                    
+                <v-col cols="12">
+                    <CameraRealtimeCard
+                        :camera="camera"
+                    ></CameraRealtimeCard>
                 </v-col>
 
             </v-row>
@@ -23,6 +25,7 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted } from 'vue'
 import { useRoute } from 'vue-router';
 
 const CameraLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/camera/CameraLayout.vue"))
+const CameraRealtimeCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/CameraRealtimeCard.vue"))
 
 
 // ---stores
