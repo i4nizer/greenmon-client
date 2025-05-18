@@ -15,7 +15,7 @@
 
         <template #append>
             <v-btn
-                v-if="readings.length > 0" 
+                v-if="readings.length > 0"
                 link
                 size="small"
                 icon="mdi-arrow-right-thick"
@@ -40,10 +40,11 @@
 </template>
 
 <script setup>
-import api from '@/utils/api.util';
-import { addWsEvent, connectWebSocket, delWsEvent } from '@/utils/ws.util';
-import { onMounted, onUnmounted, reactive } from 'vue';
+import api from "@/utils/api.util";
+import { wsAddEvent, wsConnect, wsDelEvent } from "@/utils/ws.util";
+import { onMounted, onUnmounted, reactive } from "vue";
 
+//
 
 // ---props
 const props = defineProps({
@@ -55,36 +56,35 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-})
-
+});
 
 // ---data
-const events = reactive([])
-const readings = reactive([])
+const events = reactive([]);
+const readings = reactive([]);
 
 // ---events
 const onWsReadings = (data) => {
     for (const d of data) {
         if (d?.outputId != props.output?.id) continue;
-        if (readings.length >= props.limit) readings.shift()
-        readings.push(d)
+        if (readings.length >= props.limit) readings.shift();
+        readings.push(d);
     }
-}
+};
 
 // ---hooks
 onMounted(async () => {
-    connectWebSocket()
+    const url = "/user/greenhouse/mcu/sensor/output/reading";
+    await api
+        .get(`${url}?outputId=${props.output?.id}&limit=${props.limit}`)
+        .then((res) => readings.push(...res.data?.readings))
+        .catch(console.error);
 
-    const url = "/user/greenhouse/mcu/sensor/output/reading"
-    await api.get(`${url}?outputId=${props.output?.id}&limit=${props.limit}`)
-        .then(res => readings.push(...res.data?.readings))
-        .catch(console.error)
+    events.push(wsAddEvent("reading", onWsReadings, "Create"));
+});
 
-    events.push(addWsEvent('reading', onWsReadings, 'Create'))
-})
+onUnmounted(() => { while (events.length > 0) wsDelEvent(events.shift()); });
 
-onUnmounted(() => { while(events.length > 0) delWsEvent(events.shift()) })
-
+//
 
 </script>
 

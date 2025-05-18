@@ -1,5 +1,6 @@
 import {
     cameraBeforeEnter,
+    cameraRealtimeBeforeEnter,
 } from "@/middlewares/camera.middleware"
 
 
@@ -13,7 +14,7 @@ const cameraRoutes = [
         path: "realtime",
         name: "Camera Realtime",
         component: () => import("@/views/user/greenhouse/camera/CameraRealtime.vue"),
-        beforeEnter: [cameraBeforeEnter],
+        beforeEnter: [cameraBeforeEnter, cameraRealtimeBeforeEnter],
     },
     {
         path: "settings",

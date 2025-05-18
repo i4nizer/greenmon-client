@@ -1,6 +1,8 @@
 import { useCameraStore } from "@/stores/camera.store";
+import { mlLettuceModelLoad } from "@/utils/model.util";
+import { wsConnect } from "@/utils/ws.util";
 
-
+//
 
 /** Requires valid cameraId parameter. */
 const cameraBeforeEnter = async (to, from, next) => {
@@ -20,8 +22,20 @@ const cameraBeforeEnter = async (to, from, next) => {
     return next()
 };
 
+/** Early establishes web socket connection and loads model. */
+const cameraRealtimeBeforeEnter = async (to, from, next) => {
+    // connect web socket now
+    wsConnect()
 
+    // call for loading ml model
+    mlLettuceModelLoad()
+
+    return next()
+}
+
+//
 
 export {
     cameraBeforeEnter,
+    cameraRealtimeBeforeEnter
 };

@@ -43,10 +43,9 @@
 </template>
 
 <script setup>
-import { predict, unload } from '@/utils/model.util';
+import { mlLettuceModelPredict, mlLettuceModelUnload } from '@/utils/model.util';
 import { getVideoDevices, getVideoDeviceStream } from '@/utils/camera.util';
 import { defineAsyncComponent, onMounted, onUnmounted, reactive } from 'vue';
-import { fa } from 'vuetify/locale';
 
 const ModelDetectionGuideCard = defineAsyncComponent(() => import("@/components/model/ModelDetectionGuideCard.vue"))
 const ModelDetectionDisplayCard = defineAsyncComponent(() => import("@/components/model/ModelDetectionDisplayCard.vue"))
@@ -96,7 +95,7 @@ const onCameraChangeSource = async () => {
 }
 
 const onVideoFrame = async (canvas) => {
-    const bboxes = await predict(canvas, 0.7)
+    const bboxes = await mlLettuceModelPredict(canvas, 0.7)
     boundingBoxes.splice(0, boundingBoxes.length)
     boundingBoxes.push(...bboxes)
 }
@@ -107,7 +106,7 @@ onMounted(async () => {
     // await cameraOn()
 })
 
-onUnmounted(() => unload())
+onUnmounted(() => mlLettuceModelUnload())
 </script>
 
 <style lang="scss" scoped>

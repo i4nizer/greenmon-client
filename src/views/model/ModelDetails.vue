@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { load } from '@/utils/model.util';
+import { mlLettuceModelLoad } from '@/utils/model.util';
 import { defineAsyncComponent, onMounted, reactive } from 'vue';
 
 const ModelDetailsInfoCard = defineAsyncComponent(() => import("@/components/model/ModelDetailsInfoCard.vue"))
@@ -38,7 +38,7 @@ const state = reactive({ modelLoading: false })
 // ---hooks
 onMounted(async () => {
     state.modelLoading = true
-    await load().catch(console.error)
+    await mlLettuceModelLoad().catch(console.error)
     state.modelLoading = false
 })
 </script>

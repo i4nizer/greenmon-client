@@ -2,8 +2,9 @@ import { useActionStore } from "@/stores/action.store";
 import { useActuatorStore } from "@/stores/actuator.store";
 import { useMcuStore } from "@/stores/mcu.store";
 import { useSensorStore } from "@/stores/sensor.store";
+import { wsConnect } from "@/utils/ws.util";
 
-
+//
 
 /** Requires valid mcuId parameter. */
 const mcuBeforeEnter = async (to, from, next) => {
@@ -26,6 +27,9 @@ const mcuBeforeEnter = async (to, from, next) => {
 /** Fetches mcu sensor, outputs, actuators, inputs. */
 const mcuDashboardBeforeEnter = async (to, from, next) => {
     const mcuId = to.params.mcuId;
+
+    // connect web socket
+    wsConnect()
 
     // init stores for data & funcs
     const { sensors, retrieveSensor, retrieveOutput } = useSensorStore()
@@ -112,7 +116,7 @@ const mcuActuatorsBeforeEnter = async (to, from, next) => {
     return next();
 }
 
-
+//
 
 export {
     mcuBeforeEnter,

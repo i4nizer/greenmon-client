@@ -36,7 +36,7 @@ const _onMessageEvents = []
 
 
 /** Starts connecting. */
-const connectWebSocket = () => {
+const wsConnect = () => {
     if (_connected || _connecting) return;
     _connecting = true
 
@@ -46,7 +46,7 @@ const connectWebSocket = () => {
     _webSocket.onopen = e => {
         _connected = true
         _connecting = false
-        // console.log('Web Socket connected successfully.')
+        console.log('Web Socket connected successfully.')
     }
 
     _webSocket.onmessage = e => {
@@ -58,7 +58,7 @@ const connectWebSocket = () => {
         _connected = false
         _connecting = true
         // console.log('Web socket closed, reconnecting.')
-        setTimeout(() => connectWebSocket(), _reconnectInterval)
+        setTimeout(() => wsConnect(), _reconnectInterval)
     }
 
     _webSocket.onerror = e => {
@@ -84,7 +84,7 @@ const _executeOnMessageEvent = async (msg) => {
  * @param {'Create'|'Retrieve'|'Update'|'Delete'} query The query sent by the ws.
  * @returns {WsEvent} The event created.
  */
-const addWsEvent = (event, callback, query = 'Create') => {
+const wsAddEvent = (event, callback, query = 'Create') => {
     const e = new WsEvent(event, callback, query)
     _onMessageEvents.push(e)
     return e
@@ -93,7 +93,7 @@ const addWsEvent = (event, callback, query = 'Create') => {
 /**
  * @param {WsEvent} event The event to be removed.
  */
-const delWsEvent = (event) => {
+const wsDelEvent = (event) => {
     const index = _onMessageEvents.findIndex(e => e?.id == event?.id)
     if (index != -1) _onMessageEvents.splice(index, 1)
 }
@@ -102,7 +102,7 @@ const delWsEvent = (event) => {
 
 export {
     WsEvent,
-    addWsEvent,
-    delWsEvent,
-    connectWebSocket,
+    wsAddEvent,
+    wsDelEvent,
+    wsConnect,
 }

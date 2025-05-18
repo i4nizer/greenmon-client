@@ -17,19 +17,17 @@
                 text="Kindly wait while we are requesting preview."
                 title="Please Wait"
             ></v-empty-state>
-            <v-img  
-                v-else
-                :src="base64url"
-            ></v-img>
+            <v-img v-else :src="base64url"></v-img>
         </v-card-text>
     </v-card>
 </template>
 
 <script setup>
-import { useCameraStore } from "@/stores/camera.store"
-import { addWsEvent, connectWebSocket, delWsEvent } from "@/utils/ws.util"
-import { onBeforeUnmount, onMounted, reactive, ref } from "vue"
+import { useCameraStore } from "@/stores/camera.store";
+import { wsAddEvent, wsDelEvent } from "@/utils/ws.util";
+import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
 
+//
 
 // ---props
 const props = defineProps({
@@ -37,54 +35,47 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-})
+});
 
 // ---stores
-const { updateCamera } = useCameraStore()
+const { updateCamera } = useCameraStore();
 
 // ---fps
-const fps = ref(0)
-const lastFrame = ref(0)
+const fps = ref(0);
+const lastFrame = ref(0);
 
 // ---data
-const wsEvents = reactive([])
-const base64url = ref('')
+const wsEvents = reactive([]);
+const base64url = ref("");
 
 // ---actions
-
 
 // ---events
 const onImageRealtime = (data) => {
     for (const image of data) {
-        if (image?.cameraId != props.camera?.id) continue
+        if (image?.cameraId != props.camera?.id) continue;
 
-        base64url.value = `data:image/jpeg;base64,${image?.base64img}`
-        
-        const frameDiff = Date.now() - lastFrame.value
-        fps.value = frameDiff > 0 ? 1 / (frameDiff / 1000) : 0
-        lastFrame.value = Date.now()
+        base64url.value = `data:image/jpeg;base64,${image?.base64img}`;
+
+        const frameDiff = Date.now() - lastFrame.value;
+        fps.value = frameDiff > 0 ? 1 / (frameDiff / 1000) : 0;
+        lastFrame.value = Date.now();
     }
-}
+};
 
 // ---hooks
 onMounted(async () => {
-
-    await updateCamera({ ...props.camera, realtime: true })
-        .catch(console.error)
-
-    connectWebSocket()
-    wsEvents.push(addWsEvent('image-realtime', onImageRealtime, "Create"))
-})
+    await updateCamera({ ...props.camera, realtime: true }).catch(console.error);
+    wsEvents.push(wsAddEvent("image-realtime", onImageRealtime, "Create"));
+});
 
 onBeforeUnmount(async () => {
+    await updateCamera({ ...props.camera, realtime: false });
+    while (wsEvents.length > 0) wsDelEvent(wsEvents.shift());
+});
 
-    await updateCamera({ ...props.camera, realtime: false })
-    
-    while (wsEvents.length > 0) delWsEvent(wsEvents.shift())
-})
+//
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

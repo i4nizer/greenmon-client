@@ -2,41 +2,35 @@
     <v-card class="border pt-3" density="compact">
         <v-card-title>{{ greenhouse?.name }} Logs</v-card-title>
         <v-card-subtitle v-if="logs.length > 0">
-            <span>Last Log: {{ date.format(logs.at(-1)?.createdAt, 'fullDateWithWeekday') }}</span>
+            <span>Last Log: {{ date.format(logs.at(-1)?.createdAt, "fullDateWithWeekday") }}</span>
         </v-card-subtitle>
         <v-card-text class="overflow-auto">
             <v-timeline side="end">
-    
                 <!-- Logs Lists -->
                 <v-timeline-item v-for="log in logs" :key="log?.id" size="small">
                     <v-card>
                         <v-card-title>{{ log?.title }}</v-card-title>
-                        <v-card-subtitle>{{ date.format(log?.createdAt, 'fullDateWithWeekday') }}</v-card-subtitle>
+                        <v-card-subtitle>{{ date.format(log?.createdAt, "fullDateWithWeekday") }}</v-card-subtitle>
                         <v-card-text>{{ log?.message }}</v-card-text>
                     </v-card>
                 </v-timeline-item>
 
                 <!-- Fallback/emptystate when no alert -->
                 <v-timeline-item v-if="logs?.length <= 0">
-                    <v-empty-state
-                        icon="mdi-file"
-                        text="There aren't any generated logs yet."
-                        title="No log yet"
-                    ></v-empty-state>
+                    <v-empty-state icon="mdi-file" text="There aren't any generated logs yet." title="No log yet"></v-empty-state>
                 </v-timeline-item>
-    
-            </v-timeline>   
+            </v-timeline>
         </v-card-text>
     </v-card>
 </template>
 
 <script setup>
-import api from '@/utils/api.util';
-import { addWsEvent, connectWebSocket, delWsEvent } from '@/utils/ws.util';
-import { onBeforeUnmount, onMounted, reactive } from 'vue';
-import { useDate } from 'vuetify';
+import api from "@/utils/api.util";
+import { wsAddEvent, wsConnect, wsDelEvent } from "@/utils/ws.util";
+import { onBeforeUnmount, onMounted, reactive } from "vue";
+import { useDate } from "vuetify";
 
-
+//
 
 // ---props
 const props = defineProps({
@@ -48,42 +42,38 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-})
+});
 
 // ---composables
-const date = useDate()
+const date = useDate();
 
 // ---data
-const logs = reactive([])
-const events = reactive([])
+const logs = reactive([]);
+const events = reactive([]);
 
 // ---events
 const onWsLogs = (data) => {
     for (const log of data) {
-        if (logs.length >= props.limit) logs.shift()
-        logs.push(log)
+        if (logs.length >= props.limit) logs.shift();
+        logs.push(log);
     }
-}
-
+};
 
 // ---hooks
 onMounted(async () => {
-    connectWebSocket()
+    const url = `/user/greenhouse/log?greenhouseId=${props.greenhouse?.id}&limit=${props.limit}`;
+    await api
+        .get(url)
+        .then((res) => logs.push(...res.data?.logs))
+        .catch(console.error);
 
-    const url = `/user/greenhouse/log?greenhouseId=${props.greenhouse?.id}&limit=${props.limit}`
-    await api.get(url)
-        .then(res => logs.push(...res.data?.logs))
-        .catch(console.error)
+    events.push(wsAddEvent("log", onWsLogs, "Create"));
+});
 
-    events.push(addWsEvent("log", onWsLogs, 'Create'))
-})
+onBeforeUnmount(() => { while (events.length > 0) wsDelEvent(events.shift()) });
 
-onBeforeUnmount(() => { while (events.length > 0) delWsEvent(events.shift()) })
-
-
+//
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

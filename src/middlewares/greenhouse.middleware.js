@@ -6,8 +6,9 @@ import { useCameraStore } from "@/stores/camera.store"
 import { useScheduleStore } from "@/stores/schedule.store"
 import { useSensorStore } from "@/stores/sensor.store"
 import { useThresholdStore } from "@/stores/threshold.store"
+import { wsConnect } from "@/utils/ws.util"
 
-
+//
 
 /** Requires valid greenhouseId parameter. */
 const greenhouseBeforeEnter = async (to, from, next) => {
@@ -29,6 +30,9 @@ const greenhouseBeforeEnter = async (to, from, next) => {
 /** Fetches mcus, sensors, outputs, actuators, inputs. */
 const greenhouseDashboardBeforeEnter = async (to, from, next) => {
     const greenhouseId = to.params.greenhouseId;
+
+    // connect web socket
+    wsConnect()
 
     // init stores for data & funcs
     const { mcus, retrieveMcu } = useMcuStore();
@@ -195,7 +199,7 @@ const greenhouseScheduleBeforeEnter = async (to, from, next) => {
     return next()
 }
 
-
+//
 
 export {
     greenhouseBeforeEnter,

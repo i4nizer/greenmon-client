@@ -236,4 +236,8 @@ const unload = () => {
 
 
 
-export { load, predict, unload }
+export {
+    load as mlLettuceModelLoad,
+    predict as mlLettuceModelPredict,
+    unload as mlLettuceModelUnload,
+}
