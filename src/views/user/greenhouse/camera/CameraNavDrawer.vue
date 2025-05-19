@@ -40,6 +40,12 @@
             ></v-list-item>
             <v-list-item 
                 link 
+                title="Capture" 
+                prepend-icon="mdi-camera"
+                :to="`/user/greenhouse/${greenhouseId}/camera/${cameraId}/capture`" 
+            ></v-list-item>
+            <v-list-item 
+                link 
                 title="Reatime" 
                 prepend-icon="mdi-video-wireless"
                 :to="`/user/greenhouse/${greenhouseId}/camera/${cameraId}/realtime`" 

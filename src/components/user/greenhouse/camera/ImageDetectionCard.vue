@@ -1,5 +1,5 @@
 <template>
-    <v-card class="border pa-5">
+    <v-card class="border pa-1">
         <v-card-text class="overflow-wrap">
             <div class="text-center text-wrap overflow-wrap">
                 <canvas
@@ -46,8 +46,17 @@ const canvasRef = ref(null)
 const canvasCtx = ref(null)
 const canvasSize = reactive({ width: 4000, height: 4000 })
 
+// ---state
+const state = reactive({ painted: false, resizing: false, visible: true })
+
+// ---observer
+const observer = new IntersectionObserver((e) => onIntersect(e), { threshold: 0.1 })
+
 // ---watchers
-watch(props, (nv, ov) => imageRef.value.src = nv.src)
+watch(props, (nv, ov) => {
+    state.painted = nv.src != ov.src
+    imageRef.value.src = nv.src
+})
 
 // ---actions
 const denormalize = (base, box) => {
@@ -117,7 +126,8 @@ const drawBoundingBox = (ctx, canvas, bbox) => {
 
 // ---events
 const onLoadImage = async () => {
-    if (!imageRef.value) return
+    if (state.painted || state.resizing || !state.visible) return
+    if (!imageRef.value || !canvasRef.value) return
 
     // get aspect ratio
     const { naturalWidth: imgW, naturalHeight: imgH } = imageRef.value
@@ -136,11 +146,26 @@ const onLoadImage = async () => {
     for (const bbox of props.boundingBoxes) {
         drawBoundingBox(canvasCtx.value, canvasSize, bbox)
     }
+
+    state.painted = true
 }
 
-const onResizeCanvas = (size) => {
+const onIntersect = async (entries) => {
+    entries?.forEach(e => {
+        state.visible = e.isIntersecting
+        if (e.isIntersecting) onLoadImage()
+        else state.painted = false
+    })
+}
+
+const onResizeCanvas = async (size) => {
+    state.painted = false
+    state.resizing = true
     canvasSize.width = size.width
     canvasSize.height = size.height
+    state.resizing = false
+    await new Promise(res => setTimeout(() => res(), 20))
+    await onLoadImage()
 }
 
 // ---hooks
@@ -149,9 +174,13 @@ onMounted(() => {
     imageRef.value.src = props.src
     canvasCtx.value = canvasRef.value?.getContext('2d')
     observeCanvas(canvasRef.value, onResizeCanvas)
+    observer.observe(canvasRef.value)
 })
 
-onUnmounted(() => stopObserveCanvas())
+onUnmounted(() => {
+    stopObserveCanvas()
+    observer.disconnect()
+})
 
 //
 

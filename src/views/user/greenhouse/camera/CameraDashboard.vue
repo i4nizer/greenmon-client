@@ -8,50 +8,8 @@
             </v-row>
             <v-row>
 
-                <!-- List Date Range Control -->
-                <v-col class="d-flex align-center">
-                    <h2>{{ camera.name }} Captures</h2>
-                </v-col>
-                <v-col class="d-flex ga-1 align-center">
-                    <v-select
-                        hide-details
-                        label="Year"
-                        v-model="pagination.year"
-                        :items="Array.from({ length: new Date().getFullYear() - 2024 }, (_, i) => i + 2025)"
-                        @update:model-value="onPaginate"
-                    ></v-select>
-                    <v-select
-                        hide-details
-                        label="Month"
-                        v-model="pagination.month"
-                        :items="Array.from({ length: 12 }, (_, i) => i)"
-                        :item-title="i => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][i]"
-                        :item-value="i => i"
-                        @update:model-value="onPaginate"
-                    ></v-select>
-                </v-col>
-
-            </v-row>
-            <v-row>
-                
-                <!-- List of detections -->
-                <v-col v-for="image in imageWithDetections" cols="12" sm="6" md="4" lg="3" xl="2">
-                    <CameraImageCard
-                        :image="image"
-                        :detections="image?.detections"
-                    ></CameraImageCard>
-                </v-col>
-                
-            </v-row>
-            <v-row>
-                
-                <!-- List Pagination Control -->
-                <v-col>
-                    <v-pagination
-                        v-model="pagination.page"
-                        :length="pagination.count"
-                        @update:model-value="onPaginate"
-                    ></v-pagination>
+                <v-col cols="12">
+                    
                 </v-col>
 
             </v-row>
@@ -61,63 +19,23 @@
 
 <script setup>
 import { useCameraStore } from '@/stores/camera.store';
-import { computed, defineAsyncComponent, onMounted, reactive, toRaw } from 'vue';
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const CameraLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/camera/CameraLayout.vue"))
-const CameraImageCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/CameraImageCard.vue"))
 
 
 // ---stores
-const { cameras, retrieveImage, retrieveDetection } = useCameraStore()
+const { cameras } = useCameraStore()
 
 // ---composables
 const route = useRoute()
 
 // ---data
 const cameraId = route.params.cameraId
-const greenhouseId = route.params.greenhouseId
-
-const images = reactive([])
-const detections = reactive([])
-
-const pagination = reactive({
-    page: 0,
-    limit: 25,
-    count: 0,
-    year: new Date().getFullYear(),
-    month: new Date().getMonth(),
-})
 
 // ---getters
 const camera = computed(() => cameras.find(c => c.id == cameraId))
-const imageWithDetections = computed(() => images.map(i => ({ ...i, detections: detections.filter(d => d.imageId == i.id) })))
-
-// ---state
-
-
-// ---events
-const onPaginate = async () => {
-    const imgRes = await retrieveImage(
-        cameraId,
-        greenhouseId,
-        pagination.limit,
-        pagination.page * pagination.limit,
-        pagination.year,
-        pagination.month
-    )
-
-    images.splice(0, images.length)
-    images.push(...imgRes.data?.images)
-    pagination.count = Math.floor(imgRes.data?.count / pagination.limit)
-
-    const detRes = await Promise.all(images.map(i => retrieveDetection(i.id)))
-    detections.splice(0, detections.length)
-    detections.push(...detRes.map(res => res.data?.detections).flat())
-}
-
-// ---hooks
-onMounted(async () => await onPaginate())
 
 //
 

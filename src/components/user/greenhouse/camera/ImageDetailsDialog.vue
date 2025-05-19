@@ -4,13 +4,51 @@
             <slot name="activator" :="{ props: activatorProps }"></slot>
         </template>
         <template #default="{ isActive }">
-            
+            <v-container class="bg-black rounded pt-7 overflow-auto">
+                <v-row>
+                    <v-col class="pl-8">
+                        <h3>Image: {{ image?.filename }}</h3>
+                        <sub>Captured: {{ date.format(image?.createdAt, 'fullDateTime12h') }}</sub>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12" sm="12" md="6">
+                        <ImageDetectionCard
+                            :src="src"
+                            :bounding-boxes="boundingBoxes"
+                        ></ImageDetectionCard>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="6">
+                        <v-list>
+                            <v-list-subheader>Recommendations</v-list-subheader>
+                            <v-list-item 
+                                v-for="d in deficiencies"
+                                class="d-flex flex-column"
+                            >
+                                <v-chip
+                                    :text="d"
+                                    :color="d?.includes('Nitrogen') ? 'orange' : d?.includes('Phosphorus') ? 'purple' : d?.includes('Potassium') ? 'brown' : 'green'"
+                                ></v-chip>
+                                <li v-for="r in getRecommendations(d)">{{ r }}</li>
+                            </v-list-item>
+                            <v-list-item v-if="deficiencies.length <= 0">
+                                <v-empty-state
+                                    icon="mdi-leaf"
+                                    text="There is no lettuce found on the image."
+                                    title="No Lettuce Detected"
+                                ></v-empty-state>
+                            </v-list-item>
+                        </v-list>
+                    </v-col>
+                </v-row>
+            </v-container>
         </template>
     </v-dialog>
 </template>
 
 <script setup>
-
+import { defineAsyncComponent } from "vue";
+import { useDate } from "vuetify";
 
 const ImageDetectionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/ImageDetectionCard.vue"))
 
@@ -22,11 +60,49 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    image: {
+        type: Object,
+        required: true,
+    },
+    deficiencies: {
+        type: Array,
+        default: [],
+    },
     boundingBoxes: {
         type: Array,
         default: [],
     },
 })
+
+// ---composables
+const date = useDate()
+
+// ---actions
+const getRecommendations = (deficiency) => {
+    if (deficiency?.includes('Nitrogen')) {
+        return [
+            'Apply nitrogen-rich fertilizers such as urea, ammonium nitrate, or calcium ammonium nitrate.',
+            'For rapid correction, use a foliar spray with a 1–2% urea solution.',
+            'Incorporate well-decomposed compost or manure to improve nitrogen availability.',
+        ]
+    } else if (deficiency?.includes('Phosphorus')) {
+        return [
+            'Apply phosphorus-rich fertilizers like monoammonium phosphate (MAP), diammonium phosphate (DAP), or rock phosphate.',
+            'Use bone meal or composted manure as organic phosphorus sources.',
+            'Ensure soil pH is maintained between 6.0 and 7.0 to optimize phosphorus availability.',
+        ]
+    } else if (deficiency?.includes('Potassium')) {
+        return [
+            'Apply potassium-rich fertilizers such as potassium sulfate (SOP) or potassium nitrate.',
+            'Use wood ash sparingly as an organic potassium source, being mindful of its alkalinity.',
+            'Ensure adequate soil moisture to facilitate potassium uptake.'
+        ]
+    } else {
+        return [
+            `You're doing amazing, keep it going!`
+        ]
+    }
+}
 
 // 
 

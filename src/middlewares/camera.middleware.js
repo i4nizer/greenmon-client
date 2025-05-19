@@ -22,6 +22,14 @@ const cameraBeforeEnter = async (to, from, next) => {
     return next()
 };
 
+/** Early establishes web socket connection. */
+const cameraCaptureBeforeEnter = async (to, from, next) => {
+    // connect web socket now
+    wsConnect()
+
+    return next()
+}
+
 /** Early establishes web socket connection and loads model. */
 const cameraRealtimeBeforeEnter = async (to, from, next) => {
     // connect web socket now
@@ -33,9 +41,13 @@ const cameraRealtimeBeforeEnter = async (to, from, next) => {
     return next()
 }
 
+
+
+
 //
 
 export {
     cameraBeforeEnter,
+    cameraCaptureBeforeEnter,
     cameraRealtimeBeforeEnter
 };

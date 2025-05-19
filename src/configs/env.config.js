@@ -24,7 +24,7 @@ const env = {
     otpDigits: 6,
 
     // Model
-    modelUrl: "https://greenmon-api-production.up.railway.app/user/model/v1/model.json",
+    modelUrl: "https://greenmon-api-production.up.railway.app/model/v1/model.json",
     modelName: "yolov11n-640",
     modelClasses: ["Healthy", "Nitrogen Deficient", "Phosphorus Deficient", "Potassium Deficient"],
     modelInputSize: [640, 640],

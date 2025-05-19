@@ -17,10 +17,20 @@
         </v-card-title>
         <v-card-subtitle>{{ date.format(image?.createdAt, 'fullDateTime12h') }}</v-card-subtitle>
         <v-card-text>
-            <v-btn
-                text="View Details"
-                class="w-100"
-            ></v-btn>
+            <ImageDetailsDialog 
+                :src="url" 
+                :image="image"
+                :deficiencies="deficiencies"
+                :bounding-boxes="boundingBoxes"
+            >
+                <template #activator="{ props: activatorProps }">
+                    <v-btn
+                        text="View Details"
+                        class="w-100"
+                        :="activatorProps"
+                    ></v-btn>
+                </template>
+            </ImageDetailsDialog>
         </v-card-text>
     </v-card>
 </template>
@@ -31,6 +41,7 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 
 import { useDate } from 'vuetify';
 
 const ImageDetectionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/ImageDetectionCard.vue"))
+const ImageDetailsDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/ImageDetailsDialog.vue"))
 
 //
 
@@ -53,7 +64,11 @@ const date = useDate()
 const url = ref('')
 
 // ---getters
-const deficiencies = computed(() => props.detections.map(d => d.class).sort((a, b) => a?.confidence - b?.confidence))
+const deficiencies = computed(() => 
+    props.detections
+        .map(d => d.class)
+        .sort((a, b) => a?.confidence - b?.confidence)
+)
 const boundingBoxes = computed(() =>
     props.detections.map(d => ({
         box: { w: d.w, h: d.h, x: d.x, y: d.y },
