@@ -48,6 +48,12 @@
             ></v-list-item>
             <v-list-item 
                 link 
+                title="Lettuce Detection" 
+                prepend-icon="mdi-brain"
+                :to="`/user/greenhouse/${greenhouseId}/lettuce-detection`" 
+            ></v-list-item>
+            <v-list-item 
+                link 
                 title="Action" 
                 prepend-icon="mdi-rocket-launch"
                 :to="`/user/greenhouse/${greenhouseId}/action`" 

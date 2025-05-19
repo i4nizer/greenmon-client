@@ -43,6 +43,12 @@ const greenhouseRoutes = [
         beforeEnter: [greenhouseBeforeEnter, greenhouseCameraBeforeEnter],
     },
     {
+        path: "lettuce-detection",
+        name: "Greenhouse Lettuce Detection",
+        component: () => import("@/views/user/greenhouse/GreenhouseLettuceDetection.vue"),
+        beforeEnter: [greenhouseBeforeEnter],
+    },
+    {
         path: "action",
         name: "Greenhouse Action",
         component: () => import("@/views/user/greenhouse/GreenhouseAction.vue"),
