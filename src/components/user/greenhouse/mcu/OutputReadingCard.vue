@@ -73,7 +73,7 @@ const onWsReadings = (data) => {
 
 // ---hooks
 onMounted(async () => {
-    const url = "/user/greenhouse/mcu/sensor/output/reading";
+    const url = "/user/greenhouse/reading";
     await api
         .get(`${url}?outputId=${props.output?.id}&limit=${props.limit}`)
         .then((res) => readings.push(...res.data?.readings))

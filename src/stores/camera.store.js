@@ -6,7 +6,9 @@ import { reactive } from "vue";
 export const useCameraStore = defineStore('camera', () => {
 
     // ---state
+    const images = reactive([])
     const cameras = reactive([])
+    const detections = reactive([])
 
     // ---actions
     const createCamera = async (camera) => {
@@ -45,6 +47,31 @@ export const useCameraStore = defineStore('camera', () => {
         return res
     }
 
+    const retrieveImage = async (cameraId, greenhouseId, limit = 25, offset = 0, year = new Date().getFullYear(), month = 0) => {
+        const url = `/user/greenhouse/image?limit=${limit}&offset=${offset}&year=${year}&month=${month}`;
+        let query = cameraId ? `&cameraId=${cameraId}` : "";
+        query += greenhouseId ? `&greenhouseId=${greenhouseId}` : "";
+        const res = await api.get(url + query);
+
+        const union = [...new Map([...images, ...res.data.images].map((i) => [i.id, i])).values()];
+        images.splice(0, images.length);
+        images.push(...union);
+
+        return res;
+    };
+    
+    const retrieveDetection = async (imageId, label = null) => {
+        const url = `/user/greenhouse/image/detection?imageId=${imageId}`;
+        const query = label ? `&class=${label}` : ''
+        const res = await api.get(url + query);
+
+        const union = [...new Map([...detections, ...res.data.detections].map((m) => [m.id, m])).values()];
+        detections.splice(0, detections.length);
+        detections.push(...union);
+
+        return res;
+    };
+
     // ---expose
     return {
         cameras,
@@ -52,5 +79,11 @@ export const useCameraStore = defineStore('camera', () => {
         retrieveCamera,
         updateCamera,
         destroyCamera,
+
+        images,
+        retrieveImage,
+
+        detections,
+        retrieveDetection,
     }
 }, { persist: true })

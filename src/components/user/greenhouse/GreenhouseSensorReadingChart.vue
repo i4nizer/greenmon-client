@@ -199,7 +199,7 @@ watch(decrement, async (nv, ov) => {
 
     const outputReadings = []
     for (const output of props.outputs) {
-        const url = `/user/greenhouse/mcu/sensor/output/reading`
+        const url = `/user/greenhouse/reading`
         const query = `outputId=${output?.id}&startdt=${start.toISOString()}&enddt=${end.toISOString()}&limit=${props.limit}`
 
         await api.get(`${url}?${query}`)
@@ -259,7 +259,7 @@ const generateChartDatasets = (outputs) => {
 }
 
 const downloadReadingsCsv = async (query = '', filename = 'readings.csv') => {
-    const url = `/user/greenhouse/mcu/sensor/output/reading/csv`
+    const url = `/user/greenhouse/reading/csv`
     state.downloading = true
 
     const res = await api.get(`${url}?${query}`, { responseType: 'blob' })
@@ -300,7 +300,7 @@ const downloadReadingsDataAll = async () => {
 onMounted(async () => {
     if (props.outputs.length <= 0) return;
 
-    const url = `/user/greenhouse/mcu/sensor/output/reading`
+    const url = `/user/greenhouse/reading`
     const query = `outputId=${props.outputs[0]?.id}&limit=1`
 
     const sample = await api.get(`${url}?${query}`)

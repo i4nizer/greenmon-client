@@ -11,6 +11,12 @@ const cameraRoutes = [
         redirect: (to) => `/user/greenhouse/${to.params.greenhouseId}/camera/${to.params.cameraId}/settings`,
     },
     {
+        path: "dashboard",
+        name: "Camera Dashboard",
+        component: () => import("@/views/user/greenhouse/camera/CameraDashboard.vue"),
+        beforeEnter: [cameraBeforeEnter],
+    },
+    {
         path: "realtime",
         name: "Camera Realtime",
         component: () => import("@/views/user/greenhouse/camera/CameraRealtime.vue"),

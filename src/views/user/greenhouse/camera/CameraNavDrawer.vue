@@ -34,6 +34,12 @@
             <v-list-subheader>{{ camera?.name }} ({{ camera?.label }})</v-list-subheader>
             <v-list-item 
                 link 
+                title="Dashboard" 
+                prepend-icon="mdi-view-dashboard"
+                :to="`/user/greenhouse/${greenhouseId}/camera/${cameraId}/dashboard`" 
+            ></v-list-item>
+            <v-list-item 
+                link 
                 title="Reatime" 
                 prepend-icon="mdi-video-wireless"
                 :to="`/user/greenhouse/${greenhouseId}/camera/${cameraId}/realtime`" 

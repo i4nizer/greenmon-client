@@ -7,7 +7,7 @@
         <v-card-text>
             <!-- Alerts Lists -->
             <v-alert
-                v-for="alert in alerts"
+                v-for="alert in alerts.toReversed()"
                 class="mb-1 border"
                 variant="text"
                 :key="alert?.id"
