@@ -41,7 +41,7 @@
             <v-list-item 
                 link 
                 title="Capture" 
-                prepend-icon="mdi-camera"
+                prepend-icon="mdi-image"
                 :to="`/user/greenhouse/${greenhouseId}/camera/${cameraId}/capture`" 
             ></v-list-item>
             <v-list-item 
