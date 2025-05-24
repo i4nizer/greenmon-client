@@ -6,7 +6,7 @@
                 link
                 icon="mdi-chevron-right"
                 size="small"
-                color="transparent"
+                elevation="0"
                 :to="`/user/greenhouse/${$route.params?.greenhouseId}/mcu/${sensor?.mcuId}/sensors#sensor-${sensor?.id}`"
             ></v-btn>
         </v-card-title>
@@ -16,7 +16,9 @@
             <!-- Output Reading List -->
             <OutputReadingCard 
                 v-for="output in outputs"
-                class="w-100 mb-1   "
+                class="w-100 mb-1 border"
+                variant="flat"
+                elevation="0"
                 :key="output?.id"
                 :output="output"
             ></OutputReadingCard>

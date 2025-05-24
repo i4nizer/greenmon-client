@@ -1,6 +1,9 @@
 <template>
     <v-card class="border">
         <ImageDetectionCard
+            class="border-none"
+            variant="flat"
+            elevation="0"
             :src="url"
             :bounding-boxes="boundingBoxes"
         ></ImageDetectionCard>
@@ -26,7 +29,9 @@
                 <template #activator="{ props: activatorProps }">
                     <v-btn
                         text="View Details"
-                        class="w-100"
+                        class="w-100 border"
+                        variant="flat"
+                        elevation="0"
                         :="activatorProps"
                     ></v-btn>
                 </template>

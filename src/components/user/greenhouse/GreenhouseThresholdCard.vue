@@ -20,6 +20,7 @@
                         size="small"
                         color="white"
                         class="bg-transparent"
+                        elevation="0"
                         :="menuProps"
                     ></v-btn>
                 </template>
@@ -62,7 +63,7 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn 
                                 text="Add Condtion"
-                                color="white"
+                                color="green"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>
@@ -104,7 +105,7 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn 
                                 text="Add Action"
-                                color="white"
+                                color="green"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>

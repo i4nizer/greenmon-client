@@ -5,7 +5,7 @@
         :disabled="loading"
         @submit.prevent="onSubmit"
     >
-        <h2>Create an account</h2>
+        <h2 class="text-green">Create an account</h2>
         <span class="text-grey">Sign up for your IoT Dashboard account</span>
 
         <v-text-field
@@ -33,6 +33,7 @@
         <v-btn
             text="Sign Up"
             type="submit"
+            color="green"
             class="w-100 mt-3"
             :loading="loading"
             :disabled="!valid"

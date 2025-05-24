@@ -16,24 +16,10 @@ import { VTimePicker } from 'vuetify/labs/VTimePicker'
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
-    defaultTheme: 'darkTheme',
-    themes: {
-      darkTheme: {
-        dark: true,
-        colors: {
-          primary: colors.green.base,
-          secondary: colors.green.darken2,
-          accent: colors.green.lighten2,
-          background: "#000000",
-          surface: '#000000',
-          text: colors.green.darken1,
-          border: colors.green.lighten3,
-        }
-      }
-    }
+    defaultTheme: 'light',
   },
   defaults: {
-    VBtn: { color: 'primary', class: 'text-none' },
+    VBtn: { class: 'text-none' },
     VForm: { class: 'border-md border-md-primary rounded' },
     VTextField: { variant: 'outlined', density: 'compact', class: 'mt-1' },
     VNumberInput: { variant: 'outlined', density: 'compact', class: 'mt-1' },

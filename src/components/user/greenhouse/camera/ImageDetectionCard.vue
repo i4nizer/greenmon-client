@@ -1,5 +1,5 @@
 <template>
-    <v-card class="border pa-1">
+    <v-card class="pa-1">
         <v-card-text class="overflow-wrap">
             <div class="text-center text-wrap overflow-wrap">
                 <canvas

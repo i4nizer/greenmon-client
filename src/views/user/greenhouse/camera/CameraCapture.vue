@@ -6,13 +6,10 @@
                     <h3>Camera Capture</h3>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row justify="end">
 
                 <!-- List Date Range Control -->
-                <v-col class="d-flex align-center">
-                    <h2>{{ camera.name }} Captures</h2>
-                </v-col>
-                <v-col class="d-flex ga-1 align-center">
+                <v-col cols="6" class="d-flex ga-1 align-center">
                     <v-select
                         hide-details
                         label="Year"

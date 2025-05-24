@@ -5,7 +5,7 @@
         :disabled="loading"
         @submit.prevent="$emit('forgot', mail)"
     >
-        <h2>Forgot Password</h2>
+        <h2 class="text-green">Forgot Password</h2>
         <span class="text-grey">Enter email to reset your password</span>
 
         <v-text-field
@@ -19,6 +19,7 @@
         <v-btn
             type="submit"
             text="Forgot Password"
+            color="green"
             class="w-100 mt-3"
             :loading="loading"
             :disabled="!valid"

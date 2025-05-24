@@ -5,7 +5,7 @@
         :loading="loading"
         @submit.prevent="onSubmit"
     >
-        <h2>Sign in to your account</h2>
+        <h2 class="text-green">Sign in to your account</h2>
         <span class="text-grey">Enter your credentials to access your IoT Dashboard</span>
 
         <v-text-field
@@ -26,6 +26,7 @@
         <v-btn 
             type="submit" 
             text="Sign In" 
+            color="green"
             class="w-100 mt-3" 
             :disabled="!valid"
             :loading="loading"

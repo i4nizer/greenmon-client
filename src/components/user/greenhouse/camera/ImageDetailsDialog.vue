@@ -4,7 +4,7 @@
             <slot name="activator" :="{ props: activatorProps }"></slot>
         </template>
         <template #default="{ isActive }">
-            <v-container class="bg-black rounded pt-7 overflow-auto">
+            <v-container class="bg-green-darken-4 rounded pt-7 overflow-auto">
                 <v-row>
                     <v-col class="pl-8">
                         <h3>Image: {{ image?.filename }}</h3>
@@ -14,20 +14,26 @@
                 <v-row>
                     <v-col cols="12" sm="12" md="6">
                         <ImageDetectionCard
+                            class="bg-transparent border"
+                            variant="flat"
+                            elevation="0"
                             :src="src"
                             :bounding-boxes="boundingBoxes"
                         ></ImageDetectionCard>
                     </v-col>
                     <v-col cols="12" sm="12" md="6">
-                        <v-list>
-                            <v-list-subheader>Recommendations</v-list-subheader>
+                        <v-list class="bg-transparent border">
+                            <v-list-subheader>
+                                <h3 class="text-white">Recommendations</h3>
+                            </v-list-subheader>
                             <v-list-item 
                                 v-for="d in deficiencies"
                                 class="d-flex flex-column"
                             >
                                 <v-chip
+                                    class="mb-2"
                                     :text="d"
-                                    :color="d?.includes('Nitrogen') ? 'orange' : d?.includes('Phosphorus') ? 'purple' : d?.includes('Potassium') ? 'brown' : 'green'"
+                                    :class="d?.includes('Nitrogen') ? 'bg-orange' : d?.includes('Phosphorus') ? 'bg-purple' : d?.includes('Potassium') ? 'bg-brown' : 'bg-green'"
                                 ></v-chip>
                                 <li v-for="r in getRecommendations(d)">{{ r }}</li>
                             </v-list-item>

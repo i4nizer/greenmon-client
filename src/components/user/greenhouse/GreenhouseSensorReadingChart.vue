@@ -13,7 +13,7 @@
                         icon="mdi-dots-vertical"
                         size="small"
                         color="white"
-                        class="bg-transparent"
+                        elevation="0"
                         :="menuProps"
                     ></v-btn>
                 </template>

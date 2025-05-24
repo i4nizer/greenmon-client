@@ -1,6 +1,12 @@
 <template>
     <GreenhouseLayout>
         <v-container class="pa-5 py-7" fluid>
+            <v-row justify="center" align-content="center">
+                <v-img
+                    src="@/assets/bg-doa.png"
+                    class="position-fixed top-0 h-100 w-75 w-sm-50 w-md-33 w-lg-25 opacity-50"
+                ></v-img>
+            </v-row>
             <v-row>
                 <v-col>
                     <h3>Greenhouse Schedule</h3>
@@ -11,7 +17,10 @@
                     <!-- For creating schedule -->
                     <GreenhouseScheduleDialog class="w-100 w-md-50" type="Create" @submit="onCreateSchedule">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn :="activatorProps">
+                            <v-btn 
+                                class="bg-green"
+                                :="activatorProps"
+                            >
                                 <v-icon class="mr-1">mdi-plus</v-icon>
                                 <span v-if="$vuetify.display.smAndUp">New Schedule</span>
                             </v-btn>

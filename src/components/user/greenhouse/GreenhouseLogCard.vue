@@ -8,7 +8,7 @@
             <v-timeline side="end">
                 <!-- Logs Lists -->
                 <v-timeline-item v-for="log in logs.toReversed()" :key="log?.id" size="small">
-                    <v-card>
+                    <v-card class="border" variant="flat" elevation="0">
                         <v-card-title>{{ log?.title }}</v-card-title>
                         <v-card-subtitle>{{ date.format(log?.createdAt, "fullDateWithWeekday") }}</v-card-subtitle>
                         <v-card-text>{{ log?.message }}</v-card-text>

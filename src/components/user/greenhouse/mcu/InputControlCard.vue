@@ -1,5 +1,5 @@
 <template>
-    <v-card class="bg-grey-darken-3" :loading="state.loading" :disabled="state.loading">
+    <v-card :loading="state.loading" :disabled="state.loading">
         <v-card-title class="d-flex align-center">
             <v-icon size="48" class="me-8">{{ input?.icon }}</v-icon>
             <span class="text-h6 font-weight-black text-truncate">{{ input?.name }}</span>

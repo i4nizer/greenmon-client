@@ -9,6 +9,7 @@
             <v-btn
                 text="Change Password"
                 color="red"
+                elevation="0"
                 v-tooltip="'You will be signed-out.'"
                 @click="emit('change-password')"
             ></v-btn>

@@ -1,6 +1,12 @@
 <template>
     <GreenhouseLayout>
         <v-container class="pa-5 py-7" fluid>
+            <v-row justify="center" align-content="center">
+                <v-img
+                    src="@/assets/bg-doa.png"
+                    class="position-fixed top-0 h-100 w-75 w-sm-50 w-md-33 w-lg-25 opacity-50"
+                ></v-img>
+            </v-row>
             <v-row>
                 <v-col>
                     <h3>Greenhouse Actions</h3>
@@ -22,6 +28,7 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn 
                                 text="Add Action"
+                                class="bg-green"
                                 :="activatorProps" 
                                 :loading="state.creatingAction"
                                 :disabled="state.creatingAction"

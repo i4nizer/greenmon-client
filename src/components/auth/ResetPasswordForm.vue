@@ -5,7 +5,7 @@
         :disabled="loading"
         @submit.prevent="$emit('reset', password.new)"
     >
-        <h2>Reset Password</h2>
+        <h2 class="text-green">Reset Password</h2>
         <span class="text-grey">Enter your new password below</span>
 
         <v-text-field
@@ -26,6 +26,7 @@
         <v-btn
             type="submit"
             text="Reset Passsword"
+            color="green"
             class="w-100 mt-3"
             :loading="loading"
             :disabled="!valid"

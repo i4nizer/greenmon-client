@@ -6,7 +6,7 @@
                 link
                 size="small"
                 icon="mdi-chevron-right"
-                color="transparent"
+                elevation="0"
                 :to="`/user/greenhouse/${$route.params?.greenhouseId}/mcu/${actuator?.mcuId}/actuators#actuator-${actuator?.id}`"
             ></v-btn>
         </v-card-title>
@@ -16,7 +16,9 @@
             <!-- Input Lists -->
             <InputControlCard
                 v-for="input in inputs"
-                class="mb-1"
+                class="mb-1 border"
+                variant="flat"
+                elevation="0"
                 :key="input?.id"
                 :input="input"
                 :disabled="actuator?.disabled"

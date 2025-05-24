@@ -4,7 +4,7 @@
         :disabled="loading"
         @submit.prevent="$emit('verify-otp', otp)"
     >
-        <h2>OTP Verification</h2>
+        <h2 class="text-green">OTP Verification</h2>
         <span class="text-grey">Your otp was sent to you via email.</span>
 
         <v-otp-input

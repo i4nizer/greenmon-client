@@ -29,6 +29,8 @@
                 <v-btn
                     type="submit"
                     text="Save"
+                    color="green"
+                    elevation="0"
                     :disabled="!state.valid || !changed"
                 ></v-btn>
             </v-form>
