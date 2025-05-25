@@ -55,8 +55,9 @@ const observer = new IntersectionObserver((e) => onIntersect(e), { threshold: 0.
 // ---watchers
 watch(props, (nv, ov) => {
     state.painted = nv.src != ov.src
+    imageRef.value.src = null
     imageRef.value.src = nv.src
-})
+}, { deep: true })
 
 // ---actions
 const denormalize = (base, box) => {

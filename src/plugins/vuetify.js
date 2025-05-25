@@ -12,6 +12,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import colors from 'vuetify/util/colors'
 import { VTimePicker } from 'vuetify/labs/VTimePicker'
+import { VFileUpload } from 'vuetify/labs/VFileUpload'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
@@ -28,5 +29,6 @@ export default createVuetify({
   },
   components: {
     VTimePicker,
+    VFileUpload,
   }
 })

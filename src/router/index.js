@@ -1,14 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { authRoutes } from "./auth.route";
 import { userRoutes } from "./user.route";
+import HomePage from "@/views/HomePage.vue";
 
-
+//
 
 const routes = [
     {
         path: "/",
         name: "Home",
-        redirect: "/auth/sign-in",
+        component: HomePage,
     },
     {
         path: "/auth",
