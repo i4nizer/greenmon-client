@@ -20,9 +20,8 @@
                 >
                     <template #activator="{ props: activatorProps }">
                         <v-btn
-                            text="Add Pin"
-                            color="white"
-                            class="mr-2"
+                            text="New Pin"
+                            class="mr-2 bg-green"
                             variant="outlined"
                             :="activatorProps"
                             :disabled="loading"
@@ -44,7 +43,7 @@
                     <v-btn 
                         icon="mdi-pencil"
                         size="small" 
-                        color="none" 
+                        class="text-blue"
                         :="activatorProps" 
                         :disabled="loading"
                     ></v-btn>
@@ -53,7 +52,7 @@
             <v-btn 
                 icon="mdi-delete"
                 size="small" 
-                color="none"
+                class="ml-1 text-red"
                 :disabled="loading"
                 @click="emit('delete', item.id)"
             ></v-btn>

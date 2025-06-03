@@ -18,7 +18,7 @@
                         icon="mdi-dots-vertical"
                         size="small"
                         color="white"
-                        class="bg-transparent"
+                        elevation="0"
                         :="menuProps"
                     ></v-btn>
                 </template>
@@ -62,6 +62,7 @@
                             <v-btn 
                                 text="Add Input"
                                 color="white"
+                                class="border"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>

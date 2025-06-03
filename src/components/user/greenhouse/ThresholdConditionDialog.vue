@@ -4,7 +4,11 @@
             <slot name="activator" :="{ props: activatorProps }"></slot>
         </template>
         <template #default="{ isActive }">
-            <v-form class="bg-green-darken-4 pa-7" v-model="state.valid" @submit.prevent="onSubmit">
+            <v-form 
+                class="bg-green-darken-4 pa-7 overflow-auto" 
+                v-model="state.valid" 
+                @submit.prevent="onSubmit"
+            >
                 <h3>{{ `${type} Condition` }}</h3>
                 <span class="text-grey">Please provide the condition details.</span>
                 <v-select
@@ -12,7 +16,7 @@
                     class="mt-6"
                     v-model="condition.outputId"
                     :rules="[required('Number')]"
-                    :items="outputs.filter((o) => o.type == 'Number')"
+                    :items="outputs"
                     :item-title="(i) => i.name"
                     :item-value="(i) => i?.id"
                     :prepend-inner-icon="output?.icon"
@@ -63,7 +67,7 @@ const props = defineProps({
         default: {},
     },
 });
-
+console.log(props.outputs)
 // ---composables
 const { required, min, max } = useRules();
 

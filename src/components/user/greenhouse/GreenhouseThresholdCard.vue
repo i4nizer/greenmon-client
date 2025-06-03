@@ -19,7 +19,6 @@
                         icon="mdi-dots-vertical"
                         size="small"
                         color="white"
-                        class="bg-transparent"
                         elevation="0"
                         :="menuProps"
                     ></v-btn>
@@ -63,7 +62,7 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn 
                                 text="Add Condtion"
-                                color="green"
+                                class="border"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>
@@ -105,7 +104,7 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn 
                                 text="Add Action"
-                                color="green"
+                                class="border"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>

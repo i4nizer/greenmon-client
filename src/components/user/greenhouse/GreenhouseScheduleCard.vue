@@ -69,7 +69,7 @@
                         <template #activator="{ props: activatorProps }">
                             <v-btn 
                                 text="Add Action"
-                                color="green"
+                                class="border"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>

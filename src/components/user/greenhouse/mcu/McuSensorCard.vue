@@ -18,7 +18,7 @@
                         icon="mdi-dots-vertical"
                         size="small"
                         color="white"
-                        class="bg-transparent"
+                        elevation="0"
                         :="menuProps"
                     ></v-btn>
                 </template>
@@ -65,6 +65,8 @@
                             <v-btn 
                                 text="Add Output"
                                 color="white"
+                                class="border"
+                                elevation="0"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>
@@ -99,6 +101,8 @@
                             <v-btn 
                                 text="Add Hook"
                                 color="white"
+                                class="border"
+                                elevation="0"
                                 :="activatorProps" 
                             ></v-btn>
                         </template>

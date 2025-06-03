@@ -22,7 +22,11 @@
                         @submit="onCreateSensor"
                     >
                         <template #activator="{ props: activatorProps }">
-                            <v-btn :="activatorProps" :loading="state.creatingSensor">
+                            <v-btn 
+                                color="green"
+                                :="activatorProps" 
+                                :loading="state.creatingSensor"
+                            >
                                 <v-icon class="mr-1">mdi-plus</v-icon>
                                 <span v-if="$vuetify.display.smAndUp">New Sensor</span>
                             </v-btn>

@@ -22,7 +22,10 @@
                         @submit="onCreateActuator"
                     >
                         <template #activator="{ props: activatorProps }">
-                            <v-btn :="activatorProps">
+                            <v-btn 
+                                color="green"
+                                :="activatorProps"
+                            >
                                 <v-icon class="mr-1">mdi-plus</v-icon>
                                 <span v-if="$vuetify.display.smAndUp">New Actuator</span>
                             </v-btn>

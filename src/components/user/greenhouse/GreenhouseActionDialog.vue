@@ -4,7 +4,11 @@
             <slot name="activator" :="{ props: activatorProps }"></slot>
         </template>
         <template #default="{ isActive }">
-            <v-form class="bg-green-darken-4 pa-7" v-model="state.valid" @submit.prevent="onSubmit">
+            <v-form 
+                class="bg-green-darken-4 pa-7 overflow-auto"
+                v-model="state.valid" 
+                @submit.prevent="onSubmit"
+            >
                 <h3>{{ `${type} Action` }}</h3>
                 <span class="text-grey">Please provide the action details.</span>
                 <v-select
