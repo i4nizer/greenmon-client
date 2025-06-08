@@ -35,6 +35,15 @@
                     ></ActuatorInputControlCard>
                 </v-col>
 
+                <!-- Fallback/emptystate when no dashboard data -->
+                <v-col v-if="mcuActuatorsWithInputs?.length <= 0 || mcuSensorsWithOutputs?.length <= 0">
+                    <v-empty-state
+                        icon="mdi-view-dashboard"
+                        text="You haven't created any sensors or actuators yet."
+                        title="No data yet"
+                    ></v-empty-state>
+                </v-col>
+
             </v-row>
         </v-container>
     </McuLayout>
