@@ -1,14 +1,22 @@
 <template>
-    <v-dialog>
+    <v-dialog v-model="state.dialog">
         <template #activator="{ props: activatorProps }">
             <slot name="activator" :="{ props: activatorProps }"></slot>
         </template>
         <template #default="{ isActive }">
             <v-container class="bg-green-darken-4 rounded pt-7 overflow-auto">
                 <v-row>
-                    <v-col class="pl-8">
+                    <v-col cols="10" class="pl-8">
                         <h3>Image: {{ image?.filename }}</h3>
                         <sub>Captured: {{ date.format(image?.createdAt, 'fullDateTime12h') }}</sub>
+                    </v-col>
+                    <v-col cols="2" class="text-end">
+                        <v-btn
+                            text="Close"
+                            icon="mdi-close"
+                            class="bg-transparent elevation-0"
+                            @click="state.dialog = !state.dialog"
+                        ></v-btn>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -53,7 +61,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { reactive, defineAsyncComponent } from "vue";
 import { useDate } from "vuetify";
 
 const ImageDetectionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/ImageDetectionCard.vue"))
@@ -82,6 +90,9 @@ const props = defineProps({
 
 // ---composables
 const date = useDate()
+
+// ---state
+const state = reactive({ dialog: false })
 
 // ---actions
 const getRecommendations = (deficiency) => {
