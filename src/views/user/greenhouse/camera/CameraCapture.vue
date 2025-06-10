@@ -97,8 +97,7 @@ const route = useRoute()
 const cameraId = route.params.cameraId
 const greenhouseId = route.params.greenhouseId
 
-const images = reactive([])
-const detections = reactive([])
+const imageWithDetections = reactive([])
 const wsEvents = reactive([])
 
 const pagination = reactive({
@@ -111,29 +110,24 @@ const pagination = reactive({
 
 // ---getters
 const camera = computed(() => cameras.find(c => c.id == cameraId))
-const imageWithDetections = computed(() => images.map(i => ({ ...i, detections: detections.filter(d => d.imageId == i.id) })))
 
 // ---state
 
 
 // ---events
 const onPaginate = async () => {
-    const imgRes = await retrieveImage(
+    const res = await retrieveImage({
         cameraId,
         greenhouseId,
-        pagination.limit,
-        (pagination.page - 1) * pagination.limit,
-        pagination.year,
-        pagination.month
-    )
-
-    images.splice(0, images.length)
-    images.push(...imgRes.data?.images)
-    pagination.count = Math.ceil(imgRes.data?.count / pagination.limit)
-
-    const detRes = await Promise.all(images.map(i => retrieveDetection(i.id)))
-    detections.splice(0, detections.length)
-    detections.push(...detRes.map(res => res.data?.detections).flat())
+        limit: pagination.limit,
+        offset: (pagination.page - 1) * pagination.limit,
+        year: pagination.year,
+        month: pagination.month,
+        detection: true
+    })
+    pagination.count = Math.ceil(res.data?.count / pagination.limit)
+    imageWithDetections.splice(0, imageWithDetections.length)
+    imageWithDetections.push(...res.data.images)
 }
 
 const onWsEventImage = (data) => {

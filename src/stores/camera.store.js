@@ -47,11 +47,9 @@ export const useCameraStore = defineStore('camera', () => {
         return res
     }
 
-    const retrieveImage = async (cameraId, greenhouseId, limit = 25, offset = 0, year = new Date().getFullYear(), month = 0) => {
-        const url = `/user/greenhouse/image?limit=${limit}&offset=${offset}&year=${year}&month=${month}`;
-        let query = cameraId ? `&cameraId=${cameraId}` : "";
-        query += greenhouseId ? `&greenhouseId=${greenhouseId}` : "";
-        const res = await api.get(url + query);
+    const retrieveImage = async (query) => {
+        const url = `/user/greenhouse/image?` + Object.keys(query).map(q => `${q}=${query[q]}`).join('&')
+        const res = await api.get(url);
 
         const union = [...new Map([...images, ...res.data.images].map((i) => [i.id, i])).values()];
         images.splice(0, images.length);
@@ -60,10 +58,9 @@ export const useCameraStore = defineStore('camera', () => {
         return res;
     };
     
-    const retrieveDetection = async (imageId, label = null) => {
-        const url = `/user/greenhouse/image/detection?imageId=${imageId}`;
-        const query = label ? `&class=${label}` : ''
-        const res = await api.get(url + query);
+    const retrieveDetection = async (query) => {
+        const url = `/user/greenhouse/image/detection?` + Object.keys(query).map(q => `${q}=${query[q]}`).join('&');
+        const res = await api.get(url);
 
         const union = [...new Map([...detections, ...res.data.detections].map((m) => [m.id, m])).values()];
         detections.splice(0, detections.length);
