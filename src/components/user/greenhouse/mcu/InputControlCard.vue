@@ -87,7 +87,6 @@ const onChange = async (value) => {
     input.flag = Number(value);
     if (value <= -1) return;
     const data = { ...props.input, ...input, flag: Number(value) };
-    console.log("Sent: ", data);
 
     state.loading = true;
     await updateInput(data).catch(console.error);
@@ -105,8 +104,6 @@ const onWsInput = (data) => {
         input.status = d.status;
         input.pinId = d.pinId;
         input.actuatorId = d.actuatorId;
-
-        console.log("Received: ", { ...props.input, ...input, ...d });
     }
 };
 

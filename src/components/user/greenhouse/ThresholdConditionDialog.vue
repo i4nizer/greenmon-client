@@ -67,7 +67,7 @@ const props = defineProps({
         default: {},
     },
 });
-console.log(props.outputs)
+
 // ---composables
 const { required, min, max } = useRules();
 

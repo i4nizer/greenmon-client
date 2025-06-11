@@ -12,7 +12,7 @@ const userBeforeEnter = async (to, from, next) => {
 
     // must reauthenticate
     if (refreshTokenExpired) {
-        console.log("Your session has expired, kindly login again.")
+        // console.log("Your session has expired, kindly login again.")
         return next("/auth/sign-in");
     }
 
@@ -23,7 +23,7 @@ const userBeforeEnter = async (to, from, next) => {
         
         // failed to rotate
         if (error) {
-            console.log("Authentication error occurred, kindly login again.");
+            // console.log("Authentication error occurred, kindly login again.");
             return next("/auth/sign-in");
         }
     }

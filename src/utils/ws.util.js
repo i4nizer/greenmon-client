@@ -46,7 +46,7 @@ const wsConnect = () => {
     _webSocket.onopen = e => {
         _connected = true
         _connecting = false
-        console.log('Web Socket connected successfully.')
+        // console.log('Web Socket connected successfully.')
     }
 
     _webSocket.onmessage = e => {

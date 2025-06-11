@@ -44,7 +44,7 @@ export const useTokenStore = defineStore('token', () => {
         // save new tokens
         accessToken.value = response.data.accessToken;
         refreshToken.value = response.data.refreshToken;
-        console.log("Token: Token rotated successfully.");
+        // console.log("Token: Token rotated successfully.");
 
         return response;
     }
