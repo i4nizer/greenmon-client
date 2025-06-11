@@ -71,7 +71,7 @@
                         <!-- The Chart, Bow -->
                         <Bar 
                             v-if="imagesWithDetections.length > 0"
-                            class="w-100 border" 
+                            class="w-100 border pa-2" 
                             :key="chartKey"
                             :data="chartData" 
                             :options="chartOptions" 

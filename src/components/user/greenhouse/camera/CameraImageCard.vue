@@ -85,7 +85,7 @@ const boundingBoxes = computed(() =>
 // ---hooks
 onMounted(async () => {
     const res = await api.get(
-        `/user/greenhouse/uploads/${props.image?.filename}`,
+        `/user/greenhouse/image/upload?filename=${props.image?.filename}`,
         { responseType: 'blob' }
     )
     url.value = URL.createObjectURL(res.data)

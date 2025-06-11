@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto" max-width="600">
+    <v-card class="pb-5" max-width="600">
         <template #prepend>
             <v-icon size="48" class="me-8" :color="leafColor">mdi-leaf</v-icon>
         </template>
