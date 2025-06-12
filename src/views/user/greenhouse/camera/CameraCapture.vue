@@ -12,18 +12,43 @@
                     <h3>Camera Capture</h3>
                 </v-col>
             </v-row>
-            <v-row justify="end">
+            <v-row>
 
                 <!-- List Date Range Control -->
-                <v-col cols="6" class="d-flex ga-1 align-center">
+                <v-col class="pa-1" cols="12" sm="12" md="9" lg="6" xl="4">
                     <v-select
+                        chips
+                        multiple
+                        hide-details
+                        label="Class"
+                        v-model="filter.classes"
+                        :items="['No Lettuce', ...env.modelClasses]"
+                        @update:model-value="onPaginate"
+                    ></v-select>
+                </v-col>
+                <v-col class="pa-1" cols="12" sm="12" md="3" lg="2" xl="2">
+                    <v-select
+                        chips
+                        hide-details
+                        label="Limit"
+                        v-model="pagination.limit"
+                        :items="[25, 50, 100, 200, 500]"
+                        @update:model-value="onPaginate"
+                    ></v-select>
+                </v-col>
+                <v-col class="pa-1" cols="12" sm="12" md="6" lg="2" xl="3">
+                    <v-select
+                        chips
                         hide-details
                         label="Year"
                         v-model="pagination.year"
                         :items="Array.from({ length: new Date().getFullYear() - 2024 }, (_, i) => i + 2025)"
                         @update:model-value="onPaginate"
                     ></v-select>
+                </v-col>
+                <v-col class="pa-1" cols="12" sm="12" md="6" lg="2" xl="3">
                     <v-select
+                        chips
                         hide-details
                         label="Month"
                         v-model="pagination.month"
@@ -55,7 +80,7 @@
                 >
                     <v-empty-state
                         icon="mdi-image-off"
-                        text="There are no captured images for the selected month."
+                        text="There are no captured images for the selected filter and year-month."
                         title="No Captures"
                     ></v-empty-state>
                 </v-col>
@@ -78,6 +103,7 @@
 </template>
 
 <script setup>
+import env from '@/configs/env.config';
 import { useCameraStore } from '@/stores/camera.store';
 import { wsAddEvent, wsDelEvent } from '@/utils/ws.util';
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, reactive, toRaw } from 'vue';
@@ -100,6 +126,9 @@ const greenhouseId = route.params.greenhouseId
 const imageWithDetections = reactive([])
 const wsEvents = reactive([])
 
+const filter = reactive({
+    classes: ['No Lettuce', ...env.modelClasses]
+})
 const pagination = reactive({
     page: 1,
     limit: 25,
@@ -123,7 +152,8 @@ const onPaginate = async () => {
         offset: (pagination.page - 1) * pagination.limit,
         year: pagination.year,
         month: pagination.month,
-        detection: true
+        detection: true,
+        ...(filter.classes.length > 0 && { classes: filter.classes.join(',') })
     })
     pagination.count = Math.ceil(res.data?.count / pagination.limit)
     imageWithDetections.splice(0, imageWithDetections.length)
