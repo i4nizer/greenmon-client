@@ -3,7 +3,7 @@
         <v-container class="pa-5 py-7" fluid>
             <v-row justify="center" align-content="center">
                 <v-img
-                    src="@/assets/bg-doa.png"
+                    src="https://res.cloudinary.com/dqgnetjlz/image/upload/f_auto,q_auto/v1749725689/bg-doa.png"
                     class="position-fixed top-0 h-100 w-75 w-sm-50 w-md-33 w-lg-25 opacity-50"
                 ></v-img>
             </v-row>
@@ -13,7 +13,6 @@
                 </v-col>
             </v-row>
             <v-row>
-
                 <!-- Sensor Reading Cards -->
                 <v-col v-for="mswo in mcuSensorsWithOutputs" :key="mswo?.id" sm="12" md="6" lg="4">
                     <SensorOutputReadingCard
@@ -43,54 +42,43 @@
                         title="No data yet"
                     ></v-empty-state>
                 </v-col>
-
             </v-row>
         </v-container>
     </McuLayout>
 </template>
 
 <script setup>
-import { useActuatorStore } from '@/stores/actuator.store';
-import { useSensorStore } from '@/stores/sensor.store';
-import { computed, defineAsyncComponent, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { useActuatorStore } from "@/stores/actuator.store";
+import { useSensorStore } from "@/stores/sensor.store";
+import { computed, defineAsyncComponent, reactive } from "vue";
+import { useRoute } from "vue-router";
 
-const McuLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/mcu/McuLayout.vue"))
-const SensorOutputReadingCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/SensorOutputReadingCard.vue"))
-const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/ActuatorInputControlCard.vue"))
-
+const McuLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/mcu/McuLayout.vue"));
+const SensorOutputReadingCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/SensorOutputReadingCard.vue"));
+const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/ActuatorInputControlCard.vue"));
 
 // ---stores
-const { sensors, outputs } = useSensorStore()
-const { actuators, inputs } = useActuatorStore()
+const { sensors, outputs } = useSensorStore();
+const { actuators, inputs } = useActuatorStore();
 
 // ---composables
-const route = useRoute()
+const route = useRoute();
 
 // ---getters
-const mcuId = route.params.mcuId
-const mcuSensorsWithOutputs = computed(() => 
-    sensors
-        .filter(s => s.mcuId == mcuId)
-        .map(s => ({ ...s, outputs: outputs.filter(o => o.sensorId == s.id) }))
-)
+const mcuId = route.params.mcuId;
+const mcuSensorsWithOutputs = computed(() =>
+    sensors.filter((s) => s.mcuId == mcuId).map((s) => ({ ...s, outputs: outputs.filter((o) => o.sensorId == s.id) }))
+);
 const mcuActuatorsWithInputs = computed(() =>
-    actuators
-        .filter(a => a.mcuId == mcuId)
-        .map(a => ({ ...a, inputs: inputs.filter(i => i.actuatorId == a.id) }))
-)
+    actuators.filter((a) => a.mcuId == mcuId).map((a) => ({ ...a, inputs: inputs.filter((i) => i.actuatorId == a.id) }))
+);
 
 // ---state
 const state = reactive({
     loadingActuatorId: null,
-})
-
+});
 
 // ---events
-
-
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

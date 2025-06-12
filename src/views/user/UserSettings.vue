@@ -3,7 +3,7 @@
         <v-container class="pa-5 py-7" fluid>
             <v-row justify="center" align-content="center">
                 <v-img
-                    src="@/assets/bg-doa.png"
+                    src="https://res.cloudinary.com/dqgnetjlz/image/upload/f_auto,q_auto/v1749725689/bg-doa.png"
                     class="position-fixed top-0 h-100 w-75 w-sm-50 w-md-33 w-lg-25 opacity-50"
                 ></v-img>
             </v-row>
@@ -14,16 +14,16 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <UserAccountCard 
-                        :user="user" 
+                    <UserAccountCard
+                        :user="user"
                         :loading="state.updatingUser"
                         :disabled="state.updatingUser"
                         @change="onUpdateUser"
                     />
                 </v-col>
                 <v-col>
-                    <UserSecurityCard 
-                        :user="user" 
+                    <UserSecurityCard
+                        :user="user"
                         :loading="state.forgettingPassword"
                         :disabled="state.forgettingPassword"
                         @change-password="onChangePassword"
@@ -35,58 +35,47 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/user.store';
-import { defineAsyncComponent, reactive } from 'vue';
-import { useTokenStore } from '@/stores/token.store';
-import { useRouter } from 'vue-router';
+import { useUserStore } from "@/stores/user.store";
+import { defineAsyncComponent, reactive } from "vue";
+import { useTokenStore } from "@/stores/token.store";
+import { useRouter } from "vue-router";
 
-const UserLayout = defineAsyncComponent(() => import("@/views/user/UserLayout.vue"))
-const UserAccountCard = defineAsyncComponent(() => import("@/components/user/UserAccountCard.vue"))
-const UserSecurityCard = defineAsyncComponent(() => import("@/components/user/UserSecurityCard.vue"))
-
+const UserLayout = defineAsyncComponent(() => import("@/views/user/UserLayout.vue"));
+const UserAccountCard = defineAsyncComponent(() => import("@/components/user/UserAccountCard.vue"));
+const UserSecurityCard = defineAsyncComponent(() => import("@/components/user/UserSecurityCard.vue"));
 
 // ---stores
-const {
-    user,
-    update,
-    forgotPassword,
-} = useUserStore()
-const { clear: clearTokens } = useTokenStore()
+const { user, update, forgotPassword } = useUserStore();
+const { clear: clearTokens } = useTokenStore();
 
 // ---composables
-const router = useRouter()
+const router = useRouter();
 
 // ---state
 const state = reactive({
     updatingUser: false,
-    forgettingPassword: false
-})
+    forgettingPassword: false,
+});
 
 // ---events
 const onUpdateUser = async (user) => {
-    state.updatingUser = true
+    state.updatingUser = true;
 
-    await update(user.name)
-        .catch(console.error)
-    
-    state.updatingUser = false
-}
+    await update(user.name).catch(console.error);
+
+    state.updatingUser = false;
+};
 
 const onChangePassword = async () => {
-    state.forgettingPassword = true
+    state.forgettingPassword = true;
 
     await forgotPassword(user.email)
         .then(() => clearTokens())
-        .then(() => router.push('/auth/forgot-password'))
-        .catch(console.error)
+        .then(() => router.push("/auth/forgot-password"))
+        .catch(console.error);
 
-    state.forgettingPassword = false
-}
-
-
-
+    state.forgettingPassword = false;
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

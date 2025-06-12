@@ -3,7 +3,7 @@
         <v-container class="pa-5 py-7" fluid>
             <v-row justify="center" align-content="center">
                 <v-img
-                    src="@/assets/bg-doa.png"
+                    src="https://res.cloudinary.com/dqgnetjlz/image/upload/f_auto,q_auto/v1749725689/bg-doa.png"
                     class="position-fixed top-0 h-100 w-75 w-sm-50 w-md-33 w-lg-25 opacity-50"
                 ></v-img>
             </v-row>
@@ -13,7 +13,6 @@
                 </v-col>
             </v-row>
             <v-row>
-
                 <!-- Sensor Reading Cards -->
                 <v-col v-for="gmswo in greenhouseMcusSensorsWithOutputs" :key="gmswo?.id" sm="12" md="6" lg="4">
                     <SensorOutputReadingCard
@@ -34,80 +33,64 @@
                         :actuator="gmawi"
                     ></ActuatorInputControlCard>
                 </v-col>
-
             </v-row>
             <v-row>
-
                 <!-- Greenhouse Alerts -->
                 <v-col cols="12" lg="6">
-                    <GreenhouseAlertCard
-                        class="border"
-                        :limit="10"
-                        :greenhouse="greenhouse"
-                    ></GreenhouseAlertCard>
+                    <GreenhouseAlertCard class="border" :limit="10" :greenhouse="greenhouse"></GreenhouseAlertCard>
                 </v-col>
 
                 <!-- Greenhouse Log Card -->
                 <v-col cols="12" lg="6">
-                    <GreenhouseLogCard
-                        class="border"
-                        :limit="10"
-                        :greenhouse="greenhouse"
-                    ></GreenhouseLogCard>
+                    <GreenhouseLogCard class="border" :limit="10" :greenhouse="greenhouse"></GreenhouseLogCard>
                 </v-col>
-
             </v-row>
         </v-container>
     </GreenhouseLayout>
 </template>
 
 <script setup>
-import { useActuatorStore } from '@/stores/actuator.store';
-import { useGreenhouseStore } from '@/stores/greenhouse.store';
-import { useMcuStore } from '@/stores/mcu.store';
-import { useSensorStore } from '@/stores/sensor.store';
-import { reactive, computed, defineAsyncComponent } from 'vue';
-import { useRoute } from 'vue-router';
+import { useActuatorStore } from "@/stores/actuator.store";
+import { useGreenhouseStore } from "@/stores/greenhouse.store";
+import { useMcuStore } from "@/stores/mcu.store";
+import { useSensorStore } from "@/stores/sensor.store";
+import { reactive, computed, defineAsyncComponent } from "vue";
+import { useRoute } from "vue-router";
 
-const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"))
-const GreenhouseLogCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseLogCard.vue"))
-const GreenhouseAlertCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseAlertCard.vue"))
-const SensorOutputReadingCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/SensorOutputReadingCard.vue"))
-const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/ActuatorInputControlCard.vue"))
-
+const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"));
+const GreenhouseLogCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseLogCard.vue"));
+const GreenhouseAlertCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseAlertCard.vue"));
+const SensorOutputReadingCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/SensorOutputReadingCard.vue"));
+const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/ActuatorInputControlCard.vue"));
 
 // ---stores
-const { mcus } = useMcuStore()
-const { sensors, outputs } = useSensorStore()
-const { actuators, inputs } = useActuatorStore()
-const { greenhouses } = useGreenhouseStore()
+const { mcus } = useMcuStore();
+const { sensors, outputs } = useSensorStore();
+const { actuators, inputs } = useActuatorStore();
+const { greenhouses } = useGreenhouseStore();
 
 // ---composables
-const route = useRoute()
+const route = useRoute();
 
 // ---getters
-const greenhouseId = route.params.greenhouseId
-const greenhouse = computed(() => greenhouses.find(g => g.id == greenhouseId))
-const greenhouseMcus = computed(() => mcus.filter(m => m.greenhouseId == greenhouseId))
+const greenhouseId = route.params.greenhouseId;
+const greenhouse = computed(() => greenhouses.find((g) => g.id == greenhouseId));
+const greenhouseMcus = computed(() => mcus.filter((m) => m.greenhouseId == greenhouseId));
 const greenhouseMcusSensorsWithOutputs = computed(() =>
     sensors
-        .filter(s => greenhouseMcus.value.some(m => m.id == s.mcuId))
-        .map(s => ({ ...s, outputs: outputs.filter(o => o.sensorId == s.id) }))
-)
-const greenhouseMcusActuatorsWithInputs = computed(() => 
+        .filter((s) => greenhouseMcus.value.some((m) => m.id == s.mcuId))
+        .map((s) => ({ ...s, outputs: outputs.filter((o) => o.sensorId == s.id) }))
+);
+const greenhouseMcusActuatorsWithInputs = computed(() =>
     actuators
-        .filter(a => greenhouseMcus.value.some(m => m.id == a.mcuId))
-        .map(a => ({ ...a, inputs: inputs.filter(i => i.actuatorId == a.id) }))
-)
+        .filter((a) => greenhouseMcus.value.some((m) => m.id == a.mcuId))
+        .map((a) => ({ ...a, inputs: inputs.filter((i) => i.actuatorId == a.id) }))
+);
 
 // ---state
 const state = reactive({
     loadingActuatorId: null,
-})
-
-
+});
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

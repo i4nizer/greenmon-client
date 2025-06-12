@@ -3,7 +3,7 @@
         <v-container class="pa-5 py-7" fluid>
             <v-row justify="center" align-content="center">
                 <v-img
-                    src="@/assets/bg-doa.png"
+                    src="https://res.cloudinary.com/dqgnetjlz/image/upload/f_auto,q_auto/v1749725689/bg-doa.png"
                     class="position-fixed top-0 h-100 w-75 w-sm-50 w-md-33 w-lg-25 opacity-50"
                 ></v-img>
             </v-row>
@@ -27,38 +27,33 @@
 </template>
 
 <script setup>
-import { useGreenhouseStore } from '@/stores/greenhouse.store';
-import { computed, defineAsyncComponent, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { useGreenhouseStore } from "@/stores/greenhouse.store";
+import { computed, defineAsyncComponent, reactive } from "vue";
+import { useRoute } from "vue-router";
 
-const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"))
-const GreenhouseDetailsCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseDetailsCard.vue"))
-
+const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"));
+const GreenhouseDetailsCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseDetailsCard.vue"));
 
 // ---stores
-const { greenhouses, updateGreenhouse } = useGreenhouseStore()
+const { greenhouses, updateGreenhouse } = useGreenhouseStore();
 
 // ---composables
-const route = useRoute()
+const route = useRoute();
 
 // ---getters
-const greenhouse = computed(() => greenhouses.find(g => g.id == route.params.greenhouseId))
+const greenhouse = computed(() => greenhouses.find((g) => g.id == route.params.greenhouseId));
 
 // ---state
-const state = reactive({ updating: false })
+const state = reactive({ updating: false });
 
 // ---events
 const onUpdateGreenhouse = async (greenhouse) => {
-    state.updating = true
+    state.updating = true;
 
-    await updateGreenhouse({ ...greenhouse })
-        .catch(console.error)
+    await updateGreenhouse({ ...greenhouse }).catch(console.error);
 
-    state.updating = false
-}
-
+    state.updating = false;
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

@@ -140,7 +140,7 @@ const greenhouse = computed(() => greenhouses.find(g => g.id == greenhouseId));
 
 // ---state
 const state = reactive({
-    drawer: false,
+    drawer: !smAndDown.value,
     signingOut: false,
 })
 

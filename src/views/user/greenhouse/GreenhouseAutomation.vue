@@ -3,7 +3,7 @@
         <v-container class="pa-5 py-7" fluid>
             <v-row justify="center" align-content="center">
                 <v-img
-                    src="@/assets/bg-doa.png"
+                    src="https://res.cloudinary.com/dqgnetjlz/image/upload/f_auto,q_auto/v1749725689/bg-doa.png"
                     class="position-fixed top-0 h-100 w-75 w-sm-50 w-md-33 w-lg-25 opacity-50"
                 ></v-img>
             </v-row>
@@ -14,28 +14,21 @@
             </v-row>
             <v-row>
                 <v-col class="text-end py-0">
-
                     <!-- For creating thresholds -->
                     <GreenhouseThresholdDialog class="w-100 w-md-50" type="Create" @submit="onCreateThreshold">
                         <template #activator="{ props: activatorProps }">
-                            <v-btn 
-                                class="bg-green"
-                                :="activatorProps" 
-                                :loading="state.creatingThreshold"
-                            >
+                            <v-btn class="bg-green" :="activatorProps" :loading="state.creatingThreshold">
                                 <v-icon class="mr-1">mdi-plus</v-icon>
                                 <span v-if="$vuetify.display.smAndUp">New Threshold</span>
                             </v-btn>
                         </template>
                     </GreenhouseThresholdDialog>
-
                 </v-col>
             </v-row>
             <v-row>
-
                 <!-- Threshold Lists -->
                 <v-col v-for="threshold in thresholdsWithConditionsActions" lg="6" xxl="4">
-                    <GreenhouseThresholdCard 
+                    <GreenhouseThresholdCard
                         :key="threshold?.id"
                         :inputs="inputs"
                         :outputs="outputs"
@@ -63,34 +56,27 @@
                         title="No automation yet"
                     ></v-empty-state>
                 </v-col>
-
             </v-row>
         </v-container>
     </GreenhouseLayout>
 </template>
 
 <script setup>
-import { useActionStore } from '@/stores/action.store';
-import { useActuatorStore } from '@/stores/actuator.store';
-import { useSensorStore } from '@/stores/sensor.store';
-import { useThresholdStore } from '@/stores/threshold.store';
-import { computed, defineAsyncComponent, reactive } from 'vue';
-import { useRoute } from 'vue-router';
+import { useActionStore } from "@/stores/action.store";
+import { useActuatorStore } from "@/stores/actuator.store";
+import { useSensorStore } from "@/stores/sensor.store";
+import { useThresholdStore } from "@/stores/threshold.store";
+import { computed, defineAsyncComponent, reactive } from "vue";
+import { useRoute } from "vue-router";
 
-const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"))
-const GreenhouseThresholdCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseThresholdCard.vue"))
-const GreenhouseThresholdDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseThresholdDialog.vue"))
-
+const GreenhouseLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/GreenhouseLayout.vue"));
+const GreenhouseThresholdCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseThresholdCard.vue"));
+const GreenhouseThresholdDialog = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseThresholdDialog.vue"));
 
 // ---stores
-const { inputs } = useActuatorStore()
-const { outputs } = useSensorStore()
-const {
-    actions,
-    createAction,
-    updateAction,
-    destroyAction,
-} = useActionStore()
+const { inputs } = useActuatorStore();
+const { outputs } = useSensorStore();
+const { actions, createAction, updateAction, destroyAction } = useActionStore();
 const {
     thresholds,
     conditions,
@@ -100,123 +86,107 @@ const {
     createCondition,
     updateCondition,
     destroyCondition,
-} = useThresholdStore()
+} = useThresholdStore();
 
 // ---composables
-const route = useRoute()
+const route = useRoute();
 
 // ---getters
-const greenhouseId = route.params.greenhouseId
+const greenhouseId = route.params.greenhouseId;
 const thresholdsWithConditionsActions = computed(() => {
     const twca = [];
     thresholds
-        .filter(t => t.greenhouseId == greenhouseId)
-        .forEach(t => twca.push({
-            ...t,
-            actions: actions.filter(a => a.thresholdId == t.id),
-            conditions: conditions.filter(c => c.thresholdId == t.id)
-        }))
+        .filter((t) => t.greenhouseId == greenhouseId)
+        .forEach((t) =>
+            twca.push({
+                ...t,
+                actions: actions.filter((a) => a.thresholdId == t.id),
+                conditions: conditions.filter((c) => c.thresholdId == t.id),
+            })
+        );
     return twca;
-})
+});
 
 // ---state
 const state = reactive({
     creatingThreshold: false,
     loadingThresholdId: null,
-})
+});
 
 // ---events
 const onCreateThreshold = async (threshold) => {
-    state.creatingThreshold = true
-    
-    threshold.greenhouseId = greenhouseId
-    await createThreshold(threshold)
-        .catch(console.error)
+    state.creatingThreshold = true;
 
-    state.creatingThreshold = false
-}
+    threshold.greenhouseId = greenhouseId;
+    await createThreshold(threshold).catch(console.error);
+
+    state.creatingThreshold = false;
+};
 
 const onEditThreshold = async (threshold) => {
-    state.loadingThresholdId = threshold?.id
+    state.loadingThresholdId = threshold?.id;
 
-    await updateThreshold(threshold)
-        .catch(console.error)
+    await updateThreshold(threshold).catch(console.error);
 
-    state.loadingThresholdId = null
-}
+    state.loadingThresholdId = null;
+};
 
 const onDeleteThreshold = async (thresholdId) => {
-    state.loadingThresholdId = thresholdId
+    state.loadingThresholdId = thresholdId;
 
-    await destroyThreshold(thresholdId)
-        .catch(console.error)
+    await destroyThreshold(thresholdId).catch(console.error);
 
-    state.loadingThresholdId = null
-}
+    state.loadingThresholdId = null;
+};
 
 const onCreateAction = async (action) => {
-    state.loadingThresholdId = action?.thresholdId
+    state.loadingThresholdId = action?.thresholdId;
 
-    action.greenhouseId = greenhouseId
-    await createAction(action)
-        .catch(console.error)
+    action.greenhouseId = greenhouseId;
+    await createAction(action).catch(console.error);
 
-    state.loadingThresholdId = null
-}
+    state.loadingThresholdId = null;
+};
 
 const onEditAction = async (action) => {
-    state.loadingThresholdId = action?.thresholdId
+    state.loadingThresholdId = action?.thresholdId;
 
-    await updateAction(action)
-        .catch(console.error)
+    await updateAction(action).catch(console.error);
 
-    state.loadingThresholdId = null
-}
+    state.loadingThresholdId = null;
+};
 
 const onDeleteAction = async (actionId, thresholdId) => {
-    state.loadingThresholdId = thresholdId
+    state.loadingThresholdId = thresholdId;
 
-    await destroyAction(actionId)
-        .catch(console.error)
+    await destroyAction(actionId).catch(console.error);
 
-    state.loadingThresholdId = null
-}
+    state.loadingThresholdId = null;
+};
 
 const onCreateCondition = async (condition) => {
-    state.loadingThresholdId = condition?.thresholdId
+    state.loadingThresholdId = condition?.thresholdId;
 
-    await createCondition(condition)
-        .catch(console.error)
+    await createCondition(condition).catch(console.error);
 
-    state.loadingThresholdId = null
-}
+    state.loadingThresholdId = null;
+};
 
 const onEditCondition = async (condition) => {
-    state.loadingThresholdId = condition?.thresholdId
+    state.loadingThresholdId = condition?.thresholdId;
 
-    await updateCondition(condition)
-        .catch(console.error)
+    await updateCondition(condition).catch(console.error);
 
-    state.loadingThresholdId = null
-}
+    state.loadingThresholdId = null;
+};
 
 const onDeleteCondition = async (conditionId, thresholdId) => {
-    state.loadingThresholdId = thresholdId
+    state.loadingThresholdId = thresholdId;
 
-    await destroyCondition(conditionId)
-        .catch(console.error)
+    await destroyCondition(conditionId).catch(console.error);
 
-    state.loadingThresholdId = null
-}
-
-
-
-
-
-
-
+    state.loadingThresholdId = null;
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

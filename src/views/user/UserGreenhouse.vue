@@ -3,7 +3,7 @@
         <v-container fluid class="bg-container pa-5 py-7">
             <v-row justify="center" align-content="center">
                 <v-img
-                    src="@/assets/bg-doa.png"
+                    src="https://res.cloudinary.com/dqgnetjlz/image/upload/f_auto,q_auto/v1749725689/bg-doa.png"
                     class="position-fixed top-0 h-100 w-75 w-sm-50 w-md-33 w-lg-25 opacity-50"
                 ></v-img>
             </v-row>
@@ -14,13 +14,8 @@
             </v-row>
             <v-row>
                 <v-col class="text-end py-0">
-                    
                     <!-- For creating greenhouse -->
-                    <UserGreenhouseDialog 
-                        class="w-100 w-md-50" 
-                        :type="'Create'" 
-                        @submit="onCreateGreenhouse"
-                    >
+                    <UserGreenhouseDialog class="w-100 w-md-50" :type="'Create'" @submit="onCreateGreenhouse">
                         <template #activator="{ props: activatorProps }">
                             <v-btn class="bg-green" :="activatorProps">
                                 <v-icon class="mr-1">mdi-plus</v-icon>
@@ -28,11 +23,9 @@
                             </v-btn>
                         </template>
                     </UserGreenhouseDialog>
-                
                 </v-col>
             </v-row>
             <v-row>
-                
                 <!-- Greenhouse Lists -->
                 <v-col v-for="greenhouse in greenhouses" xs="12" sm="6" md="4" lg="3" xl="2">
                     <UserGreenhouseCard
@@ -43,7 +36,7 @@
                         @delete="onDeleteGreenhouse"
                     />
                 </v-col>
-                
+
                 <!-- Fallback/emptystate when no greenhouse -->
                 <v-col v-if="!greenhouses.length">
                     <v-empty-state
@@ -52,7 +45,6 @@
                         title="No greenhouse yet"
                     ></v-empty-state>
                 </v-col>
-            
             </v-row>
         </v-container>
     </UserLayout>
@@ -63,16 +55,15 @@ import { useGreenhouseStore } from "@/stores/greenhouse.store";
 import { defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
 
-const UserLayout = defineAsyncComponent(() => import("@/views/user/UserLayout.vue"))
+const UserLayout = defineAsyncComponent(() => import("@/views/user/UserLayout.vue"));
 const UserGreenhouseCard = defineAsyncComponent(() => import("@/components/user/UserGreenhouseCard.vue"));
 const UserGreenhouseDialog = defineAsyncComponent(() => import("@/components/user/UserGreenhouseDialog.vue"));
-
 
 // ---stores
 const { greenhouses, createGreenhouse, updateGreenhouse, destroyGreenhouse } = useGreenhouseStore();
 
 // ---composables
-const router = useRouter()
+const router = useRouter();
 
 // ---events
 const onCreateGreenhouse = async (greenhouse) => {
@@ -80,7 +71,7 @@ const onCreateGreenhouse = async (greenhouse) => {
 };
 
 const onViewGreenhouse = (greenhouseId) => {
-    router.push(`/user/greenhouse/${greenhouseId}/dashboard`)
+    router.push(`/user/greenhouse/${greenhouseId}/dashboard`);
 };
 
 const onEditGreenhouse = async (greenhouse) => {
@@ -90,8 +81,6 @@ const onEditGreenhouse = async (greenhouse) => {
 const onDeleteGreenhouse = async (greenhouseId) => {
     await destroyGreenhouse(greenhouseId).catch(console.error);
 };
-
-
 </script>
 
 <style lang="scss" scoped></style>
