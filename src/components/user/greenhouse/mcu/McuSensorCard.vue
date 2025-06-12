@@ -1,6 +1,6 @@
 <template>
     <v-card class="border pt-3" :id="`sensor-${sensor?.id}`">
-        <v-card-title class="d-flex ga-1">
+        <v-card-title class="d-flex ga-1 text-wrap">
             <span :class="sensor?.disabled ? 'text-red':'text-green'">{{ sensor?.name }}</span>
             <v-spacer></v-spacer>
 
@@ -47,10 +47,10 @@
             </v-menu>
         </v-card-title>
 
-        <v-card-subtitle>Label: {{ sensor?.label }}</v-card-subtitle>
+        <v-card-subtitle class="text-wrap">Label: {{ sensor?.label }}</v-card-subtitle>
         
         <v-card-text>
-            <span class="w-100">Read Interval: Every {{ sensor?.interval }} seconds</span>
+            <span class="w-100 text-wrap">Read Interval: Every {{ sensor?.interval }} seconds</span>
             
             <!-- Output Lists -->
             <v-list>

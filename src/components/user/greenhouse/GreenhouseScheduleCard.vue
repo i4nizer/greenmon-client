@@ -1,6 +1,6 @@
 <template>
     <v-card class="border pt-3">
-        <v-card-title class="d-flex">
+        <v-card-title class="d-flex text-wrap">
             <v-icon :color="schedule?.disabled ? 'red':'green'">mdi-calendar-clock</v-icon>
             <span class="ml-2" :class="schedule?.disabled ? 'text-red':'text-green'">{{ schedule?.name }}</span>
             <v-spacer></v-spacer>

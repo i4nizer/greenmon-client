@@ -1,6 +1,6 @@
 <template>
     <v-card class="border pt-3">
-        <v-card-title class="d-flex ga-1 text-subtitle-1">
+        <v-card-title class="d-flex ga-1 text-subtitle-1 text-wrap">
             <span class="text-truncate">Hook to {{ action?.name }}</span>
             <v-spacer></v-spacer>
             <v-icon>mdi-hook</v-icon>

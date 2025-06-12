@@ -1,6 +1,6 @@
 <template>
     <v-card class="border pt-3" :id="`actuator-${actuator?.id}`">
-        <v-card-title class="d-flex ga-1">
+        <v-card-title class="d-flex ga-1 text-wrap">
             <span :class="actuator?.disabled ? 'text-red':'text-green'">{{ actuator?.name }}</span>
             <v-spacer></v-spacer>
 
@@ -47,7 +47,7 @@
             </v-menu>
         </v-card-title>
 
-        <v-card-subtitle>Label: {{ actuator?.label }}</v-card-subtitle>
+        <v-card-subtitle class="text-wrap">Label: {{ actuator?.label }}</v-card-subtitle>
         
         <v-card-text>
             <v-list>

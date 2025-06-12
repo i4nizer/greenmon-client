@@ -4,7 +4,7 @@
             <v-icon size="38" class="me-2">mdi-chart-line</v-icon>
         </template>
         <template #title>
-            <span>{{ outputs.map(o => o.name).join(', ') }} Readings</span>
+            <span class="text-wrap">{{ outputs.map(o => o.name).join(', ') }} Readings</span>
         </template>
         <template #append>
             <v-menu open-on-hover>
@@ -36,7 +36,7 @@
             </v-menu>
         </template>
         <template #subtitle>
-            <span>Readings from {{ date.format(dateRange.start, 'fullDateWithWeekday') }}</span>
+            <span class="text-wrap">Readings from {{ date.format(dateRange.start, 'fullDateWithWeekday') }}</span>
             <span>&nbsp;to {{ date.format(dateRange.end, 'fullDateWithWeekday') }}</span>
         </template>
         <template #default>
@@ -85,17 +85,21 @@
                     <v-col cols="12">
 
                         <!-- The line chart -->
-                        <Line 
-                            v-if="readings.length > 0"
-                            class="w-100 border pt-3"
-                            :key="chartKey"
-                            :data="chartData" 
-                            :options="chartOptions"
-                        ></Line>
+                        <div 
+                            class="overflow-auto"
+                        >
+                            <Line 
+                                v-if="readings.length > 0"
+                                class="w-auto h-auto border pt-3"
+                                :key="chartKey"
+                                :data="chartData" 
+                                :options="chartOptions"
+                            ></Line>
+                        </div>
 
                         <!-- Fallback/emptystate when no readings -->
                         <v-empty-state
-                            v-else
+                            v-if="readings.length <= 0"
                             icon="mdi-chart-line"
                             text="There are no data from this date range."
                             title="No records found."

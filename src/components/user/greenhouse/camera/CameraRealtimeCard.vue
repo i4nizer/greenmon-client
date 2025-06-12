@@ -4,7 +4,7 @@
             <v-icon>mdi-camera</v-icon>
         </template>
         <template #title>
-            <span class="ml-2">{{ camera?.name }}</span>
+            <span class="ml-2 text-wrap">{{ camera?.name }}</span>
         </template>
         <v-card-subtitle>{{ camera?.label }}</v-card-subtitle>
         <template #append>

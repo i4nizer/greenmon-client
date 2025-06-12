@@ -4,7 +4,7 @@
             <v-icon>mdi-account-cog</v-icon>
             <span class="ml-2">Account</span>
         </v-card-title>
-        <v-card-subtitle>Manage your account settings and preferences.</v-card-subtitle>
+        <v-card-subtitle class="text-wrap">Manage your account settings and preferences.</v-card-subtitle>
         <v-card-text>
             <v-form 
                 class="border-none pa-1"

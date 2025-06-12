@@ -75,7 +75,7 @@ const isTablet = computed(() => !isMobile.value && mdAndDown.value)
 
 // ---state
 const state = reactive({
-    drawer: true,
+    drawer: false,
     signingOut: false,
 })
 

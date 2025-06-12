@@ -4,7 +4,7 @@
             <v-icon>mdi-shield-lock</v-icon>
             <span class="ml-2">Security</span>
         </v-card-title>
-        <v-card-subtitle>Manage your password and security settings.</v-card-subtitle>
+        <v-card-subtitle class="text-wrap">Manage your password and security settings.</v-card-subtitle>
         <v-card-text>
             <v-btn
                 text="Change Password"

@@ -8,8 +8,8 @@
             <div>
                 <span class="text-caption text-grey text-uppercase">{{ output?.name }}</span>
             </div>
-            <span v-if="readings.length > 0" class="text-h4 font-weight-black">{{ readings?.at(-1)?.value }}</span>
-            <strong v-if="readings.length > 0">{{ output?.unit }}</strong>
+            <span v-if="readings.length > 0" class="text-h4 text-wrap font-weight-black">{{ readings?.at(-1)?.value }}</span>
+            <strong v-if="readings.length > 0" class="text-wrap">{{ output?.unit }}</strong>
             <span v-if="readings.length <= 0">No Records Yet</span>
         </template>
 

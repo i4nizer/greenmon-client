@@ -1,6 +1,6 @@
 <template>
     <v-card class="border pt-3">
-        <v-card-title class="d-flex align-center justify-space-between">
+        <v-card-title class="d-flex align-center justify-space-between text-wrap">
             <span :class="sensor?.disabled ? 'text-red' : 'text-green'">{{ sensor?.name }}</span>
             <v-btn
                 link
@@ -10,7 +10,7 @@
                 :to="`/user/greenhouse/${$route.params?.greenhouseId}/mcu/${sensor?.mcuId}/sensors#sensor-${sensor?.id}`"
             ></v-btn>
         </v-card-title>
-        <v-card-subtitle>{{ sensor?.label }}</v-card-subtitle>
+        <v-card-subtitle class="text-wrap">{{ sensor?.label }}</v-card-subtitle>
         <v-card-text>
             
             <!-- Output Reading List -->

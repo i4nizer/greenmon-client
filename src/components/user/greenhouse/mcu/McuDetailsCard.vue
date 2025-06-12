@@ -1,10 +1,10 @@
 <template>
     <v-card>
-        <v-card-title>
+        <v-card-title class="text-wrap">
             <v-icon>mdi-chip</v-icon>
             <span class="ml-2">Details</span>
         </v-card-title>
-        <v-card-subtitle>Manage your microcontroller settings and preferences.</v-card-subtitle>
+        <v-card-subtitle class="text-wrap">Manage your microcontroller settings and preferences.</v-card-subtitle>
         <v-card-text>
             <v-form 
                 class="border-none pa-1"

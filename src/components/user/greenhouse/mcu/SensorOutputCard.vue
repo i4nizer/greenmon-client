@@ -1,6 +1,6 @@
 <template>
     <v-card class="border pt-3">
-        <v-card-title class="d-flex text-subtitle-1">
+        <v-card-title class="d-flex text-subtitle-1 text-wrap">
             <span>{{ output?.name }}</span>
             <v-spacer></v-spacer>
             <v-icon>{{ output?.icon }}</v-icon>

@@ -9,7 +9,7 @@
                 <span class="text-caption text-grey text-uppercase">Detections</span>
             </div>
             <span class="text-h4 font-weight-black">{{ props.count }}&nbsp;</span>
-            <strong>{{ props.class }}</strong>
+            <strong class="text-wrap">{{ props.class }}</strong>
         </template>
 
     </v-card>

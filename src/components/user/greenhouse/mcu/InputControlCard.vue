@@ -1,8 +1,8 @@
 <template>
     <v-card :loading="state.loading" :disabled="state.loading">
-        <v-card-title class="d-flex align-center">
+        <v-card-title class="d-flex align-center text-wrap">
             <v-icon size="48" class="me-8">{{ input?.icon }}</v-icon>
-            <span class="text-h6 font-weight-black text-truncate">{{ input?.name }}</span>
+            <span class="text-h6 font-weight-black text-wrap">{{ input?.name }}</span>
             <v-spacer></v-spacer>
             <span class="text-subtitle-2 text-grey">{{ state.inputting ? "(Applying Input)" : "" }}</span>
         </v-card-title>
@@ -18,9 +18,9 @@
                 class="w-50"
                 density="compact"
                 v-model="input.flag"
-                :model-value="!!input.flag"
-                :label="input?.flag ? '&nbsp;&nbsp;TURN OFF' : '&nbsp;&nbsp;TURN ON'"
+                :label="$vuetify.display.mdAndDown ? '' : input?.flag ? '&nbsp;&nbsp;TURN OFF' : '&nbsp;&nbsp;TURN ON'"
                 :loading="state.loading"
+                :model-value="!!input.flag"
                 @update:model-value="(v) => onChange(Number(v))"
             ></v-switch>
 

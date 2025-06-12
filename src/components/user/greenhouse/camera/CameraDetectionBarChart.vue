@@ -4,10 +4,10 @@
             <v-icon size="38" class="me-2">mdi-chart-line</v-icon>
         </template>
         <template #title>
-            <span>{{ camera?.name }} Monthly Detections</span>
+            <span class="text-wrap">{{ camera?.name }} Monthly Detections</span>
         </template>
         <template #subtitle>
-            <span>The graph shows the detections on images captured by this camera for the selected month.</span>
+            <span class="text-wrap">The graph shows the detections on images captured by this camera for the selected month.</span>
         </template>
         <template #append>
             <v-menu open-on-hover>
@@ -45,7 +45,7 @@
                 <v-row justify="end">
                 
                     <!-- List Date Range Control -->
-                    <v-col cols="6" class="d-flex ga-1 align-center">
+                    <v-col cols="12" sm="6" md="4" lg="3" xl="2" xxl="1">
                         <v-select
                             hide-details
                             label="Year"
@@ -53,6 +53,8 @@
                             :items="Array.from({ length: new Date().getFullYear() - 2024 }, (_, i) => i + 2025)"
                             @update:model-value="onPaginate().catch(console.error)"
                         ></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4" lg="3" xl="2" xxl="1">
                         <v-select
                             hide-details
                             label="Month"
@@ -69,13 +71,18 @@
                     <v-col cols="12">
                        
                         <!-- The Chart, Bow -->
-                        <Bar 
-                            v-if="imagesWithDetections.length > 0"
-                            class="w-100 border pa-2" 
-                            :key="chartKey"
-                            :data="chartData" 
-                            :options="chartOptions" 
-                        />
+                        <div 
+                            class="overflow-auto"
+                        >
+                            <Bar 
+                                v-if="imagesWithDetections.length > 0"
+                                class="w-auto h-auto border pa-2" 
+                                :style="{ minWidth: '600px' }"
+                                :key="chartKey"
+                                :data="chartData" 
+                                :options="chartOptions" 
+                            />
+                        </div>
 
                         <!-- Fallback/emptystate when no captures -->
                         <v-empty-state
