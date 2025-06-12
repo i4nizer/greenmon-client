@@ -71,12 +71,10 @@
                     <v-col cols="12">
                        
                         <!-- The Chart, Bow -->
-                        <div 
-                            class="overflow-auto"
-                        >
+                        <div class="overflow-auto">
                             <Bar 
                                 v-if="imagesWithDetections.length > 0"
-                                class="w-auto h-auto border pa-2" 
+                                class="w-auto w-sm-100 h-auto h-sm-100 border pa-2" 
                                 :style="{ minWidth: '600px' }"
                                 :key="chartKey"
                                 :data="chartData" 

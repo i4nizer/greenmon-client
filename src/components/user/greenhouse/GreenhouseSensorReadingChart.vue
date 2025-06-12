@@ -85,12 +85,10 @@
                     <v-col cols="12">
 
                         <!-- The line chart -->
-                        <div 
-                            class="overflow-auto"
-                        >
+                        <div class="overflow-auto">
                             <Line 
                                 v-if="readings.length > 0"
-                                class="w-auto h-auto border pt-3"
+                                class="w-auto w-sm-100 h-auto h-sm-100 border pt-3"
                                 :key="chartKey"
                                 :data="chartData" 
                                 :options="chartOptions"
