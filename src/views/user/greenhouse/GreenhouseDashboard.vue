@@ -13,8 +13,16 @@
                 </v-col>
             </v-row>
             <v-row>
+                <!-- The Lettuce NPK Detection Chart -->
+                <v-col cols="12" sm="12" md="6" lg="8" xl="6" xxl="4">
+                    <GreenhouseCapturePieChart
+                        class="border"
+                        :greenhouse="greenhouse"
+                    ></GreenhouseCapturePieChart>
+                </v-col>
+
                 <!-- Sensor Reading Cards -->
-                <v-col v-for="gmswo in greenhouseMcusSensorsWithOutputs" :key="gmswo?.id" sm="12" md="6" lg="4">
+                <v-col v-for="gmswo in greenhouseMcusSensorsWithOutputs" :key="gmswo?.id" sm="12" md="6" lg="4" xl="3" xxl="2">
                     <SensorOutputReadingCard
                         class="border"
                         :key="gmswo?.id"
@@ -24,7 +32,7 @@
                 </v-col>
 
                 <!-- Actuator Input Cards -->
-                <v-col v-for="gmawi in greenhouseMcusActuatorsWithInputs" :key="gmawi?.id" sm="12" md="6" lg="4">
+                <v-col v-for="gmawi in greenhouseMcusActuatorsWithInputs" :key="gmawi?.id" sm="12" md="6" lg="4" xl="3" xxl="2">
                     <ActuatorInputControlCard
                         class="border"
                         :key="gmawi?.id"
@@ -62,6 +70,7 @@ const GreenhouseLogCard = defineAsyncComponent(() => import("@/components/user/g
 const GreenhouseAlertCard = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseAlertCard.vue"));
 const SensorOutputReadingCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/SensorOutputReadingCard.vue"));
 const ActuatorInputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/ActuatorInputControlCard.vue"));
+const GreenhouseCapturePieChart = defineAsyncComponent(() => import("@/components/user/greenhouse/GreenhouseCapturePieChart.vue"))
 
 // ---stores
 const { mcus } = useMcuStore();
@@ -91,6 +100,9 @@ const greenhouseMcusActuatorsWithInputs = computed(() =>
 const state = reactive({
     loadingActuatorId: null,
 });
+
+//
+
 </script>
 
 <style lang="scss" scoped></style>
