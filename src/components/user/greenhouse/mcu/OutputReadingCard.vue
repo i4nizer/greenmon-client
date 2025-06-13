@@ -42,7 +42,7 @@
 <script setup>
 import api from "@/utils/api.util";
 import { wsAddEvent, wsConnect, wsDelEvent } from "@/utils/ws.util";
-import { onMounted, onUnmounted, reactive } from "vue";
+import { onBeforeMount, onBeforeUnmount, reactive } from "vue";
 
 //
 
@@ -72,7 +72,7 @@ const onWsReadings = (data) => {
 };
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     const url = "/user/greenhouse/reading";
     await api
         .get(`${url}?outputId=${props.output?.id}&limit=${props.limit}`)
@@ -82,7 +82,7 @@ onMounted(async () => {
     events.push(wsAddEvent("reading", onWsReadings, "Create"));
 });
 
-onUnmounted(() => { while (events.length > 0) wsDelEvent(events.shift()); });
+onBeforeUnmount(() => { while (events.length > 0) wsDelEvent(events.shift()); });
 
 //
 

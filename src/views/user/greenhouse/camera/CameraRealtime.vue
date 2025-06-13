@@ -23,7 +23,7 @@
 
 <script setup>
 import { useCameraStore } from "@/stores/camera.store";
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
+import { computed, defineAsyncComponent, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
 
 const CameraLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/camera/CameraLayout.vue"));

@@ -127,7 +127,7 @@ import {
 import 'chartjs-adapter-date-fns'
 import { Line } from 'vue-chartjs'
 import { useDate } from 'vuetify';
-import { computed, defineAsyncComponent, onMounted, reactive, ref, toRaw, watch } from 'vue'
+import { computed, onBeforeMount, reactive, ref, watch } from 'vue'
 
 
 // Register Chart.js components
@@ -299,7 +299,7 @@ const downloadReadingsDataAll = async () => {
 
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     if (props.outputs.length <= 0) return;
 
     const url = `/user/greenhouse/reading`

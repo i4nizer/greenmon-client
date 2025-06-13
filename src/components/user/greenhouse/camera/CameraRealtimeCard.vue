@@ -34,7 +34,7 @@
 import { useCameraStore } from "@/stores/camera.store";
 import { mlLettuceModelPredict, mlLettuceModelUnload } from "@/utils/model.util";
 import { wsAddEvent, wsDelEvent } from "@/utils/ws.util";
-import { defineAsyncComponent, onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import { defineAsyncComponent, onBeforeUnmount, onBeforeMount, reactive, ref } from "vue";
 
 const ImageDetectionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/ImageDetectionCard.vue"))
 
@@ -85,7 +85,7 @@ const onLoadImage = async (image) => {
 }
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
 
     // set camera realtime
     await updateCamera({ ...props.camera, realtime: true }).catch(console.error);

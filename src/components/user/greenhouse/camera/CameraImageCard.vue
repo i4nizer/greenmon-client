@@ -42,7 +42,7 @@
 
 <script setup>
 import api from '@/utils/api.util';
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, defineAsyncComponent, onBeforeUnmount, onBeforeMount, ref } from 'vue';
 import { useDate } from 'vuetify';
 
 const ImageDetectionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/ImageDetectionCard.vue"))
@@ -83,7 +83,7 @@ const boundingBoxes = computed(() =>
 )
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     const res = await api.get(
         `/user/greenhouse/image/upload?filename=${props.image?.filename}`,
         { responseType: 'blob' }

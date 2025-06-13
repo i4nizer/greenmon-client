@@ -102,7 +102,7 @@
 import env from "@/configs/env.config";
 import { useCameraStore } from "@/stores/camera.store";
 import { wsAddEvent, wsDelEvent } from "@/utils/ws.util";
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, reactive, toRaw } from "vue";
+import { computed, defineAsyncComponent, onBeforeUnmount, onBeforeMount, reactive, toRaw } from "vue";
 import { useRoute } from "vue-router";
 
 const CameraLayout = defineAsyncComponent(() => import("@/views/user/greenhouse/camera/CameraLayout.vue"));
@@ -163,7 +163,7 @@ const onWsEventDetection = (data) => {
 };
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     await onPaginate();
     wsEvents.push(wsAddEvent("image", onWsEventImage, "Create"));
     wsEvents.push(wsAddEvent("detection", onWsEventDetection, "Create"));

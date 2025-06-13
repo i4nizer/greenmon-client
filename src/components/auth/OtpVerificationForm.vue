@@ -28,7 +28,7 @@
 
 <script setup>
 import { useCounter } from '@/composables/counter.composable';
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 
 
 // ---events
@@ -76,7 +76,7 @@ onCount.value = (v) => resendEmailText.value = `Resend in ${v}s`;
 onCountEnd.value = (v) => resendEmailText.value = "Resend Email";
 
 // ---hooks
-onMounted(() => {
+onBeforeMount(() => {
     // check existing count
     const count = props.otpGap - (Date.now() - props.otpLast)
     if (count >= 0) startCount(props.counter, 0, "Down");

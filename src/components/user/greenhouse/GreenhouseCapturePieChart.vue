@@ -47,7 +47,7 @@ import {
     ArcElement,
 } from 'chart.js'
 import { useCameraStore } from '@/stores/camera.store';
-import { onBeforeMount, onMounted, reactive, ref } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 
 //
 

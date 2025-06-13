@@ -43,7 +43,7 @@
 import { useRules } from "@/composables/rules.composable";
 import { useActuatorStore } from "@/stores/actuator.store";
 import { wsAddEvent, wsConnect, wsDelEvent } from "@/utils/ws.util";
-import { onMounted, onUnmounted, reactive, toRaw, watch } from "vue";
+import { onBeforeMount, onBeforeUnmount, reactive, t, onBeforeUnmountoRaw, watch } from "vue";
 
 //
 
@@ -108,8 +108,8 @@ const onWsInput = (data) => {
 };
 
 // ---hooks
-onMounted(() => wsEvents.push(wsAddEvent("input", onWsInput, "Update")) );
-onUnmounted(() => { while (wsEvents.length > 0) wsDelEvent(wsEvents.shift()) });
+onBeforeMount(() => wsEvents.push(wsAddEvent("input", onWsInput, "Update")) );
+onBeforeUnmount(() => { while (wsEvents.length > 0) wsDelEvent(wsEvents.shift()) });
 
 //
 

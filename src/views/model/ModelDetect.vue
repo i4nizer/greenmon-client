@@ -45,7 +45,7 @@
 <script setup>
 import { mlLettuceModelPredict, mlLettuceModelUnload } from '@/utils/model.util';
 import { getVideoDevices, getVideoDeviceStream } from '@/utils/camera.util';
-import { defineAsyncComponent, onMounted, onUnmounted, reactive } from 'vue';
+import { defineAsyncComponent, onBeforeMount, onBeforeUnmount, reactive } from 'vue';
 
 const VideoDetectionCard = defineAsyncComponent(() => import("@/components/model/VideoDetectionCard.vue"))
 const ModelDetectionGuideCard = defineAsyncComponent(() => import("@/components/model/ModelDetectionGuideCard.vue"))
@@ -101,12 +101,14 @@ const onVideoFrame = async (canvas) => {
 }
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     await cameraInit()
     // await cameraOn()
 })
 
-onUnmounted(() => mlLettuceModelUnload())
+onBeforeUnmount(() => mlLettuceModelUnload())
+
+//
 </script>
 
 <style lang="scss" scoped>

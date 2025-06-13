@@ -30,7 +30,7 @@
 <script setup>
 import api from "@/utils/api.util";
 import { wsAddEvent, wsDelEvent } from "@/utils/ws.util";
-import { onMounted, onBeforeUnmount, reactive } from "vue";
+import { onBeforeMount, onBeforeUnmount, reactive } from "vue";
 import { useDate } from "vuetify";
 
 //
@@ -63,7 +63,7 @@ const onWsAlerts = (data) => {
 };
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     const url = `/user/greenhouse/alert?greenhouseId=${props.greenhouse?.id}&limit=${props.limit}`;
     await api.get(url)
         .then((res) => alerts.push(...res.data?.alerts))

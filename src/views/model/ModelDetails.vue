@@ -25,7 +25,7 @@
 
 <script setup>
 import { mlLettuceModelLoad } from '@/utils/model.util';
-import { defineAsyncComponent, onMounted, reactive } from 'vue';
+import { defineAsyncComponent, onBeforeMount, reactive } from 'vue';
 
 const ModelDetailsInfoCard = defineAsyncComponent(() => import("@/components/model/ModelDetailsInfoCard.vue"))
 const ModelDetailsHowItWorksCard = defineAsyncComponent(() => import("@/components/model/ModelDetailsHowItWorksCard.vue"))
@@ -36,7 +36,7 @@ const ModelDetailsBestPracticesCard = defineAsyncComponent(() => import("@/compo
 const state = reactive({ modelLoading: false })
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     state.modelLoading = true
     await mlLettuceModelLoad().catch(console.error)
     state.modelLoading = false

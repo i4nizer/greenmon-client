@@ -27,7 +27,7 @@
 <script setup>
 import api from "@/utils/api.util";
 import { wsAddEvent, wsConnect, wsDelEvent } from "@/utils/ws.util";
-import { onBeforeUnmount, onMounted, reactive } from "vue";
+import { onBeforeUnmount, onBeforeMount, reactive } from "vue";
 import { useDate } from "vuetify";
 
 //
@@ -60,7 +60,7 @@ const onWsLogs = (data) => {
 };
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     const url = `/user/greenhouse/log?greenhouseId=${props.greenhouse?.id}&limit=${props.limit}`;
     await api
         .get(url)

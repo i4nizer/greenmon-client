@@ -150,7 +150,7 @@
 <script setup>
 import { techQuotes } from "@/configs/quote.config";
 import { mlLettuceModelLoad, mlLettuceModelPredict, mlLettuceModelUnload } from "@/utils/model.util";
-import { defineAsyncComponent, onMounted, onUnmounted, reactive, ref } from "vue";
+import { defineAsyncComponent, onBeforeMount, onBeforeUnmount, reactive, ref } from "vue";
 
 const ImageDetectionCard = defineAsyncComponent(() => import("@/components/user/greenhouse/camera/ImageDetectionCard.vue"));
 
@@ -205,13 +205,13 @@ const onImageUpload = async (file) => {
 };
 
 // ---hooks
-onMounted(async () => {
+onBeforeMount(async () => {
     state.mlLettuceModelLoading = true;
     await mlLettuceModelLoad().catch(console.error);
     state.mlLettuceModelLoading = false;
 });
 
-onUnmounted(async () => {
+onBeforeUnmount(async () => {
     mlLettuceModelUnload();
 });
 
