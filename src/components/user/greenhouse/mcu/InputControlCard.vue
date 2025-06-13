@@ -42,8 +42,8 @@
 <script setup>
 import { useRules } from "@/composables/rules.composable";
 import { useActuatorStore } from "@/stores/actuator.store";
-import { wsAddEvent, wsConnect, wsDelEvent } from "@/utils/ws.util";
-import { onBeforeMount, onBeforeUnmount, reactive, t, onBeforeUnmountoRaw, watch } from "vue";
+import { wsAddEvent, wsDelEvent } from "@/utils/ws.util";
+import { onBeforeMount, onBeforeUnmount, reactive, watch } from "vue";
 
 //
 
