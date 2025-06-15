@@ -15,7 +15,7 @@
 
             <!-- Input Lists -->
             <InputControlCard
-                v-for="input in inputs"
+                v-for="input in visualInputs"
                 class="mb-1 border"
                 variant="flat"
                 elevation="0"
@@ -29,11 +29,11 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 
 const InputControlCard = defineAsyncComponent(() => import("@/components/user/greenhouse/mcu/InputControlCard.vue"))
 
-
+//
 
 // ---props
 const props = defineProps({
@@ -47,7 +47,13 @@ const props = defineProps({
     },
 })
 
+// ---getters
+const visualInputs = computed(() => props.inputs.filter(input => {
+    const isStepper = props.actuator?.name?.toLowerCase()?.includes('stepper')
+    return (isStepper && input?.name?.toLowerCase()?.includes('stepper')) || (!isStepper)
+}))
 
+//
 
 </script>
 
