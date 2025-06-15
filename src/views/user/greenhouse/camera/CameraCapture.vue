@@ -155,11 +155,18 @@ const onPaginate = async () => {
 };
 
 const onWsEventImage = (data) => {
-    images.unshift(...data);
+    for (const img of data) {
+        if (img?.cameraId != cameraId) continue;
+        imageWithDetections.unshift({ ...img, detections: [] });
+    }
 };
 
 const onWsEventDetection = (data) => {
-    detections.unshift(...data);
+    for (const det of data) {
+        for (const iwd of imageWithDetections) {
+            if (iwd.id == det.imageId) iwd.detections.unshift(det);
+        }
+    }
 };
 
 // ---hooks
