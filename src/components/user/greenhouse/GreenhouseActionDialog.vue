@@ -47,6 +47,12 @@
                     :rules="[required('Number'), min(0)]"
                 ></v-number-input>
                 <v-number-input
+                    label="Timeout"
+                    prefix="Seconds: "
+                    v-model="action.timeout"
+                    :rules="[required('Number'), min(0)]"
+                ></v-number-input>
+                <v-number-input
                     label="Duration"
                     prefix="Seconds: "
                     v-model="action.duration"
@@ -127,7 +133,8 @@ const action = reactive({
     name: props.initial?.name,
     value: props.initial?.value || 1,
     delay: props.initial?.delay || 0,
-    duration: props.initial?.duration || 30,
+    timeout: props.initial?.timeout || 10,
+    duration: props.initial?.duration || -1,
     priority: props.initial?.priority || 0,
     inputId: props.initial?.inputId,
     scheduleId: props.initial?.scheduleId,
@@ -140,6 +147,7 @@ const actionProps = computed(() => ({
     name: props.initial?.name,
     value: props.initial?.value,
     delay: props.initial?.delay,
+    timeout: props.initial?.timeout,
     duration: props.initial?.duration,
     priority: props.initial?.priority,
     inputId: props.initial?.inputId,
