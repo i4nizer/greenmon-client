@@ -42,13 +42,13 @@
                 ></v-select>
                 <v-number-input
                     label="Delay"
-                    prefix="Seconds: "
+                    prefix="Milliseconds: "
                     v-model="action.delay"
                     :rules="[required('Number'), min(0)]"
                 ></v-number-input>
                 <v-number-input
                     label="Timeout"
-                    prefix="Seconds: "
+                    prefix="Milliseconds: "
                     v-model="action.timeout"
                     :rules="[required('Number'), min(0)]"
                 ></v-number-input>
@@ -133,7 +133,7 @@ const action = reactive({
     name: props.initial?.name,
     value: props.initial?.value || 1,
     delay: props.initial?.delay || 0,
-    timeout: props.initial?.timeout || 10,
+    timeout: props.initial?.timeout || 10000,
     duration: props.initial?.duration || -1,
     priority: props.initial?.priority || 0,
     inputId: props.initial?.inputId,
