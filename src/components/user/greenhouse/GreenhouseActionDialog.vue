@@ -54,8 +54,9 @@
                 ></v-number-input>
                 <v-number-input
                     label="Duration"
-                    prefix="Seconds: "
+                    prefix="Milliseconds: "
                     v-model="action.duration"
+                    :hint="action.duration == -1 ? 'The input will be applied after delay.' : 'The input will return to its previous state after this duration.'"
                     :rules="[required('Number'), min(-1)]"
                 ></v-number-input>
                 <v-number-input label="Priority" v-model="action.priority" :rules="[required('Number'), min(0)]"></v-number-input>
