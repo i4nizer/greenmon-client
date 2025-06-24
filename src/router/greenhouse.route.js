@@ -31,6 +31,12 @@ const greenhouseRoutes = [
         beforeEnter: [greenhouseBeforeEnter, greenhouseStatisticsBeforeEnter],
     },
     {
+        path: "alert",
+        name: "Greenhouse Alert",
+        component: () => import("@/views/user/greenhouse/GreenhouseAlert.vue"),
+        beforeEnter: [greenhouseBeforeEnter],
+    },
+    {
         path: "mcu",
         name: "Greenhouse Mcus",
         component: () => import("@/views/user/greenhouse/GreenhouseMcus.vue"),

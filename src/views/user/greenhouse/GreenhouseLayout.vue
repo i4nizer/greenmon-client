@@ -38,6 +38,12 @@
                 ></v-list-item>
                 <v-list-item 
                     link 
+                    title="Alert" 
+                    prepend-icon="mdi-alert"
+                    :to="`/user/greenhouse/${greenhouseId}/alert`" 
+                ></v-list-item>
+                <v-list-item 
+                    link 
                     title="Microcontrollers" 
                     prepend-icon="mdi-chip"
                     :to="`/user/greenhouse/${greenhouseId}/mcu`" 
